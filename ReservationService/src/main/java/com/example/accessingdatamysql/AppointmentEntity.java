@@ -1,6 +1,7 @@
 
 package com.example.accessingdatamysql;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 @Table(name="appointment")
@@ -10,10 +11,11 @@ public class AppointmentEntity {
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
     private String description;
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "user_id",referencedColumnName = "id")
     private UserEntity user;
-
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "doctor_id", referencedColumnName = "id")
     private DoctorInfoEntity doctorInfo;

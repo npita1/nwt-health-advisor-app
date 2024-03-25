@@ -1,10 +1,16 @@
 package com.example.accessingdatamysql;
 
+import com.example.accessingdatamysql.exceptions.DoctorInfoNotFoundException;
+import com.example.accessingdatamysql.exceptions.ReservationNotFoundException;
+import com.example.accessingdatamysql.exceptions.UserNotFoundException;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import java.util.List;
 
-@Controller // This means that this class is a Controller
+@RestController// This means that this class is a Controller
+@Validated
 @RequestMapping(path="/nwt") // This means URL's start with /demo (after Application path)
 public class MainController {
     @Autowired // This means to get the bean called userRepository
@@ -46,7 +52,7 @@ public class MainController {
         return "Saved";
     }
     @PostMapping(path="/addAppointment")
-    public  @ResponseBody String addNewAppointment( @RequestBody AppointmentEntity appointment){
+    public  @ResponseBody String addNewAppointment(  @RequestBody AppointmentEntity appointment){
         appointmentRepository.save(appointment);
         return "Saved";
     }
@@ -56,10 +62,11 @@ public class MainController {
         return "Saved";
     }
     @PostMapping(path="/addReservation")
-    public  @ResponseBody String addNewReservation( @RequestBody ReservationEntity reservation){
+    public  @ResponseBody String addNewReservation(  @Valid @RequestBody ReservationEntity reservation){
         reservationRepository.save(reservation);
         return "Saved";
     }
+
 
     @GetMapping(path="/allUsers")
     public @ResponseBody Iterable<UserEntity> getAllUsers() {
@@ -77,15 +84,54 @@ public class MainController {
         // This returns a JSON or XML with the users
         return appointmentRepository.findAll();
     }
+    @GetMapping(path = "/appointments-for-user/{userId}")
+    public List<AppointmentEntity> getAppointmentsForUser(@PathVariable int userId){
+        UserEntity user=userRepository.findById(userId);
+        if (user==null) {
+            throw new UserNotFoundException(" Not found user by id " + userId);
+        }
+        return appointmentRepository.findByUser(user);
+
+    }
+    @GetMapping(path = "/appointments-for-doctor/{doctorId}")
+    public List<AppointmentEntity> getAppointmentsForDoctor(@PathVariable int doctorId){
+        DoctorInfoEntity doctor=doctorInfoRepository.findById(doctorId);
+        if (doctor==null) {
+            throw new DoctorInfoNotFoundException(" Not found doctor by id " + doctorId);
+        }
+        return appointmentRepository.findByDoctorInfo(doctor);
+
+    }
     @GetMapping(path = "/allEvents")
     public @ResponseBody Iterable<EventEntity> getAllEvents(){
         return eventRepository.findAll();
     }
+    @GetMapping("/events/{eventId}")
+    public EventEntity getEvent(@PathVariable int eventId) {
+        EventEntity event = eventRepository.findById(eventId);
 
+
+        if (event == null) {
+            throw new ReservationNotFoundException(" Not found event by id " + eventId);
+        }
+
+        return event;
+    }
     @GetMapping(path = "/allReservations")
     public @ResponseBody Iterable<ReservationEntity> getAllReservations(){
         return reservationRepository.findAll();
     }
 
+    @GetMapping("/reservations/{reservationId}")
+    public ReservationEntity getReservation(@PathVariable int reservationId) {
+        ReservationEntity reservation = reservationRepository.findById(reservationId);
+
+
+        if (reservation == null) {
+            throw new ReservationNotFoundException(" Not found reservation by id: " + reservationId);
+        }
+
+        return reservation;
+    }
 
 }

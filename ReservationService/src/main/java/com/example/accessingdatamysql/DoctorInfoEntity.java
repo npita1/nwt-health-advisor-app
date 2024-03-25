@@ -21,10 +21,10 @@ public class DoctorInfoEntity {
     private UserEntity user;
 
 
-
+    @JsonIgnore
     @OneToMany(mappedBy = "doctorInfo")
     private List<AppointmentEntity> appointments;
-
+    @JsonIgnore
     @OneToMany(mappedBy = "doctorInfo")
     private List<EventEntity> events;
     protected DoctorInfoEntity() {}
@@ -56,6 +56,22 @@ public class DoctorInfoEntity {
     }
     public void setId(Long id){
         this.id=id;
+    }
+
+    public List<AppointmentEntity> getAppointments() {
+        return appointments;
+    }
+
+    public void setAppointments(List<AppointmentEntity> appointments) {
+        this.appointments = appointments;
+    }
+
+    public List<EventEntity> getEvents() {
+        return events;
+    }
+
+    public void setEvents(List<EventEntity> events) {
+        this.events = events;
     }
 }
 

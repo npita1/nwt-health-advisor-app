@@ -2,6 +2,9 @@
 package com.example.accessingdatamysql;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 
 @Table(name="reservation")
@@ -11,7 +14,8 @@ public class ReservationEntity {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
-
+    @NotNull(message = "NumOfTickets is mandatory")
+    @Min(value = 1, message = "The number of ticket must be a positive integer")
     private Integer numOfTicket;
 
     @ManyToOne

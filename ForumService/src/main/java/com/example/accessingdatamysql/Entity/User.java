@@ -1,15 +1,12 @@
-package com.example.accessingdatamysql;
+package com.example.accessingdatamysql.Entity;
+import com.example.accessingdatamysql.Entity.DoctorInfo;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-
 @Table(name="user")
 @Entity
-public class UserEntity {
+public class User {
 
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
@@ -23,14 +20,8 @@ public class UserEntity {
     private String passwordHash;
     @JsonIgnore
     @OneToOne(mappedBy = "user")
-    private DoctorInfoEntity doctorInfo;
+    private DoctorInfo doctorInfo;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "user")
-    private List<AppointmentEntity> appointments;
-    @JsonIgnore
-    @OneToMany(mappedBy = "user")
-    private List<ReservationEntity> reservations;
     public void setId(Long id) {
         this.id = id;
     }
@@ -55,9 +46,9 @@ public class UserEntity {
         this.passwordHash = passwordHash;
     }
 
-    protected UserEntity() {}
+    public User() {}
 
-    public UserEntity(String email, String firstName, String lastName, Integer type, String passwordHash) {
+    public User(String email, String firstName, String lastName, Integer type, String passwordHash) {
         this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -65,7 +56,7 @@ public class UserEntity {
         this.passwordHash = passwordHash;
     }
 
-    public UserEntity(String firstName, String lastName) {
+    public User(String firstName, String lastName) {
         this.firstName = firstName;
         this.lastName = lastName;
     }
@@ -99,11 +90,7 @@ public class UserEntity {
     }
 
 
-    public List<AppointmentEntity> getAppointments() {
-        return appointments;
-    }
-
-    public void setAppointments(List<AppointmentEntity> appointments) {
-        this.appointments = appointments;
+    public String getEmail() {
+        return email;
     }
 }
