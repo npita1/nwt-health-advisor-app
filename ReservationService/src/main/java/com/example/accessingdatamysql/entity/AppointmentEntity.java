@@ -1,5 +1,5 @@
 
-package com.example.accessingdatamysql;
+package com.example.accessingdatamysql.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
@@ -15,7 +15,7 @@ public class AppointmentEntity {
     @ManyToOne
     @JoinColumn(name = "user_id",referencedColumnName = "id")
     private UserEntity user;
-    @JsonIgnore
+
     @ManyToOne
     @JoinColumn(name = "doctor_id", referencedColumnName = "id")
     private DoctorInfoEntity doctorInfo;

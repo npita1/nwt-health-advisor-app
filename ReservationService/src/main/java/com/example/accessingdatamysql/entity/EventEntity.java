@@ -1,8 +1,11 @@
 
-package com.example.accessingdatamysql;
+package com.example.accessingdatamysql.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,6 +18,9 @@ public class EventEntity {
     private String name;
     private String description;
     private String date;
+    @NotNull
+    //@PastOrPresent(message = "Datum mora biti u prošlosti ili današnji datum.")
+    @Pattern(regexp = "^\\d{2}.\\d{2}.\\d{4}$", message = "Datum mora biti u formatu 'DD.MM.YYYY'.")
     private String location;
 
     @ManyToOne

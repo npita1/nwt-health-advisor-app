@@ -1,4 +1,4 @@
-package com.example.accessingdatamysql;
+package com.example.accessingdatamysql.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
@@ -55,7 +55,7 @@ public class UserEntity {
         this.passwordHash = passwordHash;
     }
 
-    protected UserEntity() {}
+    public UserEntity() {}
 
     public UserEntity(String email, String firstName, String lastName, Integer type, String passwordHash) {
         this.email = email;
@@ -106,4 +106,14 @@ public class UserEntity {
     public void setAppointments(List<AppointmentEntity> appointments) {
         this.appointments = appointments;
     }
+
+    public DoctorInfoEntity getDoctorInfo() {
+        return doctorInfo;
+    }
+
+    public void setDoctorInfo(DoctorInfoEntity doctorInfo) {
+        this.doctorInfo = doctorInfo;
+    }
+
+
 }

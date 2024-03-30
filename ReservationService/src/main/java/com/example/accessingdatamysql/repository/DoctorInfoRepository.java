@@ -1,5 +1,6 @@
-package com.example.accessingdatamysql;
+package com.example.accessingdatamysql.repository;
 
+import com.example.accessingdatamysql.entity.DoctorInfoEntity;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;

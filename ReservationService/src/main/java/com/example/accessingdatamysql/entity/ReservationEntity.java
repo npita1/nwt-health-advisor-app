@@ -1,6 +1,7 @@
 
-package com.example.accessingdatamysql;
+package com.example.accessingdatamysql.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -17,11 +18,11 @@ public class ReservationEntity {
     @NotNull(message = "NumOfTickets is mandatory")
     @Min(value = 1, message = "The number of ticket must be a positive integer")
     private Integer numOfTicket;
-
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "event_id", referencedColumnName = "id")
     private EventEntity event;
-
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "user_id",referencedColumnName = "id")
     private UserEntity user;
