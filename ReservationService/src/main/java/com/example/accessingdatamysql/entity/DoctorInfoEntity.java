@@ -27,7 +27,7 @@ public class DoctorInfoEntity {
     @JsonIgnore
     @OneToMany(mappedBy = "doctorInfo")
     private List<EventEntity> events;
-    protected DoctorInfoEntity() {}
+    public DoctorInfoEntity() {}
 
     @Override
     public String toString() {

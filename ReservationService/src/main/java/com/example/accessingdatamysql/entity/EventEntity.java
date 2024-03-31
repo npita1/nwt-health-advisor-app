@@ -3,8 +3,11 @@ package com.example.accessingdatamysql.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,14 +18,21 @@ public class EventEntity {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Long id;
-    private String name;
-    private String description;
-    private String date;
-    @NotNull
-    //@PastOrPresent(message = "Datum mora biti u prošlosti ili današnji datum.")
-    @Pattern(regexp = "^\\d{2}.\\d{2}.\\d{4}$", message = "Datum mora biti u formatu 'DD.MM.YYYY'.")
+    @NotBlank(message = "Morate unijeti lokaciju događaja.")
     private String location;
 
+    @Size(min = 3, max = 255, message = "Naziv događaja mora imati između 3 i 255 znakova.")
+    private String name;
+
+    @Size(max = 1000, message = "Opis događaja ne smije biti duži od 1000 znakova.")
+    private String description;
+
+    //@PastOrPresent(message = "Datum mora biti u prošlosti ili današnji datum.")
+    @Pattern(regexp = "^\\d{2}.\\d{2}.\\d{4}$", message = "Datum mora biti u formatu 'DD.MM.YYYY'.")
+    private String date;
+
+    @NotNull(message = "Liječnik mora biti dodijeljen događaju.")
+    @Valid
     @ManyToOne
     @JoinColumn(name = "doctor_id", referencedColumnName = "id")
     private DoctorInfoEntity doctorInfo;
@@ -36,7 +46,7 @@ public class EventEntity {
     @Override
     public String toString() {
         return String.format(
-                "DoctorInfoEntity[id=%d, name='%s', description='%s, date='%s, location='%s']",
+                "EventEntity[id=%d, name='%s', description='%s, date='%s, location='%s']",
                 id, name, description, date, location);
     }
 
@@ -45,6 +55,13 @@ public class EventEntity {
         this.description = description;
         this.date = date;
         this.location = location;
+    }
+    public EventEntity(String name, String description, String date, String location,DoctorInfoEntity doctor) {
+        this.name = name;
+        this.description = description;
+        this.date = date;
+        this.location = location;
+        this.doctorInfo=doctor;
     }
 
 

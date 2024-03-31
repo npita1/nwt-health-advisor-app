@@ -3,7 +3,7 @@ package com.example.accessingdatamysql.exceptions;
 public class ErrorResponse {
     private int status;
     private String message;
-
+    private String error;
     public ErrorResponse() {}
 
     public ErrorResponse(int status, String message) {
@@ -27,4 +27,11 @@ public class ErrorResponse {
         this.message = message;
     }
 
+    public String getError() {
+        return error;
+    }
+
+    public void setError(String error) {
+        this.error = error;
+    }
 }

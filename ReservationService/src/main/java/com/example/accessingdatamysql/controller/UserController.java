@@ -47,7 +47,7 @@ public class UserController {
     public List<AppointmentEntity> getAppointmentsForUser(@PathVariable int userId){
         UserEntity user=userRepository.findById(userId);
         if (user==null) {
-            throw new UserNotFoundException(" Not found user by id " + userId);
+            throw new UserNotFoundException("Not found user by id " + userId);
         }
         return appointmentRepository.findByUser(user);
 

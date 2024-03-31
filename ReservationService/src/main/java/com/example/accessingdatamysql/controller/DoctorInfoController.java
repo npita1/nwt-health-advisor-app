@@ -34,7 +34,7 @@ public class DoctorInfoController {
     public List<AppointmentEntity> getAppointmentsForDoctor(@PathVariable int doctorId){
         DoctorInfoEntity doctor=doctorInfoRepository.findById(doctorId);
         if (doctor==null) {
-            throw new DoctorInfoNotFoundException(" Not found doctor by id " + doctorId);
+            throw new DoctorInfoNotFoundException("Not found doctor by id " + doctorId);
         }
         return appointmentRepository.findByDoctorInfo(doctor);
 

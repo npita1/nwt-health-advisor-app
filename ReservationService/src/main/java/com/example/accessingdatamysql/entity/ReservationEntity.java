@@ -18,7 +18,7 @@ public class ReservationEntity {
     @NotNull(message = "NumOfTickets is mandatory")
     @Min(value = 1, message = "The number of ticket must be a positive integer")
     private Integer numOfTicket;
-    @JsonIgnore
+    @NotNull(message = "Event is mandatory")
     @ManyToOne
     @JoinColumn(name = "event_id", referencedColumnName = "id")
     private EventEntity event;
@@ -26,6 +26,13 @@ public class ReservationEntity {
     @ManyToOne
     @JoinColumn(name = "user_id",referencedColumnName = "id")
     private UserEntity user;
+
+    public ReservationEntity(Integer numOfTicket) {
+        this.numOfTicket = numOfTicket;
+    }
+
+    public ReservationEntity() {
+    }
 
 
     public Long getId() {
@@ -58,6 +65,12 @@ public class ReservationEntity {
 
     public void setUser(UserEntity user) {
         this.user = user;
+    }
+    @Override
+    public String toString() {
+        return String.format(
+                "ReservationEntity[id=%d, numOfTicket=%d]",
+                id, numOfTicket);
     }
 }
 

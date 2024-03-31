@@ -36,7 +36,7 @@ public class EventController {
 
 
         if (event == null) {
-            throw new ReservationNotFoundException(" Not found event by id " + eventId);
+            throw new ReservationNotFoundException("Not found event by id " + eventId);
         }
 
         return event;

@@ -21,23 +21,24 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseBody
-    public ResponseEntity<ErrorResponse> handleValidationExceptions(MethodArgumentNotValidException ex) {
+    public ResponseEntity<Object> handleValidationExceptions(MethodArgumentNotValidException ex) {
         BindingResult result = ex.getBindingResult();
         List<FieldError> fieldErrors = result.getFieldErrors();
         String errorMessage = fieldErrors.stream()
-                .map(fe -> "Validation error: " + fe.getDefaultMessage())
+                .map(fe -> fe.getDefaultMessage())
                 .collect(Collectors.joining(", "));
-        ErrorResponse errorResponse = new ErrorResponse();
-        errorResponse.setStatus(HttpStatus.BAD_REQUEST.value());
-        errorResponse.setMessage(errorMessage);
+        Map<String, String> errorResponse = new HashMap<>();
+        errorResponse.put("error", "validation");
+        errorResponse.put("message", errorMessage);
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler({ReservationNotFoundException.class, EventNotFoundException.class, UserNotFoundException.class, DoctorInfoNotFoundException.class})
-    public ResponseEntity<ErrorResponse> handleNotFoundExceptions(Exception exc) {
-        ErrorResponse errorResponse = new ErrorResponse();
-        errorResponse.setStatus(HttpStatus.NOT_FOUND.value());
-        errorResponse.setMessage(exc.getMessage());
+    @ExceptionHandler({ReservationNotFoundException.class, EventNotFoundException.class, UserNotFoundException.class, DoctorInfoNotFoundException.class,AppointmentNotFoundException.class})
+    @ResponseBody
+    public ResponseEntity<Object> handleNotFoundExceptions(Exception exc) {
+        Map<String, String> errorResponse = new HashMap<>();
+        errorResponse.put("error", "not_found");
+        errorResponse.put("message", exc.getMessage());
         return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
     }
 

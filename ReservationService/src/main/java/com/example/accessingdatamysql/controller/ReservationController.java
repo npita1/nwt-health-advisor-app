@@ -37,7 +37,7 @@ public class ReservationController {
 
 
         if (reservation == null) {
-            throw new ReservationNotFoundException(" Not found reservation by id: " + reservationId);
+            throw new ReservationNotFoundException("Not found reservation by id: " + reservationId);
         }
 
         return reservation;

@@ -2,12 +2,16 @@ package com.example.accessingdatamysql.controller;
 
 import com.example.accessingdatamysql.entity.AppointmentEntity;
 import com.example.accessingdatamysql.entity.DoctorInfoEntity;
+import com.example.accessingdatamysql.entity.EventEntity;
 import com.example.accessingdatamysql.entity.UserEntity;
+import com.example.accessingdatamysql.exceptions.AppointmentNotFoundException;
 import com.example.accessingdatamysql.exceptions.DoctorInfoNotFoundException;
+import com.example.accessingdatamysql.exceptions.ReservationNotFoundException;
 import com.example.accessingdatamysql.exceptions.UserNotFoundException;
 import com.example.accessingdatamysql.repository.AppointmentRepository;
 import com.example.accessingdatamysql.repository.DoctorInfoRepository;
 import com.example.accessingdatamysql.repository.UserRepository;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -28,7 +32,7 @@ public class AppointmentController {
     @Autowired
     private AppointmentRepository appointmentRepository;
     @PostMapping(path="/addAppointment")
-    public  @ResponseBody String addNewAppointment(@RequestBody AppointmentEntity appointment){
+    public  @ResponseBody String addNewAppointment( @Valid @RequestBody AppointmentEntity appointment){
         appointmentRepository.save(appointment);
         return "Saved";
     }
@@ -36,6 +40,17 @@ public class AppointmentController {
     public @ResponseBody Iterable<AppointmentEntity> getAllAppointments() {
         // This returns a JSON or XML with the users
         return appointmentRepository.findAll();
+    }
+    @GetMapping("/appointments/{appointmentId}")
+    public AppointmentEntity getEvent(@PathVariable int appointmentId) {
+        AppointmentEntity appointment = appointmentRepository.findById(appointmentId);
+
+
+        if (appointment == null) {
+            throw new AppointmentNotFoundException("Not found appointment by id " + appointmentId);
+        }
+
+        return appointment;
     }
 
 }
