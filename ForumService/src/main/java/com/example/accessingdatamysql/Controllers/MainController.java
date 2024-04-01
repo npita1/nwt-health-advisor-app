@@ -1,18 +1,19 @@
 package com.example.accessingdatamysql.Controllers;
-import com.example.accessingdatamysql.DataService.UserDataService;
 import com.example.accessingdatamysql.Entity.*;
 import com.example.accessingdatamysql.Repository.*;
 
+import com.example.accessingdatamysql.exceptions.ArticleNotFoundException;
+import com.example.accessingdatamysql.exceptions.ForumQuestionNotFoundException;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
+@Validated
 @RequestMapping(path="/demo") // This means URL's start with /demo (after Application path)
 public class MainController {
     // This means to get the bean called userRepository
@@ -54,15 +55,17 @@ public class MainController {
     }
 
     @PostMapping(path="/addArticle")
-    public @ResponseBody String addNewArticle (@RequestBody Article article) {
+    public @ResponseBody String addNewArticle (@Valid @RequestBody Article article) {
         articleRepository.save(article);
         return "Article Saved";
     }
 
     @PostMapping(path="/addForumQuestion")
-    public @ResponseBody String addNewForumQuestion (@RequestBody ForumQuestion forumQuestion) {
+    public @ResponseBody ResponseEntity<String> addNewForumQuestion (@RequestBody ForumQuestion forumQuestion) {
         forumQuestionRepository.save(forumQuestion);
-        return "Forum Question Saved";
+        String message = "{\"message\": \"Forum question saved\"}";
+        // Vrati se JSON objekat pa kasnije kad nam bude trebao odgovor da se parsira
+        return ResponseEntity.status(HttpStatus.CREATED).body(message);
     }
 
     @PostMapping(path="/addForumAnswer")
@@ -71,10 +74,42 @@ public class MainController {
         return "Forum Answer Saved";
     }
 
-    @GetMapping(path="/all")
+    @GetMapping(path="/allUsers")
     public @ResponseBody Iterable<User> getAllUsers() {
-        // This returns a JSON or XML with the users
         return userRepository.findAll();
+    }
+
+    @GetMapping(path="/allArticles")
+    public @ResponseBody Iterable<Article> getAllArticles() {
+        return articleRepository.findAll();
+    }
+
+    @GetMapping(path="/articles/{articleId}")
+    public @ResponseBody Article getArticle(@PathVariable long articleId) {
+        Article article = articleRepository.findById(articleId);
+
+        if (article == null) {
+            // Da se vrati u JSON formatu objekat
+            throw new ArticleNotFoundException(" Not found article by id: " + articleId);
+        }
+
+        return article;
+    }
+
+    @GetMapping(path="/allForumQuestions")
+    public @ResponseBody Iterable<ForumQuestion> getAllForumQuestions() {
+        return forumQuestionRepository.findAll();
+    }
+
+    @GetMapping(path="/forumQuestions/{forumQuestionId}")
+    public @ResponseBody ForumQuestion getForumQuestion(@PathVariable long forumQuestionId) {
+        ForumQuestion forumQuestion = forumQuestionRepository.findById(forumQuestionId);
+
+        if (forumQuestion == null) {
+            throw new ForumQuestionNotFoundException(" Not found forum question by id: " + forumQuestionId);
+        }
+
+        return forumQuestion;
     }
 
 }

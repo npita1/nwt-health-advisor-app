@@ -1,6 +1,11 @@
 package com.example.accessingdatamysql.Entity;
-
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PastOrPresent;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
+
+
 
 import java.util.Date;
 
@@ -19,8 +24,16 @@ public class Article {
     @JoinColumn(name = "category_id", referencedColumnName = "id")
     private Category category;
 
+    @NotNull
+    @Size(min = 1, max = 100)
     private String title;
+
+    @NotNull
+    @Size(min = 1, max = 1500)
     private String text;
+
+    @NotNull
+    @Pattern(regexp = "^\\d{2}.\\d{2}.\\d{4}$", message = "Datum mora biti u formatu 'DD.MM.YYYY'.")
     private String date;
 
 

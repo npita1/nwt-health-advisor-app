@@ -1,14 +1,16 @@
 package com.example.accessingdatamysql.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.JoinColumn;
-import java.util.Date;
-import java.util.List;
-import java.util.ArrayList;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PastOrPresent;
+import jakarta.validation.constraints.Pattern;
+
 
 @Entity
 public class ForumAnswer {
@@ -19,6 +21,7 @@ public class ForumAnswer {
 
     @ManyToOne
     @JoinColumn(name = "question_id", referencedColumnName = "id")
+    @JsonIgnore
     private ForumQuestion question;
 
     @ManyToOne
@@ -27,9 +30,14 @@ public class ForumAnswer {
 
     @ManyToOne
     @JoinColumn(name = "parent_id", referencedColumnName = "id")
+    @JsonIgnore
     private ForumAnswer parent;
 
+    @NotNull(message = "Tekst ne smije biti prazan.")
     private String text;
+
+    @NotNull
+    @Pattern(regexp = "^\\d{2}.\\d{2}.\\d{4}$", message = "Datum mora biti u formatu 'DD.MM.YYYY'.")
     private String date;
 
     public ForumAnswer() {}

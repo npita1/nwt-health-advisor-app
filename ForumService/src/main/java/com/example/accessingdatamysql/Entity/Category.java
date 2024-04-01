@@ -2,6 +2,8 @@ package com.example.accessingdatamysql.Entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 @Entity
 public class Category {
@@ -10,7 +12,9 @@ public class Category {
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Integer id;
 
+    @NotBlank(message = "Naziv kategorije ne smije biti prazan.")
     private String name;
+    @Size(max = 255, message = "Opis kategorije može sadržavati najviše 255 znakova.")
     private String description;
 
 //    @JsonIgnore

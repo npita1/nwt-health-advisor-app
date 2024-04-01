@@ -6,6 +6,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.JoinColumn;
+import jakarta.validation.constraints.*;
+
 import java.util.Date;
 
 @Entity
@@ -15,17 +17,27 @@ public class ForumQuestion {
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Integer id;
 
+    @NotNull(message = "Korisnik ne smije biti prazan.")
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
+    @NotNull(message = "Kategorija ne smije biti prazna.")
     @ManyToOne
     @JoinColumn(name = "category_id", referencedColumnName = "id")
     private Category category;
 
+    @NotNull
+    @Size(min = 1, max = 100, message = "Naslov mora imati između 1 i 100 znakova.")
     private String title;
+    @NotNull
+    @Size(min = 1, max = 1000, message = "Tekst mora imati između 1 i 1000 znakova.")
     private String text;
+    @NotNull
+    @Pattern(regexp = "^\\d{2}.\\d{2}.\\d{4}$", message = "Datum mora biti u formatu 'DD.MM.YYYY'.")
     private String date;
+
+    @AssertTrue(message = "Anonimnost mora biti postavljena na true ili false.")
     private boolean anonymity;
 
     public ForumQuestion() {}
