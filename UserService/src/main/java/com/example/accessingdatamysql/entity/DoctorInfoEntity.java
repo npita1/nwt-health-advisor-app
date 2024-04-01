@@ -1,7 +1,9 @@
-package com.example.accessingdatamysql;
+package com.example.accessingdatamysql.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 @Table(name="doctorInfo")
 @Entity
@@ -10,10 +12,13 @@ public class DoctorInfoEntity {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Long id;
+    @NotBlank(message = "Polje za detalje o doktoru ne smije biti prazno.")
+    @Size(min = 3, message = "Opis mora biti najmanje dzužine 20 znakova.")
     private String about;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @Valid
     private UserEntity user;
 
     protected DoctorInfoEntity() {}
