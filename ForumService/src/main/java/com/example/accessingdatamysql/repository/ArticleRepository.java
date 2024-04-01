@@ -7,6 +7,6 @@ import org.springframework.data.repository.CrudRepository;
 public interface ArticleRepository extends CrudRepository<ArticleEntity, Long> {
     ArticleEntity findById(long id);
 
-    @Query("SELECT a FROM ArticleEntity a WHERE a.categoryEntity.name = :category")
+    @Query("SELECT a FROM ArticleEntity a WHERE a.category.name = :category")
     Iterable<ArticleEntity> findByCategory(String category);
 }

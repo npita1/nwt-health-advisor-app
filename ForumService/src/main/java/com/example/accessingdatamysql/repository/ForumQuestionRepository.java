@@ -10,4 +10,7 @@ public interface ForumQuestionRepository extends CrudRepository<ForumQuestionEnt
 
     @Query("SELECT question FROM ForumQuestionEntity question WHERE question.user.id = :userId")
     Iterable<ForumQuestionEntity> findQuestionsByUserId(Long userId);
+
+    @Query("SELECT question FROM ForumQuestionEntity question WHERE question.category.name = :category")
+    Iterable<ForumQuestionEntity> findByCategory(String category);
 }

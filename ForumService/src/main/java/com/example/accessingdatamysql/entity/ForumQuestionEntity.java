@@ -1,19 +1,15 @@
 package com.example.accessingdatamysql.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.JoinColumn;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 
 @Entity
+@Table(name="forum_question")
 public class ForumQuestionEntity {
 
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
-    private Integer id;
+    private Long id;
 
     @NotNull(message = "Korisnik ne smije biti prazan.")
     @ManyToOne
@@ -23,7 +19,7 @@ public class ForumQuestionEntity {
     @NotNull(message = "Kategorija ne smije biti prazna.")
     @ManyToOne
     @JoinColumn(name = "category_id", referencedColumnName = "id")
-    private CategoryEntity categoryEntity;
+    private CategoryEntity category;
 
     @NotNull
     @Size(min = 1, max = 100, message = "Naslov mora imati između 1 i 100 znakova.")
@@ -42,18 +38,18 @@ public class ForumQuestionEntity {
 
     public ForumQuestionEntity(User user, CategoryEntity categoryEntity, String title, String text, String date, boolean anonymity) {
         this.user = user;
-        this.categoryEntity = categoryEntity;
+        this.category = categoryEntity;
         this.title = title;
         this.text = text;
         this.date = date;
         this.anonymity = anonymity;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -66,11 +62,11 @@ public class ForumQuestionEntity {
     }
 
     public CategoryEntity getCategory() {
-        return categoryEntity;
+        return category;
     }
 
     public void setCategory(CategoryEntity categoryEntity) {
-        this.categoryEntity = categoryEntity;
+        this.category = categoryEntity;
     }
 
     public String getTitle() {
@@ -109,6 +105,6 @@ public class ForumQuestionEntity {
     public String toString() {
         return String.format(
                 "ForumQuestionEntity[id=%d, user='%s', categoryEntity='%s', title='%s', text='%s', date='%s', anonymity='%b']",
-                id, user.toString(), categoryEntity.toString(), title, text, date.toString(), anonymity);
+                id, user.toString(), category.toString(), title, text, date.toString(), anonymity);
     }
 }

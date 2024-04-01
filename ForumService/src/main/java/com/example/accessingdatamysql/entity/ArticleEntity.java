@@ -5,6 +5,7 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 @Entity
+@Table(name="article")
 public class ArticleEntity {
 
     @Id
@@ -17,7 +18,7 @@ public class ArticleEntity {
 
     @ManyToOne
     @JoinColumn(name = "category_id", referencedColumnName = "id")
-    private CategoryEntity categoryEntity;
+    private CategoryEntity category;
 
     @NotNull
     @Size(min = 1, max = 100)
@@ -36,7 +37,7 @@ public class ArticleEntity {
 
     public ArticleEntity(DoctorInfoEntity doctor, CategoryEntity categoryEntity, String text, String date, String title) {
         this.doctor = doctor;
-        this.categoryEntity = categoryEntity;
+        this.category = categoryEntity;
         this.text = text;
         this.date = date;
         this.title = title;
@@ -59,11 +60,11 @@ public class ArticleEntity {
     }
 
     public CategoryEntity getCategory() {
-        return categoryEntity;
+        return category;
     }
 
     public void setCategory(CategoryEntity categoryEntity) {
-        this.categoryEntity = categoryEntity;
+        this.category = categoryEntity;
     }
 
     public String getText() {
@@ -86,7 +87,7 @@ public class ArticleEntity {
     public String toString() {
         return String.format(
                 "ArticleEntity[id=%d, doctor='%s', categoryEntity='%s', text='%s', date='%s']",
-                id, doctor.toString(), categoryEntity.toString(), text, date.toString());
+                id, doctor.toString(), category.toString(), text, date.toString());
     }
 
     public String getTitle() {

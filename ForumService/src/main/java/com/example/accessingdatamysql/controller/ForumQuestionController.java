@@ -32,7 +32,7 @@ public class ForumQuestionController {
         return forumQuestionRepository.findAll();
     }
 
-    @GetMapping(path="/forumQuestions/{forumQuestionId}")
+    @GetMapping(path="/questions/{forumQuestionId}")
     public @ResponseBody ForumQuestionEntity getForumQuestion(@PathVariable long forumQuestionId) {
         ForumQuestionEntity forumQuestionEntity = forumQuestionRepository.findById(forumQuestionId);
 
@@ -43,10 +43,13 @@ public class ForumQuestionController {
         return forumQuestionEntity;
     }
 
-    @GetMapping(path="/questionsByUserId/{userId}")
-    public @ResponseBody Iterable<ForumQuestionEntity> getArticlesByCategory(@PathVariable Long userId) {
+    @GetMapping(path="/questions/user/{userId}")
+    public @ResponseBody Iterable<ForumQuestionEntity> getForumQuestionsByUserId(@PathVariable Long userId) {
         return forumQuestionRepository.findQuestionsByUserId(userId);
     }
 
-
+    @GetMapping(path="/questions/category/{category}")
+    public @ResponseBody Iterable<ForumQuestionEntity> getForumQuestionsByCategory (@PathVariable String category) {
+        return forumQuestionRepository.findByCategory(category);
+    }
 }

@@ -42,7 +42,7 @@ public class ArticleController {
         return articleEntity;
     }
 
-    @GetMapping(path="/articlesByCategory/{category}")
+    @GetMapping(path="/articles/category/{category}")
     public @ResponseBody Iterable<ArticleEntity> getArticlesByCategory(@PathVariable String category) {
         return articleRepository.findByCategory(category);
     }
