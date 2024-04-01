@@ -27,5 +27,9 @@ public class ForumAnswerController {
         return "Forum Answer Saved";
     }
 
+    @GetMapping(path="/allForumAnswers")
+    public @ResponseBody Iterable<ForumAnswer> getAllForumQuestions() {
+        return forumAnswerRepository.findAll();
+    }
 
 }
