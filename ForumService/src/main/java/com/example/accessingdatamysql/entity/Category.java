@@ -9,29 +9,27 @@ public class Category {
 
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
-    private Integer id;
+    private Long id;
 
     @NotBlank(message = "Naziv kategorije ne smije biti prazan.")
+    @Column(unique = true)
     private String name;
+
     @Size(max = 255, message = "Opis kategorije može sadržavati najviše 255 znakova.")
     private String description;
 
-//    @JsonIgnore
-//    @OneToMany(mappedBy = "category")
-//    private Article article;
-
     public Category() {}
 
-    public Category(String name, String field, String description) {
+    public Category(String name, String description) {
         this.name = name;
         this.description = description;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

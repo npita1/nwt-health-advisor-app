@@ -1,10 +1,10 @@
 package com.example.accessingdatamysql.ControllerTests;
 import com.example.accessingdatamysql.controller.ArticleController;
-import com.example.accessingdatamysql.entity.Category;
-import com.example.accessingdatamysql.entity.DoctorInfo;
-import com.example.accessingdatamysql.entity.User;
+import com.example.accessingdatamysql.controller.ForumQuestionController;
+import com.example.accessingdatamysql.entity.*;
 import com.example.accessingdatamysql.repository.ArticleRepository;
 import com.example.accessingdatamysql.repository.DoctorInfoRepository;
+import com.example.accessingdatamysql.repository.ForumQuestionRepository;
 import com.example.accessingdatamysql.repository.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
@@ -21,7 +21,6 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import com.example.accessingdatamysql.entity.Article;
 
 import static java.util.Optional.empty;
 import static org.mockito.Mockito.*;
@@ -30,66 +29,63 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @ExtendWith(MockitoExtension.class)
-@WebMvcTest(ArticleController.class)
-public class ArticleControllerTest {
+@WebMvcTest(ForumQuestionController.class)
+public class ForumQuestionControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
 
     @MockBean
-    private ArticleRepository articleRepository;
+    private ForumQuestionRepository forumQuestionRepository;
     @MockBean
     private UserRepository userRepository;
     @MockBean
     private DoctorInfoRepository doctorInfoRepository;
     @InjectMocks
-    private ArticleController articleController;
+    private ForumQuestionController forumQuestionController;
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Test
-    public void testAddNewArticle() throws Exception {
+    public void testAddNewForumQuestion() throws Exception {
         User user = new User("neki.email@mail.com", "ime", "prezime", 2, "passhash");
-        DoctorInfo doctor = new DoctorInfo(user, "reference");
         Category category = new Category("kategorija", "opis");
-        Article article = new Article(doctor, category, "teks", "22.01.2024", "naslov");
+        ForumQuestion forumQuestion = new ForumQuestion(user, category, "naslovvv", "tekst pit", "22.03.2024", true);
 
+        when(forumQuestionRepository.save(any(ForumQuestion.class))).thenReturn(forumQuestion);
 
-        when(articleRepository.save(any(Article.class))).thenReturn(article);
-
-        mockMvc.perform(post("/demo/addArticle")
+        mockMvc.perform(post("/demo/addForumQuestion")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(article)))
-                .andExpect(status().isOk())
-                .andExpect(content().string("Article Saved"));
+                        .content(objectMapper.writeValueAsString(forumQuestion)))
+                .andExpect(status().isCreated()) // Updated to expect CREATED status
+                .andExpect(content().string("{\"message\": \"Forum question saved\"}"));
 
-        verify(articleRepository, times(1)).save(any(Article.class));
+        verify(forumQuestionRepository, times(1)).save(any(ForumQuestion.class));
     }
 
 
+
     @Test
-    public void testGetAllAppointments() throws Exception {
+    public void testGetAllForumQuestions() throws Exception {
         User user = new User("neki.email@mail.com", "ime", "prezime", 2, "passhash");
-        DoctorInfo doctor = new DoctorInfo(user, "reference");
         Category category = new Category("kategorija", "opis");
-        Article article = new Article(doctor, category, "teks", "22.01.2024", "naslov");
+        ForumQuestion forumQuestion = new ForumQuestion(user, category, "naslovvv", "tekst pit", "22.03.2024", true);
 
         User user2 = new User("neki.email@mail.com", "ime", "prezime", 2, "passhash");
-        DoctorInfo doctor2 = new DoctorInfo(user2, "reference");
         Category category2 = new Category("kategorija", "opis");
-        Article article2 = new Article(doctor2, category2, "teks", "22.01.2024", "naslov2");
+        ForumQuestion forumQuestion2 = new ForumQuestion(user2, category2, "TITLE", "tekst pit", "22.03.2024", true);
 
-        List<Article> articles = Arrays.asList(article, article2);
+        List<ForumQuestion> forumQuestions = Arrays.asList(forumQuestion, forumQuestion2);
 
-        when(articleRepository.findAll()).thenReturn(articles);
+        when(forumQuestionRepository.findAll()).thenReturn(forumQuestions);
 
-        mockMvc.perform(get("/demo/allArticles"))
+        mockMvc.perform(get("/demo/allForumQuestions"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isArray())
-                .andExpect(jsonPath("$[0].title").value("naslov"))
-                .andExpect(jsonPath("$[1].title").value("naslov2"));
+                .andExpect(jsonPath("$[0].title").value("naslovvv"))
+                .andExpect(jsonPath("$[1].title").value("TITLE"));
 
-        verify(articleRepository, times(1)).findAll();
+        verify(forumQuestionRepository, times(1)).findAll();
     }
 //    @Test
 //    public void testGetAppointmentById_Success() throws Exception {

@@ -9,6 +9,7 @@ public class Article {
 
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
+    @Column(unique = true)
     private Long id;
 
     @ManyToOne
@@ -34,11 +35,12 @@ public class Article {
 
     public Article() {}
 
-    public Article(DoctorInfo doctor, Category category, String text, String date) {
+    public Article(DoctorInfo doctor, Category category, String text, String date, String title) {
         this.doctor = doctor;
         this.category = category;
         this.text = text;
         this.date = date;
+        this.title = title;
     }
 
     public Long getId() {

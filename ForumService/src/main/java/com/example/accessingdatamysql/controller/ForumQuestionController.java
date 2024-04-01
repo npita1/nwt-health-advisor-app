@@ -20,7 +20,7 @@ public class ForumQuestionController {
     @Autowired
     private ForumQuestionRepository forumQuestionRepository;
 
-
+    // ovdje imam fol vracanje jsona
     @PostMapping(path="/addForumQuestion")
     public @ResponseBody ResponseEntity<String> addNewForumQuestion (@RequestBody ForumQuestion forumQuestion) {
         forumQuestionRepository.save(forumQuestion);

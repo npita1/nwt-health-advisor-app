@@ -45,5 +45,9 @@ public class ArticleController {
         return article;
     }
 
+    @GetMapping(path="/articlesByCategory/{category}")
+    public @ResponseBody Iterable<Article> getArticlesByCategory(@PathVariable String category) {
+        return articleRepository.findByCategory(category);
+    }
 
 }
