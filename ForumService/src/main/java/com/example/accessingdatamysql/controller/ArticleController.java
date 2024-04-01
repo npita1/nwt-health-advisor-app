@@ -3,11 +3,8 @@ import com.example.accessingdatamysql.entity.*;
 import com.example.accessingdatamysql.repository.*;
 
 import com.example.accessingdatamysql.exceptions.ArticleNotFoundException;
-import com.example.accessingdatamysql.exceptions.ForumQuestionNotFoundException;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -22,31 +19,31 @@ public class ArticleController {
 
 
     @PostMapping(path="/addArticle")
-    public @ResponseBody String addNewArticle (@Valid @RequestBody Article article) {
-        articleRepository.save(article);
-        return "Article Saved";
+    public @ResponseBody String addNewArticle (@Valid @RequestBody ArticleEntity articleEntity) {
+        articleRepository.save(articleEntity);
+        return "ArticleEntity Saved";
     }
 
 
     @GetMapping(path="/allArticles")
-    public @ResponseBody Iterable<Article> getAllArticles() {
+    public @ResponseBody Iterable<ArticleEntity> getAllArticles() {
         return articleRepository.findAll();
     }
 
     @GetMapping(path="/articles/{articleId}")
-    public @ResponseBody Article getArticle(@PathVariable long articleId) {
-        Article article = articleRepository.findById(articleId);
+    public @ResponseBody ArticleEntity getArticle(@PathVariable long articleId) {
+        ArticleEntity articleEntity = articleRepository.findById(articleId);
 
-        if (article == null) {
+        if (articleEntity == null) {
             // Da se vrati u JSON formatu objekat
-            throw new ArticleNotFoundException(" Not found article by id: " + articleId);
+            throw new ArticleNotFoundException(" Not found articleEntity by id: " + articleId);
         }
 
-        return article;
+        return articleEntity;
     }
 
     @GetMapping(path="/articlesByCategory/{category}")
-    public @ResponseBody Iterable<Article> getArticlesByCategory(@PathVariable String category) {
+    public @ResponseBody Iterable<ArticleEntity> getArticlesByCategory(@PathVariable String category) {
         return articleRepository.findByCategory(category);
     }
 

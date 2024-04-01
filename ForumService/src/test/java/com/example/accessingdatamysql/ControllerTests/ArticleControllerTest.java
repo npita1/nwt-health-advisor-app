@@ -1,7 +1,8 @@
 package com.example.accessingdatamysql.ControllerTests;
 import com.example.accessingdatamysql.controller.ArticleController;
-import com.example.accessingdatamysql.entity.Category;
-import com.example.accessingdatamysql.entity.DoctorInfo;
+import com.example.accessingdatamysql.entity.ArticleEntity;
+import com.example.accessingdatamysql.entity.CategoryEntity;
+import com.example.accessingdatamysql.entity.DoctorInfoEntity;
 import com.example.accessingdatamysql.entity.User;
 import com.example.accessingdatamysql.repository.ArticleRepository;
 import com.example.accessingdatamysql.repository.DoctorInfoRepository;
@@ -10,20 +11,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
-import com.example.accessingdatamysql.entity.Article;
 
-import static java.util.Optional.empty;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -50,38 +47,38 @@ public class ArticleControllerTest {
     @Test
     public void testAddNewArticle() throws Exception {
         User user = new User("neki.email@mail.com", "ime", "prezime", 2, "passhash");
-        DoctorInfo doctor = new DoctorInfo(user, "reference");
-        Category category = new Category("kategorija", "opis");
-        Article article = new Article(doctor, category, "teks", "22.01.2024", "naslov");
+        DoctorInfoEntity doctor = new DoctorInfoEntity(user, "reference");
+        CategoryEntity categoryEntity = new CategoryEntity("kategorija", "opis");
+        ArticleEntity articleEntity = new ArticleEntity(doctor, categoryEntity, "teks", "22.01.2024", "naslov");
 
 
-        when(articleRepository.save(any(Article.class))).thenReturn(article);
+        when(articleRepository.save(any(ArticleEntity.class))).thenReturn(articleEntity);
 
         mockMvc.perform(post("/demo/addArticle")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(article)))
+                        .content(objectMapper.writeValueAsString(articleEntity)))
                 .andExpect(status().isOk())
-                .andExpect(content().string("Article Saved"));
+                .andExpect(content().string("ArticleEntity Saved"));
 
-        verify(articleRepository, times(1)).save(any(Article.class));
+        verify(articleRepository, times(1)).save(any(ArticleEntity.class));
     }
 
 
     @Test
     public void testGetAllAppointments() throws Exception {
         User user = new User("neki.email@mail.com", "ime", "prezime", 2, "passhash");
-        DoctorInfo doctor = new DoctorInfo(user, "reference");
-        Category category = new Category("kategorija", "opis");
-        Article article = new Article(doctor, category, "teks", "22.01.2024", "naslov");
+        DoctorInfoEntity doctor = new DoctorInfoEntity(user, "reference");
+        CategoryEntity categoryEntity = new CategoryEntity("kategorija", "opis");
+        ArticleEntity articleEntity = new ArticleEntity(doctor, categoryEntity, "teks", "22.01.2024", "naslov");
 
         User user2 = new User("neki.email@mail.com", "ime", "prezime", 2, "passhash");
-        DoctorInfo doctor2 = new DoctorInfo(user2, "reference");
-        Category category2 = new Category("kategorija", "opis");
-        Article article2 = new Article(doctor2, category2, "teks", "22.01.2024", "naslov2");
+        DoctorInfoEntity doctor2 = new DoctorInfoEntity(user2, "reference");
+        CategoryEntity categoryEntity2 = new CategoryEntity("kategorija", "opis");
+        ArticleEntity articleEntity2 = new ArticleEntity(doctor2, categoryEntity2, "teks", "22.01.2024", "naslov2");
 
-        List<Article> articles = Arrays.asList(article, article2);
+        List<ArticleEntity> articleEntities = Arrays.asList(articleEntity, articleEntity2);
 
-        when(articleRepository.findAll()).thenReturn(articles);
+        when(articleRepository.findAll()).thenReturn(articleEntities);
 
         mockMvc.perform(get("/demo/allArticles"))
                 .andExpect(status().isOk())

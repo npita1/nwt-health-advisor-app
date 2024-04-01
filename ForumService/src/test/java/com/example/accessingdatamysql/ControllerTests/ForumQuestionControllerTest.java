@@ -1,8 +1,6 @@
 package com.example.accessingdatamysql.ControllerTests;
-import com.example.accessingdatamysql.controller.ArticleController;
 import com.example.accessingdatamysql.controller.ForumQuestionController;
 import com.example.accessingdatamysql.entity.*;
-import com.example.accessingdatamysql.repository.ArticleRepository;
 import com.example.accessingdatamysql.repository.DoctorInfoRepository;
 import com.example.accessingdatamysql.repository.ForumQuestionRepository;
 import com.example.accessingdatamysql.repository.UserRepository;
@@ -10,19 +8,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
-import static java.util.Optional.empty;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -49,18 +44,18 @@ public class ForumQuestionControllerTest {
     @Test
     public void testAddNewForumQuestion() throws Exception {
         User user = new User("neki.email@mail.com", "ime", "prezime", 2, "passhash");
-        Category category = new Category("kategorija", "opis");
-        ForumQuestion forumQuestion = new ForumQuestion(user, category, "naslovvv", "tekst pit", "22.03.2024", true);
+        CategoryEntity categoryEntity = new CategoryEntity("kategorija", "opis");
+        ForumQuestionEntity forumQuestionEntity = new ForumQuestionEntity(user, categoryEntity, "naslovvv", "tekst pit", "22.03.2024", true);
 
-        when(forumQuestionRepository.save(any(ForumQuestion.class))).thenReturn(forumQuestion);
+        when(forumQuestionRepository.save(any(ForumQuestionEntity.class))).thenReturn(forumQuestionEntity);
 
         mockMvc.perform(post("/demo/addForumQuestion")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(forumQuestion)))
+                        .content(objectMapper.writeValueAsString(forumQuestionEntity)))
                 .andExpect(status().isCreated()) // Updated to expect CREATED status
                 .andExpect(content().string("{\"message\": \"Forum question saved\"}"));
 
-        verify(forumQuestionRepository, times(1)).save(any(ForumQuestion.class));
+        verify(forumQuestionRepository, times(1)).save(any(ForumQuestionEntity.class));
     }
 
 
@@ -68,16 +63,16 @@ public class ForumQuestionControllerTest {
     @Test
     public void testGetAllForumQuestions() throws Exception {
         User user = new User("neki.email@mail.com", "ime", "prezime", 2, "passhash");
-        Category category = new Category("kategorija", "opis");
-        ForumQuestion forumQuestion = new ForumQuestion(user, category, "naslovvv", "tekst pit", "22.03.2024", true);
+        CategoryEntity categoryEntity = new CategoryEntity("kategorija", "opis");
+        ForumQuestionEntity forumQuestionEntity = new ForumQuestionEntity(user, categoryEntity, "naslovvv", "tekst pit", "22.03.2024", true);
 
         User user2 = new User("neki.email@mail.com", "ime", "prezime", 2, "passhash");
-        Category category2 = new Category("kategorija", "opis");
-        ForumQuestion forumQuestion2 = new ForumQuestion(user2, category2, "TITLE", "tekst pit", "22.03.2024", true);
+        CategoryEntity categoryEntity2 = new CategoryEntity("kategorija", "opis");
+        ForumQuestionEntity forumQuestionEntity2 = new ForumQuestionEntity(user2, categoryEntity2, "TITLE", "tekst pit", "22.03.2024", true);
 
-        List<ForumQuestion> forumQuestions = Arrays.asList(forumQuestion, forumQuestion2);
+        List<ForumQuestionEntity> forumQuestionEntities = Arrays.asList(forumQuestionEntity, forumQuestionEntity2);
 
-        when(forumQuestionRepository.findAll()).thenReturn(forumQuestions);
+        when(forumQuestionRepository.findAll()).thenReturn(forumQuestionEntities);
 
         mockMvc.perform(get("/demo/allForumQuestions"))
                 .andExpect(status().isOk())

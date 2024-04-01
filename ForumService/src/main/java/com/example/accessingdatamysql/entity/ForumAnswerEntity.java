@@ -12,7 +12,7 @@ import jakarta.validation.constraints.Pattern;
 
 
 @Entity
-public class ForumAnswer {
+public class ForumAnswerEntity {
 
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
@@ -21,16 +21,16 @@ public class ForumAnswer {
     @ManyToOne
     @JoinColumn(name = "question_id", referencedColumnName = "id")
     @JsonIgnore
-    private ForumQuestion question;
+    private ForumQuestionEntity question;
 
     @ManyToOne
     @JoinColumn(name = "doctor_id", referencedColumnName = "id")
-    private DoctorInfo doctor;
+    private DoctorInfoEntity doctor;
 
     @ManyToOne
     @JoinColumn(name = "parent_id", referencedColumnName = "id")
     @JsonIgnore
-    private ForumAnswer parent;
+    private ForumAnswerEntity parent;
 
     @NotNull(message = "Tekst ne smije biti prazan.")
     private String text;
@@ -39,9 +39,9 @@ public class ForumAnswer {
     @Pattern(regexp = "^\\d{2}.\\d{2}.\\d{4}$", message = "Datum mora biti u formatu 'DD.MM.YYYY'.")
     private String date;
 
-    public ForumAnswer() {}
+    public ForumAnswerEntity() {}
 
-    public ForumAnswer(ForumQuestion question, DoctorInfo doctor, String text, String date, ForumAnswer parent) {
+    public ForumAnswerEntity(ForumQuestionEntity question, DoctorInfoEntity doctor, String text, String date, ForumAnswerEntity parent) {
         this.question = question;
         this.doctor = doctor;
         this.text = text;
@@ -57,19 +57,19 @@ public class ForumAnswer {
         this.id = id;
     }
 
-    public ForumQuestion getQuestion() {
+    public ForumQuestionEntity getQuestion() {
         return question;
     }
 
-    public void setQuestion(ForumQuestion question) {
+    public void setQuestion(ForumQuestionEntity question) {
         this.question = question;
     }
 
-    public DoctorInfo getDoctor() {
+    public DoctorInfoEntity getDoctor() {
         return doctor;
     }
 
-    public void setDoctor(DoctorInfo doctor) {
+    public void setDoctor(DoctorInfoEntity doctor) {
         this.doctor = doctor;
     }
 
@@ -89,18 +89,18 @@ public class ForumAnswer {
         this.date = date;
     }
 
-    public ForumAnswer getParent() {
+    public ForumAnswerEntity getParent() {
         return parent;
     }
 
-    public void setParent(ForumAnswer parent) {
+    public void setParent(ForumAnswerEntity parent) {
         this.parent = parent;
     }
 
     @Override
     public String toString() {
         return String.format(
-                "ForumAnswer[id=%d, question='%s', doctor='%s', text='%s', date='%s', parent='%s']",
+                "ForumAnswerEntity[id=%d, question='%s', doctor='%s', text='%s', date='%s', parent='%s']",
                 id, question.toString(), doctor.toString(), text, date.toString(), parent.toString());
     }
 }

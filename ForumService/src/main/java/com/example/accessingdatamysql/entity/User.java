@@ -19,7 +19,7 @@ public class User {
     private String passwordHash;
     @JsonIgnore
     @OneToOne(mappedBy = "user")
-    private DoctorInfo doctorInfo;
+    private DoctorInfoEntity doctorInfoEntity;
 
     public void setId(Long id) {
         this.id = id;

@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
 @Entity
-public class Category {
+public class CategoryEntity {
 
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
@@ -18,9 +18,9 @@ public class Category {
     @Size(max = 255, message = "Opis kategorije može sadržavati najviše 255 znakova.")
     private String description;
 
-    public Category() {}
+    public CategoryEntity() {}
 
-    public Category(String name, String description) {
+    public CategoryEntity(String name, String description) {
         this.name = name;
         this.description = description;
     }
@@ -52,7 +52,7 @@ public class Category {
     @Override
     public String toString() {
         return String.format(
-                "Category[id=%d, name='%s', description='%s']",
+                "CategoryEntity[id=%d, name='%s', description='%s']",
                 id, name, description);
     }
 }

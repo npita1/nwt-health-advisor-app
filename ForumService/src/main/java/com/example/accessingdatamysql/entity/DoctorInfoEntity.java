@@ -3,7 +3,7 @@ import jakarta.persistence.*;
 
 @Table(name="doctorInfo")
 @Entity
-public class DoctorInfo {
+public class DoctorInfoEntity {
 
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
@@ -14,9 +14,9 @@ public class DoctorInfo {
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
-    public DoctorInfo() {}
+    public DoctorInfoEntity() {}
 
-    public DoctorInfo(User user, String references) {
+    public DoctorInfoEntity(User user, String references) {
         this.user = user;
         this.about = references;
     }
@@ -48,7 +48,7 @@ public class DoctorInfo {
     @Override
     public String toString() {
         return String.format(
-                "DoctorInfo[id=%d, user='%s', references='%s']",
+                "DoctorInfoEntity[id=%d, user='%s', references='%s']",
                 id, user.toString(), about);
     }
 }

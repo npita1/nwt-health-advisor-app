@@ -5,20 +5,19 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 @Entity
-public class Article {
+public class ArticleEntity {
 
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
-    @Column(unique = true)
     private Long id;
 
     @ManyToOne
     @JoinColumn(name = "doctor_id", referencedColumnName = "id")
-    private DoctorInfo doctor;
+    private DoctorInfoEntity doctor;
 
     @ManyToOne
     @JoinColumn(name = "category_id", referencedColumnName = "id")
-    private Category category;
+    private CategoryEntity categoryEntity;
 
     @NotNull
     @Size(min = 1, max = 100)
@@ -33,11 +32,11 @@ public class Article {
     private String date;
 
 
-    public Article() {}
+    public ArticleEntity() {}
 
-    public Article(DoctorInfo doctor, Category category, String text, String date, String title) {
+    public ArticleEntity(DoctorInfoEntity doctor, CategoryEntity categoryEntity, String text, String date, String title) {
         this.doctor = doctor;
-        this.category = category;
+        this.categoryEntity = categoryEntity;
         this.text = text;
         this.date = date;
         this.title = title;
@@ -51,20 +50,20 @@ public class Article {
         this.id = id;
     }
 
-    public DoctorInfo getDoctor() {
+    public DoctorInfoEntity getDoctor() {
         return doctor;
     }
 
-    public void setDoctor(DoctorInfo doctor) {
+    public void setDoctor(DoctorInfoEntity doctor) {
         this.doctor = doctor;
     }
 
-    public Category getCategory() {
-        return category;
+    public CategoryEntity getCategory() {
+        return categoryEntity;
     }
 
-    public void setCategory(Category category) {
-        this.category = category;
+    public void setCategory(CategoryEntity categoryEntity) {
+        this.categoryEntity = categoryEntity;
     }
 
     public String getText() {
@@ -86,8 +85,8 @@ public class Article {
     @Override
     public String toString() {
         return String.format(
-                "Article[id=%d, doctor='%s', category='%s', text='%s', date='%s']",
-                id, doctor.toString(), category.toString(), text, date.toString());
+                "ArticleEntity[id=%d, doctor='%s', categoryEntity='%s', text='%s', date='%s']",
+                id, doctor.toString(), categoryEntity.toString(), text, date.toString());
     }
 
     public String getTitle() {

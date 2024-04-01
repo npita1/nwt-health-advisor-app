@@ -42,26 +42,26 @@
 //    }
 //
 //    @PostMapping(path="/addDoctor")
-//    public @ResponseBody String addNewDoctor (@RequestBody DoctorInfo doctor) {
+//    public @ResponseBody String addNewDoctor (@RequestBody DoctorInfoEntity doctor) {
 //
 //        doctorInfoRepository.save(doctor);
 //        return "Doctor Saved";
 //    }
 //
 //    @PostMapping(path="/addCategory")
-//    public @ResponseBody String addNewCategory (@RequestBody Category category) {
+//    public @ResponseBody String addNewCategory (@RequestBody CategoryEntity category) {
 //        categoryRepository.save(category);
-//        return "Category Saved";
+//        return "CategoryEntity Saved";
 //    }
 //
 //    @PostMapping(path="/addArticle")
-//    public @ResponseBody String addNewArticle (@Valid @RequestBody Article article) {
+//    public @ResponseBody String addNewArticle (@Valid @RequestBody ArticleEntity article) {
 //        articleRepository.save(article);
-//        return "Article Saved";
+//        return "ArticleEntity Saved";
 //    }
 //
 //    @PostMapping(path="/addForumQuestion")
-//    public @ResponseBody ResponseEntity<String> addNewForumQuestion (@RequestBody ForumQuestion forumQuestion) {
+//    public @ResponseBody ResponseEntity<String> addNewForumQuestion (@RequestBody ForumQuestionEntity forumQuestion) {
 //        forumQuestionRepository.save(forumQuestion);
 //        String message = "{\"message\": \"Forum question saved\"}";
 //        // Vrati se JSON objekat pa kasnije kad nam bude trebao odgovor da se parsira
@@ -69,7 +69,7 @@
 //    }
 //
 //    @PostMapping(path="/addForumAnswer")
-//    public @ResponseBody String addNewForumAnswer (@RequestBody ForumAnswer forumAnswer) {
+//    public @ResponseBody String addNewForumAnswer (@RequestBody ForumAnswerEntity forumAnswer) {
 //        forumAnswerRepository.save(forumAnswer);
 //        return "Forum Answer Saved";
 //    }
@@ -80,13 +80,13 @@
 //    }
 //
 //    @GetMapping(path="/allArticles")
-//    public @ResponseBody Iterable<Article> getAllArticles() {
+//    public @ResponseBody Iterable<ArticleEntity> getAllArticles() {
 //        return articleRepository.findAll();
 //    }
 //
 //    @GetMapping(path="/articles/{articleId}")
-//    public @ResponseBody Article getArticle(@PathVariable long articleId) {
-//        Article article = articleRepository.findById(articleId);
+//    public @ResponseBody ArticleEntity getArticle(@PathVariable long articleId) {
+//        ArticleEntity article = articleRepository.findById(articleId);
 //
 //        if (article == null) {
 //            // Da se vrati u JSON formatu objekat
@@ -97,13 +97,13 @@
 //    }
 //
 //    @GetMapping(path="/allForumQuestions")
-//    public @ResponseBody Iterable<ForumQuestion> getAllForumQuestions() {
+//    public @ResponseBody Iterable<ForumQuestionEntity> getAllForumQuestions() {
 //        return forumQuestionRepository.findAll();
 //    }
 //
 //    @GetMapping(path="/forumQuestions/{forumQuestionId}")
-//    public @ResponseBody ForumQuestion getForumQuestion(@PathVariable long forumQuestionId) {
-//        ForumQuestion forumQuestion = forumQuestionRepository.findById(forumQuestionId);
+//    public @ResponseBody ForumQuestionEntity getForumQuestion(@PathVariable long forumQuestionId) {
+//        ForumQuestionEntity forumQuestion = forumQuestionRepository.findById(forumQuestionId);
 //
 //        if (forumQuestion == null) {
 //            throw new ForumQuestionNotFoundException(" Not found forum question by id: " + forumQuestionId);

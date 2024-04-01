@@ -9,7 +9,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.validation.constraints.*;
 
 @Entity
-public class ForumQuestion {
+public class ForumQuestionEntity {
 
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
@@ -23,7 +23,7 @@ public class ForumQuestion {
     @NotNull(message = "Kategorija ne smije biti prazna.")
     @ManyToOne
     @JoinColumn(name = "category_id", referencedColumnName = "id")
-    private Category category;
+    private CategoryEntity categoryEntity;
 
     @NotNull
     @Size(min = 1, max = 100, message = "Naslov mora imati između 1 i 100 znakova.")
@@ -38,11 +38,11 @@ public class ForumQuestion {
     @AssertTrue(message = "Anonimnost mora biti postavljena na true ili false.")
     private boolean anonymity;
 
-    public ForumQuestion() {}
+    public ForumQuestionEntity() {}
 
-    public ForumQuestion(User user, Category category, String title, String text, String date, boolean anonymity) {
+    public ForumQuestionEntity(User user, CategoryEntity categoryEntity, String title, String text, String date, boolean anonymity) {
         this.user = user;
-        this.category = category;
+        this.categoryEntity = categoryEntity;
         this.title = title;
         this.text = text;
         this.date = date;
@@ -65,12 +65,12 @@ public class ForumQuestion {
         this.user = user;
     }
 
-    public Category getCategory() {
-        return category;
+    public CategoryEntity getCategory() {
+        return categoryEntity;
     }
 
-    public void setCategory(Category category) {
-        this.category = category;
+    public void setCategory(CategoryEntity categoryEntity) {
+        this.categoryEntity = categoryEntity;
     }
 
     public String getTitle() {
@@ -108,7 +108,7 @@ public class ForumQuestion {
     @Override
     public String toString() {
         return String.format(
-                "ForumQuestion[id=%d, user='%s', category='%s', title='%s', text='%s', date='%s', anonymity='%b']",
-                id, user.toString(), category.toString(), title, text, date.toString(), anonymity);
+                "ForumQuestionEntity[id=%d, user='%s', categoryEntity='%s', title='%s', text='%s', date='%s', anonymity='%b']",
+                id, user.toString(), categoryEntity.toString(), title, text, date.toString(), anonymity);
     }
 }
