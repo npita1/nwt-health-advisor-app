@@ -1,5 +1,5 @@
-package com.example.accessingdatamysql.Repository;
-import com.example.accessingdatamysql.Entity.User;
+package com.example.accessingdatamysql.repository;
+import com.example.accessingdatamysql.entity.User;
 
 import java.util.List;
 

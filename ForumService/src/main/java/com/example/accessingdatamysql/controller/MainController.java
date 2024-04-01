@@ -1,6 +1,6 @@
-package com.example.accessingdatamysql.Controllers;
-import com.example.accessingdatamysql.Entity.*;
-import com.example.accessingdatamysql.Repository.*;
+package com.example.accessingdatamysql.controller;
+import com.example.accessingdatamysql.entity.*;
+import com.example.accessingdatamysql.repository.*;
 
 import com.example.accessingdatamysql.exceptions.ArticleNotFoundException;
 import com.example.accessingdatamysql.exceptions.ForumQuestionNotFoundException;

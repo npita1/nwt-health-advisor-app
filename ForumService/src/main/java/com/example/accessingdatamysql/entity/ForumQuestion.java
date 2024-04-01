@@ -1,4 +1,4 @@
-package com.example.accessingdatamysql.Entity;
+package com.example.accessingdatamysql.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -7,8 +7,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.JoinColumn;
 import jakarta.validation.constraints.*;
-
-import java.util.Date;
 
 @Entity
 public class ForumQuestion {

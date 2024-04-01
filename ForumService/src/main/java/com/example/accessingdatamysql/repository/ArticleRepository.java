@@ -1,7 +1,6 @@
-package com.example.accessingdatamysql.Repository;
+package com.example.accessingdatamysql.repository;
 
-import com.example.accessingdatamysql.Entity.Article;
-import com.example.accessingdatamysql.Entity.DoctorInfo;
+import com.example.accessingdatamysql.entity.Article;
 import org.springframework.data.repository.CrudRepository;
 
 public interface ArticleRepository extends CrudRepository<Article, Long> {

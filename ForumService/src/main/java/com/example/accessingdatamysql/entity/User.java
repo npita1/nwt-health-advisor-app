@@ -1,5 +1,4 @@
-package com.example.accessingdatamysql.Entity;
-import com.example.accessingdatamysql.Entity.DoctorInfo;
+package com.example.accessingdatamysql.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;

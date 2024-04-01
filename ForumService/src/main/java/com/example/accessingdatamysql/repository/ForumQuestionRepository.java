@@ -1,9 +1,7 @@
-package com.example.accessingdatamysql.Repository;
+package com.example.accessingdatamysql.repository;
 
-import com.example.accessingdatamysql.Entity.ForumQuestion;
+import com.example.accessingdatamysql.entity.ForumQuestion;
 import org.springframework.data.repository.CrudRepository;
-
-import java.util.Optional;
 
 public interface ForumQuestionRepository extends CrudRepository<ForumQuestion, Long> {
 

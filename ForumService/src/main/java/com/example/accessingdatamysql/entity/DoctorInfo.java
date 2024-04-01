@@ -1,6 +1,4 @@
-package com.example.accessingdatamysql.Entity;
-import com.example.accessingdatamysql.Entity.User;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+package com.example.accessingdatamysql.entity;
 import jakarta.persistence.*;
 
 @Table(name="doctorInfo")
