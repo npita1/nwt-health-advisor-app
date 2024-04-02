@@ -24,7 +24,7 @@ public class UserEntity {
     private String firstName;
 
     @NotBlank(message = "Polje za prezime ne smije biti prazna.")
-    @Size(min = 3, max = 30, message = "Lozinka mora biti dužine između 3 i 30 znakova.")
+    @Size(min = 3, max = 30, message = "Prezime mora biti dužine između 3 i 30 znakova.")
     private String lastName;
 
     private Integer type;
