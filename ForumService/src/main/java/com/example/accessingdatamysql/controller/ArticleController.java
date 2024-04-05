@@ -21,7 +21,7 @@ public class ArticleController {
 
     @PostMapping(path="/addArticle")
     public @ResponseBody String addNewArticle (@Valid @RequestBody ArticleEntity article) {
-        articleService.addArticle(article);
+        ArticleEntity newArticle = articleService.addArticle(article);
         return "ArticleEntity Saved";
     }
 
@@ -46,6 +46,11 @@ public class ArticleController {
     @GetMapping(path="/articles/category/{category}")
     public @ResponseBody Iterable<ArticleEntity> getArticlesByCategory(@PathVariable String category) {
         return articleService.getByCategory(category);
+    }
+
+    @DeleteMapping(path="/deleteArticle/{id}")
+    public void deleteArticle (@PathVariable long id) {
+        articleService.deleteArticle(id);
     }
 
 }

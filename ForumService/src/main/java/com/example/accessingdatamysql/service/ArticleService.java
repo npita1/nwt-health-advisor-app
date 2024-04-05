@@ -28,7 +28,7 @@ public class ArticleService {
     }
 
     public Iterable<ArticleEntity> getByCategory(String category) {
-        return articleRepository.findByCategory(category);
+        return this.articleRepository.findByCategory(category);
     }
 
 
