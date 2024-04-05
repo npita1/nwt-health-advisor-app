@@ -3,6 +3,7 @@ import com.example.accessingdatamysql.entity.*;
 import com.example.accessingdatamysql.repository.*;
 
 import com.example.accessingdatamysql.exceptions.ForumQuestionNotFoundException;
+import com.example.accessingdatamysql.service.ForumQuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,16 +13,15 @@ import org.springframework.web.bind.annotation.*;
 
 @Controller
 @Validated
-@RequestMapping(path="/demo")
+@RequestMapping(path="/nwt")
 public class ForumQuestionController {
 
     @Autowired
-    private ForumQuestionRepository forumQuestionRepository;
+    private ForumQuestionService forumQuestionService;
 
-    // ovdje imam fol vracanje jsona
     @PostMapping(path="/addForumQuestion")
     public @ResponseBody ResponseEntity<String> addNewForumQuestion (@RequestBody ForumQuestionEntity forumQuestionEntity) {
-        forumQuestionRepository.save(forumQuestionEntity);
+        ForumQuestionEntity forumQuestion = forumQuestionService.addForumQuestion(forumQuestionEntity);
         String message = "{\"message\": \"Forum question saved\"}";
         // Vrati se JSON objekat pa kasnije kad nam bude trebao odgovor da se parsira
         return ResponseEntity.status(HttpStatus.CREATED).body(message);
@@ -29,12 +29,12 @@ public class ForumQuestionController {
 
     @GetMapping(path="/allForumQuestions")
     public @ResponseBody Iterable<ForumQuestionEntity> getAllForumQuestions() {
-        return forumQuestionRepository.findAll();
+        return forumQuestionService.getAllForumQuestions();
     }
 
     @GetMapping(path="/questions/{forumQuestionId}")
     public @ResponseBody ForumQuestionEntity getForumQuestion(@PathVariable long forumQuestionId) {
-        ForumQuestionEntity forumQuestionEntity = forumQuestionRepository.findById(forumQuestionId);
+        ForumQuestionEntity forumQuestionEntity = forumQuestionService.getForumQuestionById(forumQuestionId);
 
         if (forumQuestionEntity == null) {
             throw new ForumQuestionNotFoundException(" Not found forum question by id: " + forumQuestionId);
@@ -45,11 +45,11 @@ public class ForumQuestionController {
 
     @GetMapping(path="/questions/user/{userId}")
     public @ResponseBody Iterable<ForumQuestionEntity> getForumQuestionsByUserId(@PathVariable Long userId) {
-        return forumQuestionRepository.findQuestionsByUserId(userId);
+        return forumQuestionService.getForumQuestionsByUserId(userId);
     }
 
     @GetMapping(path="/questions/category/{category}")
     public @ResponseBody Iterable<ForumQuestionEntity> getForumQuestionsByCategory (@PathVariable String category) {
-        return forumQuestionRepository.findByCategory(category);
+        return forumQuestionService.getForumQuestionsByCategory(category);
     }
 }
