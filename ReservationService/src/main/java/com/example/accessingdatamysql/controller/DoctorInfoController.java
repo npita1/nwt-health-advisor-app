@@ -6,8 +6,10 @@ import com.example.accessingdatamysql.exceptions.DoctorInfoNotFoundException;
 import com.example.accessingdatamysql.repository.AppointmentRepository;
 import com.example.accessingdatamysql.repository.DoctorInfoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 

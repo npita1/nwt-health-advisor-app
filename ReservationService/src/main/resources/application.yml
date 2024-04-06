@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: ReservationService
+server:
+  port: 8089
+
+  eureka:
+    instance:
+      hostname: localhost
+    client:
+      register-with-eureka: true
+  management:
+    endpoints:
+      web:
+        exposure:
+          include: health

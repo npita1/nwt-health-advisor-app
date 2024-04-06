@@ -9,11 +9,13 @@
         <module name="accessing-data-mysql (1)" />
         <module name="accessing-data-mysql" />
         <module name="accessing-data-mysql (2)" />
+        <module name="EurekaService" />
       </profile>
     </annotationProcessing>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="EurekaService" options="-parameters" />
       <module name="accessing-data-mysql" options="-parameters" />
       <module name="accessing-data-mysql (1)" options="-parameters" />
       <module name="accessing-data-mysql (2)" options="-parameters" />
