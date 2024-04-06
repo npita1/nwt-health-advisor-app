@@ -11,8 +11,15 @@ import com.example.accessingdatamysql.exceptions.UserNotFoundException;
 import com.example.accessingdatamysql.repository.AppointmentRepository;
 import com.example.accessingdatamysql.repository.DoctorInfoRepository;
 import com.example.accessingdatamysql.repository.UserRepository;
+import com.example.accessingdatamysql.service.AppointmentService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.fge.jsonpatch.JsonPatch;
+import com.github.fge.jsonpatch.JsonPatchException;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,6 +38,9 @@ public class AppointmentController {
 
     @Autowired
     private AppointmentRepository appointmentRepository;
+    private ObjectMapper objectMapper = new ObjectMapper();
+    @Autowired
+    private AppointmentService appointmentService;
     @PostMapping(path="/addAppointment")
     public  @ResponseBody String addNewAppointment( @Valid @RequestBody AppointmentEntity appointment){
         appointmentRepository.save(appointment);
@@ -52,5 +62,27 @@ public class AppointmentController {
 
         return appointment;
     }
+    @PatchMapping(path = "/appointments/{id}", consumes = "application/json-patch+json")
+    public @ResponseBody ResponseEntity Update(@PathVariable("id") Long id, @RequestBody JsonPatch patch) throws JsonPatchException, JsonProcessingException {
+        AppointmentEntity appointment = appointmentService.Details(id);
+        AppointmentEntity appointmentPatched = applyPatchToAppointment(patch, appointment);
+        appointmentService.Update(appointmentPatched);
+        return ResponseEntity.status(200).body(appointmentPatched);
+
+    }
+
+    private AppointmentEntity applyPatchToAppointment(JsonPatch patch, AppointmentEntity targetAppointment) throws JsonProcessingException, JsonPatchException {
+        JsonNode patched = patch.apply(objectMapper.convertValue(targetAppointment, JsonNode.class));
+        return objectMapper.treeToValue(patched, AppointmentEntity.class);
+    }
+    @GetMapping("/appointments/doctor/{doctorName}")
+    public Iterable<AppointmentEntity> getAppointmentsByDoctorName(@PathVariable String doctorName) {
+        return appointmentService.ListAppointmentsByDoctorName(doctorName);
+    }
+    @GetMapping("/appointments/user/{userName}/description/{description}")
+    public Iterable<AppointmentEntity> getAppointmentsByUserAndDescription(@PathVariable String userName, @PathVariable String description) {
+        return appointmentService.ListAppointmentsByDescriptionAndUserName(userName,description);
+    }
+
 
 }

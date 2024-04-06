@@ -6,6 +6,7 @@ import com.example.accessingdatamysql.entity.UserEntity;
 import com.example.accessingdatamysql.repository.DoctorInfoRepository;
 import com.example.accessingdatamysql.repository.EventRepository;
 import com.example.accessingdatamysql.repository.ReservationRepository;
+import com.example.accessingdatamysql.service.EventService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,6 +20,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import com.github.fge.jsonpatch.JsonPatch;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.List;
 import java.util.Optional;
@@ -44,7 +47,9 @@ public class EventControllerTest {
     private ReservationRepository reservationRepository;
     @InjectMocks
     private EventController eventController;
-
+    @MockBean
+    private EventService eventService;
+    private ObjectMapper objectMapper = new ObjectMapper();
     @Test
     public void testAddNewEventSuccessfully() throws Exception {
         // Kreiramo testnog korisnika
@@ -159,5 +164,26 @@ public class EventControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.get("/nwt/reservations-for-events/100"))
                 .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
+    @Test
+    public void testUpdateEventSuccessfully() throws Exception {
+        // Priprema testnog događaja i zakrpe
+        EventEntity originalEvent = new EventEntity("Test Event", "Description", "06.04.2024", "Location");
+        JsonPatch patch = objectMapper.readValue("[{ \"op\": \"replace\", \"path\": \"/name\", \"value\": \"Updated Event Name\" }]", JsonPatch.class);
+
+        // Mockanje ponašanja servisa
+        when(eventService.Details(1L)).thenReturn(originalEvent);
+        when(eventService.Update(any(EventEntity.class))).thenReturn(originalEvent);
+
+        // Izvršavanje HTTP PATCH zahtjeva s JSON tijelom zakrpe
+        MockMvc mockMvc = MockMvcBuilders.standaloneSetup(eventController).build();
+        mockMvc.perform(MockMvcRequestBuilders.patch("/nwt/events/1")
+                        .contentType("application/json-patch+json")
+                        .content(objectMapper.writeValueAsString(patch)))
+                .andExpect(status().isOk());
+    }
+
+
+
+
 }
 

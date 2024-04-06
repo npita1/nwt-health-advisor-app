@@ -1,13 +1,22 @@
 package com.example.accessingdatamysql.controller;
 
+import com.example.accessingdatamysql.entity.AppointmentEntity;
 import com.example.accessingdatamysql.entity.EventEntity;
 import com.example.accessingdatamysql.entity.ReservationEntity;
 import com.example.accessingdatamysql.exceptions.EventNotFoundException;
 import com.example.accessingdatamysql.exceptions.ReservationNotFoundException;
 import com.example.accessingdatamysql.repository.EventRepository;
 import com.example.accessingdatamysql.repository.ReservationRepository;
+import com.example.accessingdatamysql.service.AppointmentService;
+import com.example.accessingdatamysql.service.EventService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.fge.jsonpatch.JsonPatch;
+import com.github.fge.jsonpatch.JsonPatchException;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,6 +30,9 @@ public class EventController {
     private EventRepository eventRepository;
     @Autowired
     private ReservationRepository reservationRepository;
+    private ObjectMapper objectMapper = new ObjectMapper();
+    @Autowired
+    private EventService eventService;
     @PostMapping(path="/addEvent")
     public  @ResponseBody String addNewEvent(@Valid @RequestBody EventEntity event){
         eventRepository.save(event);
@@ -48,5 +60,18 @@ public class EventController {
             throw new EventNotFoundException("Not found event by id "+ eventId);
         }
         return reservationRepository.findByEvent(event);
+    }
+    @PatchMapping(path = "/events/{id}", consumes = "application/json-patch+json")
+    public @ResponseBody ResponseEntity Update(@PathVariable("id") Long id, @RequestBody JsonPatch patch) throws JsonPatchException, JsonProcessingException {
+        EventEntity event = eventService.Details(id);
+        EventEntity eventPatched = applyPatchToEvent(patch, event);
+        eventService.Update(eventPatched);
+        return ResponseEntity.status(200).body(eventPatched);
+
+    }
+
+    private EventEntity applyPatchToEvent(JsonPatch patch, EventEntity targetEvent) throws JsonProcessingException, JsonPatchException {
+        JsonNode patched = patch.apply(objectMapper.convertValue(targetEvent, JsonNode.class));
+        return objectMapper.treeToValue(patched, EventEntity.class);
     }
 }

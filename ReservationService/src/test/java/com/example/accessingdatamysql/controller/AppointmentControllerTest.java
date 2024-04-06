@@ -5,6 +5,7 @@ import com.example.accessingdatamysql.exceptions.AppointmentNotFoundException;
 import com.example.accessingdatamysql.repository.AppointmentRepository;
 import com.example.accessingdatamysql.repository.DoctorInfoRepository;
 import com.example.accessingdatamysql.repository.UserRepository;
+import com.example.accessingdatamysql.service.AppointmentService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -40,6 +41,8 @@ public class AppointmentControllerTest {
     private UserRepository userRepository;
     @MockBean
     private DoctorInfoRepository doctorInfoRepository;
+    @MockBean
+    private AppointmentService appointmentService;
     @InjectMocks
     private AppointmentController appointmentController;
 

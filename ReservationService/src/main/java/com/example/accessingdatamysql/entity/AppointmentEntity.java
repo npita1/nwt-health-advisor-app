@@ -14,11 +14,11 @@ public class AppointmentEntity {
     private Long id;
     @NotBlank(message = "Description must not be blank")
     private String description;
-    @JsonIgnore
+
     @ManyToOne
     @JoinColumn(name = "user_id",referencedColumnName = "id")
     private UserEntity user;
-    @JsonIgnore
+
     @ManyToOne
     @JoinColumn(name = "doctor_id", referencedColumnName = "id")
     private DoctorInfoEntity doctorInfo;
