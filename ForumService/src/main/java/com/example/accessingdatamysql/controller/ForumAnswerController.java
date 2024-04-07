@@ -28,4 +28,14 @@ public class ForumAnswerController {
         return forumAnswerService.getAllForumAnswers();
     }
 
+    @GetMapping(path="/forumAnswers/question/{questionId}")
+    public @ResponseBody Iterable<ForumAnswerEntity> getForumAnswersByQuestionId(@PathVariable Long questionId) {
+        return forumAnswerService.getForumAnswersByQuestionId(questionId);
+    }
+
+    @GetMapping(path="/forumAnswers/doctor/{doctorId}")
+    public @ResponseBody Iterable<ForumAnswerEntity> getAllForumAnswers(@PathVariable Long doctorId) {
+        return forumAnswerService.getForumAnswersByDoctorId(doctorId);
+    }
+
 }

@@ -32,4 +32,7 @@ public class ArticleService {
     }
 
 
+    public Iterable<ArticleEntity> getArticleByDoctorId(long doctorId) {
+        return this.articleRepository.getArticlesByDoctorId(doctorId);
+    }
 }

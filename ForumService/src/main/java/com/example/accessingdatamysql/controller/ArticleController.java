@@ -48,6 +48,18 @@ public class ArticleController {
         return articleService.getByCategory(category);
     }
 
+    @GetMapping(path="/articles/doctor/{doctorId}")
+    public @ResponseBody Iterable<ArticleEntity> getArticleByDoctorId(@PathVariable long doctorId) {
+        Iterable<ArticleEntity> article = articleService.getArticleByDoctorId(doctorId);
+
+        if (article == null) {
+            // Da se vrati u JSON formatu objekat
+            throw new ArticleNotFoundException(" Not found articleEntity by id: " + doctorId);
+        }
+
+        return article;
+    }
+
     @DeleteMapping(path="/deleteArticle/{id}")
     public void deleteArticle (@PathVariable long id) {
         articleService.deleteArticle(id);

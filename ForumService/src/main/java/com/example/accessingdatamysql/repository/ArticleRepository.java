@@ -10,4 +10,8 @@ public interface ArticleRepository extends CrudRepository<ArticleEntity, Long> {
 
     @Query("SELECT a FROM ArticleEntity a WHERE a.category.name = :category")
     Iterable<ArticleEntity> findByCategory(String category);
+
+    @Query("SELECT a FROM ArticleEntity a WHERE a.doctor.id = :doctorId")
+    Iterable<ArticleEntity> getArticlesByDoctorId(long doctorId);
+
 }

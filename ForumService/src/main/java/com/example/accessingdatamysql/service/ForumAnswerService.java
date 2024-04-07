@@ -24,8 +24,15 @@ public class ForumAnswerService {
         return this.forumAnswerRepository.findById(id);
     }
 
-    public void deleteArticle(long id) {
+    public void deleteForumAnswer(long id) {
         this.forumAnswerRepository.deleteById(id);
     }
 
+    public Iterable<ForumAnswerEntity> getForumAnswersByQuestionId(Long questionId) {
+        return this.forumAnswerRepository.getForumAnswersFromQuestionId(questionId);
+    }
+
+    public Iterable<ForumAnswerEntity> getForumAnswersByDoctorId(Long doctorId) {
+        return this.forumAnswerRepository.getForumAnswersFromDoctorId(doctorId);
+    }
 }
