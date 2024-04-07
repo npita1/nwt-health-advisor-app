@@ -1,11 +1,13 @@
 package com.example.accessingdatamysql.controller;
 import com.example.accessingdatamysql.entity.*;
+import com.example.accessingdatamysql.exceptions.CategoryNotFoundException;
 import com.example.accessingdatamysql.repository.*;
 
 import com.example.accessingdatamysql.exceptions.ArticleNotFoundException;
 import com.example.accessingdatamysql.service.ArticleService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -20,9 +22,9 @@ public class ArticleController {
 
 
     @PostMapping(path="/addArticle")
-    public @ResponseBody String addNewArticle (@Valid @RequestBody ArticleEntity article) {
+    public @ResponseBody ResponseEntity<String> addNewArticle (@Valid @RequestBody ArticleEntity article) {
         ArticleEntity newArticle = articleService.addArticle(article);
-        return "ArticleEntity Saved";
+        return ResponseEntity.ok("Article added.");
     }
 
 
@@ -36,8 +38,7 @@ public class ArticleController {
         ArticleEntity article = articleService.getArticleById(articleId);
 
         if (article == null) {
-            // Da se vrati u JSON formatu objekat
-            throw new ArticleNotFoundException(" Not found articleEntity by id: " + articleId);
+            throw new ArticleNotFoundException("Not found article by id: " + articleId);
         }
 
         return article;
@@ -53,16 +54,21 @@ public class ArticleController {
         Iterable<ArticleEntity> article = articleService.getArticleByDoctorId(doctorId);
 
         if (article == null) {
-            // Da se vrati u JSON formatu objekat
-            throw new ArticleNotFoundException(" Not found articleEntity by id: " + doctorId);
+            throw new ArticleNotFoundException(" Not found article by doctor id: " + doctorId);
         }
 
         return article;
     }
 
+    // Kaskadno brisanje vidi poslije
     @DeleteMapping(path="/deleteArticle/{id}")
-    public void deleteArticle (@PathVariable long id) {
-        articleService.deleteArticle(id);
+    public @ResponseBody ResponseEntity<String> deleteArticle (@PathVariable long id) {
+        ArticleEntity article = this.articleService.getArticleById(id);
+        if(article != null) {
+            articleService.deleteArticle(id);
+            return ResponseEntity.ok().build();
+        }
+        throw new ArticleNotFoundException("Not found article by id: " + id);
     }
 
 }

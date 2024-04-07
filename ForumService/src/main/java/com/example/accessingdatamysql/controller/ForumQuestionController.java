@@ -20,11 +20,9 @@ public class ForumQuestionController {
     private ForumQuestionService forumQuestionService;
 
     @PostMapping(path="/addForumQuestion")
-    public @ResponseBody ResponseEntity<String> addNewForumQuestion (@RequestBody ForumQuestionEntity forumQuestionEntity) {
+    public @ResponseBody ResponseEntity<ForumQuestionEntity> addNewForumQuestion (@RequestBody ForumQuestionEntity forumQuestionEntity) {
         ForumQuestionEntity forumQuestion = forumQuestionService.addForumQuestion(forumQuestionEntity);
-        String message = "{\"message\": \"Forum question saved\"}";
-        // Vrati se JSON objekat pa kasnije kad nam bude trebao odgovor da se parsira
-        return ResponseEntity.status(HttpStatus.CREATED).body(message);
+        return ResponseEntity.ok(forumQuestion);
     }
 
     @GetMapping(path="/allForumQuestions")
@@ -45,6 +43,7 @@ public class ForumQuestionController {
 
     @GetMapping(path="/questions/user/{userId}")
     public @ResponseBody Iterable<ForumQuestionEntity> getForumQuestionsByUserId(@PathVariable Long userId) {
+        // treba staviti nejlin user not found exception kad se uvezemo
         return forumQuestionService.getForumQuestionsByUserId(userId);
     }
 
@@ -52,4 +51,5 @@ public class ForumQuestionController {
     public @ResponseBody Iterable<ForumQuestionEntity> getForumQuestionsByCategory (@PathVariable String category) {
         return forumQuestionService.getForumQuestionsByCategory(category);
     }
+
 }

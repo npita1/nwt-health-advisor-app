@@ -1,5 +1,6 @@
 package com.example.accessingdatamysql.controller;
 import com.example.accessingdatamysql.entity.*;
+import com.example.accessingdatamysql.exceptions.CategoryNotFoundException;
 import com.example.accessingdatamysql.repository.*;
 
 import com.example.accessingdatamysql.exceptions.ArticleNotFoundException;
@@ -21,10 +22,10 @@ public class CategoryController {
     @Autowired
     private CategoryService categoryService;
 
-    @PostMapping(path="/addCategory")
-    public @ResponseBody String addNewCategory (@Valid @RequestBody CategoryEntity category) {
-        CategoryEntity newCategory = categoryService.addCategory(category);
-        return "Category Saved";
+    @PostMapping(path = "/addCategory")
+    public @ResponseBody  ResponseEntity<String> addCategory(@Valid @RequestBody CategoryEntity category) {
+        CategoryEntity addedCategory = categoryService.addCategory(category);
+        return ResponseEntity.ok("Category added.");
     }
 
     @GetMapping(path="/allCategories")
@@ -37,15 +38,21 @@ public class CategoryController {
         CategoryEntity category = categoryService.getCategoryById(categoryId);
 
         if (category == null) {
-            throw new ArticleNotFoundException(" Not found articleEntity by id: " + categoryId);
+            throw new CategoryNotFoundException("Not found category by id: " + categoryId);
         }
 
         return category;
     }
 
+    // Kaskadno brisanje vidi kad bude trebalo
     @DeleteMapping(path="/deleteCategory/{id}")
-    public void deleteCategory (@PathVariable long id) {
-        categoryService.deleteCategory(id);
+    public @ResponseBody ResponseEntity<String> deleteCategory (@PathVariable long id) {
+        CategoryEntity category = this.categoryService.findById(id);
+        if(category != null) {
+            categoryService.deleteCategory(id);
+            return ResponseEntity.ok().build();
+        }
+        throw new CategoryNotFoundException("Not found category by id: " + id);
     }
 
 

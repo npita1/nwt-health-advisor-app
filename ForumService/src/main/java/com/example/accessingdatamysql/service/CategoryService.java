@@ -27,4 +27,7 @@ public class CategoryService {
         return this.categoryRepository.findById(id);
     }
 
+    public CategoryEntity findById(long id) {
+        return this.categoryRepository.findById(id);
+    }
 }

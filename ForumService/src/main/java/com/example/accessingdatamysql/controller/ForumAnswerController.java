@@ -4,6 +4,7 @@ import com.example.accessingdatamysql.repository.*;
 
 import com.example.accessingdatamysql.service.ForumAnswerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -18,9 +19,9 @@ public class ForumAnswerController {
 
 
     @PostMapping(path="/addForumAnswer")
-    public @ResponseBody String addNewForumAnswer (@RequestBody ForumAnswerEntity forumAnswerEntity) {
+    public @ResponseBody ResponseEntity<ForumAnswerEntity> addNewForumAnswer (@RequestBody ForumAnswerEntity forumAnswerEntity) {
         ForumAnswerEntity forumAnswer = forumAnswerService.addForumAnswer(forumAnswerEntity);
-        return "Forum Answer Saved";
+        return ResponseEntity.ok(forumAnswer);
     }
 
     @GetMapping(path="/allForumAnswers")
