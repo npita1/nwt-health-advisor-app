@@ -16,7 +16,7 @@ public class UserEntity {
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Long id;
 
-    @NotBlank(message="Email ne smije biti prazan.")
+    //@NotBlank(message="Email ne smije biti prazan.")
     @Email(message="Email adresa nije validna")
     private String email;
     @NotBlank(message = "Polje za ime ne smije biti prazno.")

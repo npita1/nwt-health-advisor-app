@@ -14,4 +14,6 @@ public interface UserRepository extends CrudRepository<UserEntity, Long> {
     List<UserEntity> findByLastName(String lastName);
     @Query("SELECT u FROM UserEntity u WHERE u.firstName =?1")
     List<UserEntity> findByFirstName(String firstName);
+
+
 }

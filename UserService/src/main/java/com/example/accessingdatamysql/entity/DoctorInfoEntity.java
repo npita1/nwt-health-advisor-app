@@ -16,6 +16,8 @@ public class DoctorInfoEntity {
     @Size(min = 3, message = "Opis mora biti najmanje dzužine 20 znakova.")
     private String about;
 
+    private String specialization;
+
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     @Valid
@@ -26,8 +28,8 @@ public class DoctorInfoEntity {
     @Override
     public String toString() {
         return String.format(
-                "DoctorInfoEntity[id=%d, about='%s', user='%s']",
-                id, about, user);
+                "DoctorInfoEntity[id=%d, about='%s', specialization ='%s', user='%s']",
+                id, about, specialization, user);
     }
 
     public String getAbout() {
@@ -44,5 +46,13 @@ public class DoctorInfoEntity {
 
     public void setUser(UserEntity user) {
         this.user = user;
+    }
+
+    public String getSpecialization() {
+        return specialization;
+    }
+
+    public void setSpecialization(String specialization) {
+        this.specialization = specialization;
     }
 }
