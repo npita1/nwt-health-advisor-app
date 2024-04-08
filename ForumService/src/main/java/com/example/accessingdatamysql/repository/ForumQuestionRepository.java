@@ -1,10 +1,11 @@
 package com.example.accessingdatamysql.repository;
 
 import com.example.accessingdatamysql.entity.ForumQuestionEntity;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
-public interface ForumQuestionRepository extends CrudRepository<ForumQuestionEntity, Long> {
+public interface ForumQuestionRepository extends JpaRepository<ForumQuestionEntity, Long> {
 
     ForumQuestionEntity findById(long id);
 
