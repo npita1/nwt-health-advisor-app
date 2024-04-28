@@ -34,7 +34,6 @@ public class DoctorInfoController {
         // This returns a JSON or XML with the users
         return doctorInfoRepository.findAll();
     }
-
     @GetMapping(path="/doctors/specialist/{specialization}")
     public List<DoctorInfoEntity> getDoctorsBySpecialization(@PathVariable String specialization){
 
@@ -45,6 +44,18 @@ public class DoctorInfoController {
         }
 
         return users;
+    }
+
+    @GetMapping(path="/doctors/{doctorID}")
+    public DoctorInfoEntity getDoctorID(@PathVariable int doctorID){
+        DoctorInfoEntity doctor = doctorInfoRepository.findById(doctorID);
+
+        if(doctor == null) {
+            throw new UserNotFoundException("Not found doctor by id: " + doctorID);
+        }
+
+        //return ResponseEntity.ok(user);
+        return doctor;
     }
 
 }

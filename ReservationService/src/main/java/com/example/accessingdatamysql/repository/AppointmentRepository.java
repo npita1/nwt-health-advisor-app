@@ -17,5 +17,6 @@ public interface AppointmentRepository extends JpaRepository<AppointmentEntity,L
     Iterable<AppointmentEntity> findAppointmentsByDoctorName( String doctorName);
     @Query("SELECT a FROM AppointmentEntity a WHERE a.user.firstName = :userName AND a.description = :description")
     Iterable<AppointmentEntity> findAppointmentsByUserAndDescription( String userName,  String description);
-
+    @Query("SELECT a FROM AppointmentEntity a WHERE a.user.firstName = :userName")
+    Iterable<AppointmentEntity> findAppointmentsByUserName( String userName);
 }

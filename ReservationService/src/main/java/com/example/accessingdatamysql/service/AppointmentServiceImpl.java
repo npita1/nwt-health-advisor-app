@@ -34,6 +34,12 @@ public class AppointmentServiceImpl implements AppointmentService{
     }
 
     @Override
+    public Iterable<AppointmentEntity> ListAppointmentsByUserName(String userName) {
+        Iterable<AppointmentEntity> appoitnments=appointmentRepository.findAppointmentsByUserName(userName);
+        return appoitnments;
+    }
+
+    @Override
     public Iterable<AppointmentEntity> ListAppointmentsByDescriptionAndUserName(String userName, String description) {
         Iterable<AppointmentEntity> appointments = appointmentRepository.findAppointmentsByUserAndDescription(userName,description);
         return appointments;

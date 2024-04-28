@@ -1,3 +1,4 @@
+/*
 package com.example.accessingdatamysql;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -41,3 +42,5 @@ public class ConfigClient {
         return String.format("Hello! You're %s and you'll become a(n) %s...\n", username, role);
     }
 }
+
+ */

@@ -18,7 +18,7 @@ public class AppointmentEntity {
     @ManyToOne
     @JoinColumn(name = "user_id",referencedColumnName = "id")
     private UserEntity user;
-
+@JsonIgnore
     @ManyToOne
     @JoinColumn(name = "doctor_id", referencedColumnName = "id")
     private DoctorInfoEntity doctorInfo;

@@ -55,4 +55,6 @@ public class DoctorInfoEntity {
     public void setSpecialization(String specialization) {
         this.specialization = specialization;
     }
+
 }
+

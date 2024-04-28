@@ -2,6 +2,8 @@ package com.example.accessingdatamysql.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +16,7 @@ public class UserEntity {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Long id;
+    @NotBlank(message="Email ne smije biti prazan.")
     private String email;
     private String firstName;
     private String lastName;
@@ -116,4 +119,11 @@ public class UserEntity {
     }
 
 
+    public String getEmail() {
+        return email;
+    }
+
+    public List<ReservationEntity> getReservations() {
+        return reservations;
+    }
 }

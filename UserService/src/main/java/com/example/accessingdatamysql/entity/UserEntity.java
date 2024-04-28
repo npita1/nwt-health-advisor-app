@@ -105,4 +105,11 @@ public class UserEntity {
     }
 
 
+    public String getEmail() {
+        return email;
+    }
+
+    public DoctorInfoEntity getDoctorInfo() {
+        return doctorInfo;
+    }
 }
