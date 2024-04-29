@@ -1,4 +1,5 @@
 package com.example.accessingdatamysql.entity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -14,6 +15,8 @@ public class ArticleEntity {
 
     @ManyToOne
     @JoinColumn(name = "doctor_id", referencedColumnName = "id")
+    //@JsonIgnore
+    // dodaj da je json ignore probaj
     private DoctorInfoEntity doctor;
 
     @ManyToOne

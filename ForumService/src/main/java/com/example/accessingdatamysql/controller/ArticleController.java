@@ -1,6 +1,7 @@
 package com.example.accessingdatamysql.controller;
 import com.example.accessingdatamysql.entity.*;
 import com.example.accessingdatamysql.exceptions.CategoryNotFoundException;
+import com.example.accessingdatamysql.feign.UserInterface;
 import com.example.accessingdatamysql.repository.*;
 
 import com.example.accessingdatamysql.exceptions.ArticleNotFoundException;
@@ -23,12 +24,37 @@ public class ArticleController {
     @Autowired
     private ArticleService articleService;
 
+    @Autowired
+    UserInterface userClient;
+
+    @Autowired
+    private DoctorInfoRepository doctorInfoRepository;
+
 
     @PostMapping(path="/addArticle")
     public @ResponseBody ResponseEntity<String> addNewArticle (@Valid @RequestBody ArticleEntity article) {
         ArticleEntity newArticle = articleService.addArticle(article);
         return ResponseEntity.ok("Article added.");
     }
+
+//    @PostMapping(path="/addArticle")
+//    public @ResponseBody ResponseEntity<String> addArticleWithDoctor (
+//            @RequestParam("doctorId") int doctorId,
+//            @RequestBody ArticleEntity article) {
+//        DoctorInfoEntity doctor = userClient.getDoctorID(doctorId);
+//
+//        DoctorInfoEntity doctor1 = new DoctorInfoEntity();
+//        doctor1.setId(doctor.getId());
+//        doctor1.setUser(doctor.getUser());
+//        doctor1.setAbout(doctor.getAbout());
+//        doctor1.setSpecialization(doctor.getSpecialization());
+//        doctorInfoRepository.save(doctor1);
+//
+//        article.setDoctor(doctor1);
+//
+//        ArticleEntity newArticle = articleService.addArticle(article);
+//        return ResponseEntity.ok("Article added.");
+//    }
 
 
     @GetMapping(path="/allArticles")

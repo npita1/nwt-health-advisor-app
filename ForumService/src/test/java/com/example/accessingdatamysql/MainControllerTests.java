@@ -1,7 +1,7 @@
 //package com.example.accessingdatamysql;
 //
 //import com.example.accessingdatamysql.controller.MainController;
-//import com.example.accessingdatamysql.entity.User;
+//import com.example.accessingdatamysql.entity.UserEntity;
 //import com.example.accessingdatamysql.repository.*;
 //import org.junit.jupiter.api.Test;
 //import org.mockito.Mockito;
@@ -41,7 +41,7 @@
 //
 //    @Test
 //    public void testGetAllUsers() throws Exception {
-//        User user=new  User();
+//        UserEntity user=new  UserEntity();
 //        user.setFirstName("Amaar");
 //        long id =1;
 //        user.setId(id);

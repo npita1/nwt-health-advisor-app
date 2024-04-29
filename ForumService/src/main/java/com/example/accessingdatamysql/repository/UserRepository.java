@@ -1,14 +1,14 @@
 package com.example.accessingdatamysql.repository;
-import com.example.accessingdatamysql.entity.User;
+import com.example.accessingdatamysql.entity.UserEntity;
 
 import java.util.List;
 
 import org.springframework.data.repository.CrudRepository;
 
-public interface UserRepository extends CrudRepository<User, Long> {
+public interface UserRepository extends CrudRepository<UserEntity, Long> {
 
-    List<User> findByLastName(String lastName);
+    List<UserEntity> findByLastName(String lastName);
 
-    User findById(long id);
+    UserEntity findById(long id);
 
 }

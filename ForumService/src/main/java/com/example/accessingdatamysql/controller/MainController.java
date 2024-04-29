@@ -36,9 +36,9 @@
 //    private ForumAnswerRepository forumAnswerRepository;
 //
 //    @PostMapping(path="/addUser")
-//    public @ResponseBody String addNewUser (@RequestBody User user) {
+//    public @ResponseBody String addNewUser (@RequestBody UserEntity user) {
 //        userRepository.save(user);
-//        return "User Saved";
+//        return "UserEntity Saved";
 //    }
 //
 //    @PostMapping(path="/addDoctor")
@@ -75,7 +75,7 @@
 //    }
 //
 //    @GetMapping(path="/allUsers")
-//    public @ResponseBody Iterable<User> getAllUsers() {
+//    public @ResponseBody Iterable<UserEntity> getAllUsers() {
 //        return userRepository.findAll();
 //    }
 //

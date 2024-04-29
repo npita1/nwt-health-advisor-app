@@ -14,7 +14,7 @@ public class ForumQuestionEntity {
     @NotNull(message = "Korisnik ne smije biti prazan.")
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private User user;
+    private UserEntity user;
 
     @NotNull(message = "Kategorija ne smije biti prazna.")
     @ManyToOne
@@ -36,7 +36,7 @@ public class ForumQuestionEntity {
 
     public ForumQuestionEntity() {}
 
-    public ForumQuestionEntity(User user, CategoryEntity categoryEntity, String title, String text, String date, boolean anonymity) {
+    public ForumQuestionEntity(UserEntity user, CategoryEntity categoryEntity, String title, String text, String date, boolean anonymity) {
         this.user = user;
         this.category = categoryEntity;
         this.title = title;
@@ -53,11 +53,11 @@ public class ForumQuestionEntity {
         this.id = id;
     }
 
-    public User getUser() {
+    public UserEntity getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(UserEntity user) {
         this.user = user;
     }
 
