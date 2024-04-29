@@ -12,4 +12,5 @@ public interface DoctorInfoRepository extends CrudRepository<DoctorInfoEntity, L
     @Query("SELECT u FROM DoctorInfoEntity u WHERE u.specialization =?1")
     List<DoctorInfoEntity> findBySpecialization(String specialization);
 
+
 }

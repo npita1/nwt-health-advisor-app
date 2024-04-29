@@ -3,6 +3,7 @@ package com.example.accessingdatamysql.controllers;
 import com.example.accessingdatamysql.entity.DoctorInfoEntity;
 import com.example.accessingdatamysql.entity.UserEntity;
 import com.example.accessingdatamysql.exceptions.UserNotFoundException;
+import com.example.accessingdatamysql.feign.ForumInterface;
 import com.example.accessingdatamysql.repository.DoctorInfoRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,11 +13,14 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping(path="/nwt")
 public class DoctorInfoController {
 
+    @Autowired
+    ForumInterface forumClient;
     @Autowired
     private DoctorInfoRepository doctorInfoRepository;
 
@@ -56,6 +60,12 @@ public class DoctorInfoController {
 
         //return ResponseEntity.ok(user);
         return doctor;
+    }
+
+    @GetMapping(path="/doctor/{doctorID}/articles")
+    public @ResponseBody  Map<String, String> getArticlesForDoctor(@PathVariable int doctorID){
+        return  forumClient.getTitleAndTextArticleDoctorId(doctorID);
+
     }
 
 }

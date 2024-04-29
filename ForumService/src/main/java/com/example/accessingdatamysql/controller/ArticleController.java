@@ -12,6 +12,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Controller
 @Validated
 @RequestMapping(path="/nwt")
@@ -69,6 +72,21 @@ public class ArticleController {
             return ResponseEntity.ok().build();
         }
         throw new ArticleNotFoundException("Not found article by id: " + id);
+    }
+    @GetMapping(path="/userCom/articles/doctor/{doctorId}")
+    public @ResponseBody Map<String, String> getTitleAndTextArticleDoctorId(@PathVariable long doctorId) {
+        Iterable<ArticleEntity> articles = articleService.getArticleByDoctorId(doctorId);
+
+        if (articles == null) {
+            throw new ArticleNotFoundException("Not found articles by doctor id: " + doctorId);
+        }
+
+        Map<String, String> articleMap = new HashMap<>();
+        for (ArticleEntity article : articles) {
+            articleMap.put(article.getTitle(), article.getText());
+        }
+
+        return articleMap;
     }
 
 }
