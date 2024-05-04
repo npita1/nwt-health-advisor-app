@@ -12,10 +12,10 @@ import java.util.Set;
 public class DoctorInfoEntity {
 
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    //@GeneratedValue(strategy=GenerationType.AUTO)
     private Long id;
     private String about;
-
+    private String specialization;
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private UserEntity user;
@@ -72,6 +72,14 @@ public class DoctorInfoEntity {
 
     public void setEvents(List<EventEntity> events) {
         this.events = events;
+    }
+
+    public String getSpecialization() {
+        return specialization;
+    }
+
+    public void setSpecialization(String specialization) {
+        this.specialization = specialization;
     }
 }
 

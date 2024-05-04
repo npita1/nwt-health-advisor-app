@@ -30,7 +30,10 @@ public class ArticleController {
     @Autowired
     private DoctorInfoRepository doctorInfoRepository;
 
-
+    @Autowired
+    private CategoryRepository categoryRepository;
+    @Autowired
+    private ArticleRepository articleRepository;
     @PostMapping(path="/addArticle")
     public @ResponseBody ResponseEntity<String> addNewArticle (@Valid @RequestBody ArticleEntity article) {
         ArticleEntity newArticle = articleService.addArticle(article);
@@ -113,6 +116,27 @@ public class ArticleController {
         }
 
         return articleMap;
+    }
+    @PostMapping(path="/addArticle1")
+    public @ResponseBody ResponseEntity<String> addArticle1(@RequestParam("doctorId") Long doctorId,
+                                              @RequestParam("categoryId") Long categoryId,
+                                              @RequestParam("title") String title,
+                                              @RequestParam("text") String text,
+                                              @RequestParam("date") String date) {
+        DoctorInfoEntity doctor = doctorInfoRepository.findById(doctorId)
+                .orElseThrow(() -> new ArticleNotFoundException("Not found doctor by id: " + doctorId));
+        CategoryEntity category = categoryRepository.findById(categoryId)
+                .orElseThrow(() -> new CategoryNotFoundException("Not found category by id: "+ categoryId));
+
+        ArticleEntity article = new ArticleEntity();
+        article.setDoctor(doctor);
+        article.setCategory(category);
+        article.setTitle(title);
+        article.setText(text);
+        article.setDate(date);
+
+        articleRepository.save(article);
+        return ResponseEntity.ok("Article successfully added");
     }
 
 }

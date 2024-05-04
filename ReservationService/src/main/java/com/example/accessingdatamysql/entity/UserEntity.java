@@ -14,7 +14,7 @@ import java.util.Set;
 public class UserEntity {
 
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    //@GeneratedValue(strategy=GenerationType.AUTO)
     private Long id;
     @NotBlank(message="Email ne smije biti prazan.")
     private String email;

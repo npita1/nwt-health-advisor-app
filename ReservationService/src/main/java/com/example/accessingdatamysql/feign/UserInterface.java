@@ -14,11 +14,11 @@ import java.util.List;
 public interface UserInterface {
     @GetMapping(path="/nwt/users/{userID}")
     public UserEntity getUserByID(@PathVariable int userID);
-    @GetMapping(path="nwt/users/firstname/{firstname}")
+    @GetMapping(path="/nwt/users/firstname/{firstname}")
     public List<UserEntity> getUsersByFirstName(@PathVariable String firstname);
 
-    @GetMapping(path="nwt/doctors/{doctorID}")
+    @GetMapping(path="/nwt/doctors/{doctorID}")
     public DoctorInfoEntity getDoctorID(@PathVariable int doctorID);
-    @GetMapping(path="nwt/doctors/specialist/{specialization}")
+    @GetMapping(path="/nwt/doctors/specialist/{specialization}")
     public List<DoctorInfoEntity> getDoctorsBySpecialization(@PathVariable String specialization);
 }
