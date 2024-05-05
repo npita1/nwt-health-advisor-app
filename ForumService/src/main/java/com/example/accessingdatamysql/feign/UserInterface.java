@@ -1,6 +1,7 @@
 package com.example.accessingdatamysql.feign;
 
 import com.example.accessingdatamysql.entity.DoctorInfoEntity;
+import com.example.accessingdatamysql.entity.UserEntity;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,5 +13,8 @@ public interface UserInterface {
 
     @GetMapping(value = "/nwt/doctors/{doctorID}")
     public DoctorInfoEntity getDoctorID(@PathVariable int doctorID);
+
+    @GetMapping(path="/nwt/users/{userID}")
+    public UserEntity getUserByID(@PathVariable int userID);
 
 }

@@ -1,5 +1,6 @@
 package com.example.accessingdatamysql.controller;
 import com.example.accessingdatamysql.entity.*;
+import com.example.accessingdatamysql.feign.UserInterface;
 import com.example.accessingdatamysql.repository.*;
 
 import com.example.accessingdatamysql.exceptions.ForumQuestionNotFoundException;
@@ -19,10 +20,36 @@ public class ForumQuestionController {
     @Autowired
     private ForumQuestionService forumQuestionService;
 
-    @PostMapping(path="/addForumQuestion")
+    @Autowired
+    UserInterface userClient;
+
+    @Autowired
+    UserRepository userRepository;
+
+    @PostMapping(path="/addForumQuestionClassic")
     public @ResponseBody ResponseEntity<ForumQuestionEntity> addNewForumQuestion (@RequestBody ForumQuestionEntity forumQuestionEntity) {
         ForumQuestionEntity forumQuestion = forumQuestionService.addForumQuestion(forumQuestionEntity);
         return ResponseEntity.ok(forumQuestion);
+    }
+
+    @PostMapping(path="/addForumQuestion")
+    public @ResponseBody ResponseEntity<?> addForumQuestion (@RequestParam("userId") int userId, @RequestBody ForumQuestionEntity forumQuestion) {
+
+        UserEntity user = userClient.getUserByID(userId);
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Korisnik s ID-om " + user + " nije pronađen.");
+        }
+
+        // Provjeri je li user već spremljen u bazi
+        UserEntity forumUser = userRepository.findByUserServiceId(userId);
+        if (forumUser == null) {
+            user.setUserServiceId(user.getId());
+            userRepository.save(user);
+        }
+
+        ForumQuestionEntity savedForumQuestion = forumQuestionService.addForumQuestionUser(forumQuestion, forumUser);
+
+        return ResponseEntity.ok(savedForumQuestion);
     }
 
     @GetMapping(path="/allForumQuestions")

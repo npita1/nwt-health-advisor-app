@@ -1,8 +1,6 @@
 package com.example.accessingdatamysql.service;
 
-import com.example.accessingdatamysql.entity.ArticleEntity;
-import com.example.accessingdatamysql.entity.ForumAnswerEntity;
-import com.example.accessingdatamysql.entity.ForumQuestionEntity;
+import com.example.accessingdatamysql.entity.*;
 import com.example.accessingdatamysql.repository.ForumQuestionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,6 +14,15 @@ public class ForumQuestionService {
     public ForumQuestionEntity addForumQuestion(ForumQuestionEntity forumQuestion) {
         return this.forumQuestionRepository.save(forumQuestion);
     }
+    public ForumQuestionEntity addForumQuestionUser(ForumQuestionEntity forumQuestion, UserEntity user) {
+        if (user.getId() == null) {
+            throw new IllegalArgumentException("User must be saved in the database before adding a forum question.");
+        }
+
+        forumQuestion.setUser(user);
+        return this.forumQuestionRepository.save(forumQuestion);
+    }
+
 
     public Iterable<ForumQuestionEntity> getAllForumQuestions () {
         return this.forumQuestionRepository.findAll();

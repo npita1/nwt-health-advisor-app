@@ -37,6 +37,8 @@ public class UserEntity {
     @JsonIgnore
     @OneToOne(mappedBy = "user")
     private DoctorInfoEntity doctorInfo;
+
+    private long userServiceId;
     public void setId(Long id) {
         this.id = id;
     }
@@ -111,5 +113,13 @@ public class UserEntity {
 
     public DoctorInfoEntity getDoctorInfo() {
         return doctorInfo;
+    }
+
+    public long getUserServiceId() {
+        return userServiceId;
+    }
+
+    public void setUserServiceId(long userServiceId) {
+        this.userServiceId = userServiceId;
     }
 }

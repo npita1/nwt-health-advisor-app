@@ -58,6 +58,7 @@ public class ArticleController {
         // Provjeri je li doktor već spremljen u bazi
         DoctorInfoEntity forumDoctor = doctorInfoRepository.findByUserId(doctor.getUser().getId());
         if (forumDoctor == null) {
+            doctor.getUser().setUserServiceId(doctor.getUser().getId());
             userRepository.save(doctor.getUser());
             doctorInfoRepository.save(doctor);
         }
