@@ -10,4 +10,5 @@ import java.util.List;
 public interface ReservationRepository extends JpaRepository<ReservationEntity,Long> {
     ReservationEntity findById(long id);
     List<ReservationEntity> findByEvent(EventEntity event);
+    List<ReservationEntity> findByUserId(Integer userId);
 }

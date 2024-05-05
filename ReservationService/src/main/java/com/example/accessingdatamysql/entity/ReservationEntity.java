@@ -22,7 +22,6 @@ public class ReservationEntity {
     @ManyToOne
     @JoinColumn(name = "event_id", referencedColumnName = "id")
     private EventEntity event;
-    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "user_id",referencedColumnName = "id")
     private UserEntity user;
