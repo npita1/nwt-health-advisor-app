@@ -13,7 +13,7 @@ import jakarta.validation.constraints.Size;
 public class UserEntity {
 
     @Id
-    //@GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private Long id;
 
     //@NotBlank(message="Email ne smije biti prazan.")

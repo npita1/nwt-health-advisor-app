@@ -10,7 +10,7 @@ import jakarta.validation.constraints.Size;
 public class DoctorInfoEntity {
 
     @Id
-    //@GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private Long id;
     @NotBlank(message = "Polje za detalje o doktoru ne smije biti prazno.")
     @Size(min = 3, message = "Opis mora biti najmanje dzužine 20 znakova.")
@@ -18,7 +18,7 @@ public class DoctorInfoEntity {
 
     private String specialization;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     @Valid
     private UserEntity user;

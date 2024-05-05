@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @FeignClient(name = "USERSERVICE")
 public interface UserInterface {
 
-    @RequestMapping(method = RequestMethod.GET, value = "/nwt/doctors/{doctorID}")
+    @GetMapping(value = "/nwt/doctors/{doctorID}")
     public DoctorInfoEntity getDoctorID(@PathVariable int doctorID);
 
 }

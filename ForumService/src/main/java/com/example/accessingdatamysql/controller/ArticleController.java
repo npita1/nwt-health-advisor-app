@@ -8,6 +8,7 @@ import com.example.accessingdatamysql.exceptions.ArticleNotFoundException;
 import com.example.accessingdatamysql.service.ArticleService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
@@ -32,8 +33,11 @@ public class ArticleController {
 
     @Autowired
     private CategoryRepository categoryRepository;
+
     @Autowired
-    private ArticleRepository articleRepository;
+    private UserRepository userRepository;
+
+
     @PostMapping(path="/addArticle")
     public @ResponseBody ResponseEntity<String> addNewArticle (@Valid @RequestBody ArticleEntity article) {
         ArticleEntity newArticle = articleService.addArticle(article);
@@ -117,8 +121,8 @@ public class ArticleController {
 
         return articleMap;
     }
-    @PostMapping(path="/addArticle1")
-    public @ResponseBody ResponseEntity<String> addArticle1(@RequestParam("doctorId") Long doctorId,
+    @PostMapping(path="/reservationCom/event/addArticle")
+    public @ResponseBody ResponseEntity<String> addArticleThroughEvent(@RequestParam("doctorId") Long doctorId,
                                               @RequestParam("categoryId") Long categoryId,
                                               @RequestParam("title") String title,
                                               @RequestParam("text") String text,
@@ -135,8 +139,32 @@ public class ArticleController {
         article.setText(text);
         article.setDate(date);
 
-        articleRepository.save(article);
+        articleService.addArticle(article);
         return ResponseEntity.ok("Article successfully added");
+    }
+
+    @PostMapping(path="/addArticleNew")
+    public @ResponseBody ResponseEntity<?> addArticle(
+            @RequestParam("doctorId") int doctorId,
+            @RequestBody ArticleEntity article) {
+
+        DoctorInfoEntity doctor = userClient.getDoctorID(doctorId);
+        if (doctor == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Doktor s ID-om " + doctorId + " nije pronađen.");
+        }
+
+        DoctorInfoEntity forumDoctor = doctorInfoRepository.findById((long) doctorId);
+
+        if (forumDoctor == null) {
+            userRepository.save(doctor.getUser());
+            doctorInfoRepository.save(doctor);
+        }
+
+        article.setDoctor(doctor);
+        ArticleEntity savedArticle = articleService.addArticle(article);
+
+        return ResponseEntity.ok(savedArticle);
+
     }
 
 }
