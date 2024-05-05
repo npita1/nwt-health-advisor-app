@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @Controller
 @Validated
@@ -38,30 +39,33 @@ public class ArticleController {
     private UserRepository userRepository;
 
 
-    @PostMapping(path="/addArticle")
-    public @ResponseBody ResponseEntity<String> addNewArticle (@Valid @RequestBody ArticleEntity article) {
+    @PostMapping(path="/addArticleClassic")
+    public @ResponseBody ResponseEntity<String> addArticle (@Valid @RequestBody ArticleEntity article) {
         ArticleEntity newArticle = articleService.addArticle(article);
         return ResponseEntity.ok("Article added.");
     }
 
-//    @PostMapping(path="/addArticle")
-//    public @ResponseBody ResponseEntity<String> addArticleWithDoctor (
-//            @RequestParam("doctorId") int doctorId,
-//            @RequestBody ArticleEntity article) {
-//        DoctorInfoEntity doctor = userClient.getDoctorID(doctorId);
-//
-//        DoctorInfoEntity doctor1 = new DoctorInfoEntity();
-//        doctor1.setId(doctor.getId());
-//        doctor1.setUser(doctor.getUser());
-//        doctor1.setAbout(doctor.getAbout());
-//        doctor1.setSpecialization(doctor.getSpecialization());
-//        doctorInfoRepository.save(doctor1);
-//
-//        article.setDoctor(doctor1);
-//
-//        ArticleEntity newArticle = articleService.addArticle(article);
-//        return ResponseEntity.ok("Article added.");
-//    }
+    @PostMapping(path="/addArticle")
+    public @ResponseBody ResponseEntity<?> addArticleNew(
+            @RequestParam("doctorId") int doctorId,
+            @RequestBody ArticleEntity article) {
+
+        DoctorInfoEntity doctor = userClient.getDoctorID(doctorId);
+        if (doctor == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Doktor s ID-om " + doctorId + " nije pronađen.");
+        }
+
+        // Provjeri je li doktor već spremljen u bazi
+        DoctorInfoEntity forumDoctor = doctorInfoRepository.findByUserId(doctor.getUser().getId());
+        if (forumDoctor == null) {
+            userRepository.save(doctor.getUser());
+            doctorInfoRepository.save(doctor);
+        }
+
+        ArticleEntity savedArticle = articleService.addArticleDoctor(article, forumDoctor);
+
+        return ResponseEntity.ok(savedArticle);
+    }
 
 
     @GetMapping(path="/allArticles")
@@ -143,28 +147,5 @@ public class ArticleController {
         return ResponseEntity.ok("Article successfully added");
     }
 
-    @PostMapping(path="/addArticleNew")
-    public @ResponseBody ResponseEntity<?> addArticle(
-            @RequestParam("doctorId") int doctorId,
-            @RequestBody ArticleEntity article) {
-
-        DoctorInfoEntity doctor = userClient.getDoctorID(doctorId);
-        if (doctor == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Doktor s ID-om " + doctorId + " nije pronađen.");
-        }
-
-        DoctorInfoEntity forumDoctor = doctorInfoRepository.findById((long) doctorId);
-
-        if (forumDoctor == null) {
-            userRepository.save(doctor.getUser());
-            doctorInfoRepository.save(doctor);
-        }
-
-        article.setDoctor(doctor);
-        ArticleEntity savedArticle = articleService.addArticle(article);
-
-        return ResponseEntity.ok(savedArticle);
-
-    }
 
 }

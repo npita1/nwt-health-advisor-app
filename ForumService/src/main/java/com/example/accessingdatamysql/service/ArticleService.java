@@ -1,6 +1,7 @@
 package com.example.accessingdatamysql.service;
 
 import com.example.accessingdatamysql.entity.ArticleEntity;
+import com.example.accessingdatamysql.entity.DoctorInfoEntity;
 import com.example.accessingdatamysql.repository.ArticleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,6 +15,16 @@ public class ArticleService {
     public ArticleEntity addArticle(ArticleEntity article) {
         return this.articleRepository.save(article);
     }
+
+    public ArticleEntity addArticleDoctor(ArticleEntity article, DoctorInfoEntity doctor) {
+        if (doctor.getId() == null) {
+            throw new IllegalArgumentException("Doctor must be saved in the database before adding an article.");
+        }
+
+        article.setDoctor(doctor);
+        return this.articleRepository.save(article);
+    }
+
 
     public Iterable<ArticleEntity> getAllArticles () {
         return this.articleRepository.findAll();
