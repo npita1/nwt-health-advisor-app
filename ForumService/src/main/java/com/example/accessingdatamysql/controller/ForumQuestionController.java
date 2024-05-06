@@ -5,6 +5,7 @@ import com.example.accessingdatamysql.repository.*;
 
 import com.example.accessingdatamysql.exceptions.ForumQuestionNotFoundException;
 import com.example.accessingdatamysql.service.ForumQuestionService;
+import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -69,10 +70,9 @@ public class ForumQuestionController {
     }
 
     @GetMapping(path="/questions/user/{userId}")
-    public @ResponseBody Iterable<ForumQuestionEntity> getForumQuestionsByUserId(@PathVariable Long userId) {
-        // treba staviti nejlin user not found exception kad se uvezemo
-        // vidi postoji li taj user u userservice, i vidi kod mene imal u forum, ako ima u user, a nema kod mene onda dodaj
-        return forumQuestionService.getForumQuestionsByUserId(userId);
+    public @ResponseBody Iterable<ForumQuestionEntity> getForumQuestionsByUserId(@PathVariable long userId) {
+        UserEntity forumServiceUser = userRepository.findByUserServiceId(userId);
+        return forumQuestionService.getForumQuestionsByUserId(forumServiceUser.getId());
     }
 
     @GetMapping(path="/questions/category/{category}")

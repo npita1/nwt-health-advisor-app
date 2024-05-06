@@ -1,5 +1,6 @@
 package com.example.accessingdatamysql.controller;
 import com.example.accessingdatamysql.entity.*;
+import com.example.accessingdatamysql.feign.UserInterface;
 import com.example.accessingdatamysql.repository.*;
 
 import com.example.accessingdatamysql.service.ForumAnswerService;
@@ -16,6 +17,12 @@ public class ForumAnswerController {
 
     @Autowired
     private ForumAnswerService forumAnswerService;
+
+    @Autowired
+    UserInterface userClient;
+
+    @Autowired
+    private DoctorInfoRepository doctorInfoRepository;
 
 
     @PostMapping(path="/addForumAnswer")
@@ -35,8 +42,10 @@ public class ForumAnswerController {
     }
 
     @GetMapping(path="/forumAnswers/doctor/{doctorId}")
-    public @ResponseBody Iterable<ForumAnswerEntity> getAllForumAnswers(@PathVariable Long doctorId) {
-        return forumAnswerService.getForumAnswersByDoctorId(doctorId);
+    public @ResponseBody Iterable<ForumAnswerEntity> getAllForumAnswers(@PathVariable long doctorId) {
+        DoctorInfoEntity userServiceDoctor = userClient.getDoctorID((int)doctorId);
+        DoctorInfoEntity forumServiceDoctor = doctorInfoRepository.findByUserId(userServiceDoctor.getUser().getId());
+        return forumAnswerService.getForumAnswersByDoctorId(forumServiceDoctor.getId());
     }
 
 }

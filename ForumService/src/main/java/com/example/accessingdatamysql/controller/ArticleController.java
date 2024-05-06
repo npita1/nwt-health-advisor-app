@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 @Controller
 @Validated
@@ -59,7 +58,7 @@ public class ArticleController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Doktor s ID-om " + doctorId + " nije pronađen.");
         }
 
-        // Provjeri je li doktor već spremljen u bazi
+        // Provjera da li je doktor vec spasen u bazi foruma
         DoctorInfoEntity forumDoctor = doctorInfoRepository.findByUserId(doctor.getUser().getId());
         if (forumDoctor == null) {
             doctor.getUser().setUserServiceId(doctor.getUser().getId());
@@ -96,14 +95,17 @@ public class ArticleController {
 
     @GetMapping(path="/articles/doctor/{doctorId}")
     public @ResponseBody Iterable<ArticleEntity> getArticleByDoctorId(@PathVariable long doctorId) {
-        Iterable<ArticleEntity> article = articleService.getArticleByDoctorId(doctorId);
-        // vidis ima li taj doktor u user service, ako ima tamo a nema u forum dodaj
-        if (article == null) {
+        DoctorInfoEntity userServiceDoctor = userClient.getDoctorID((int)doctorId);
+        DoctorInfoEntity forumServiceDoctor = doctorInfoRepository.findByUserId(userServiceDoctor.getUser().getId());
+        Iterable<ArticleEntity> articles = articleService.getArticleByDoctorId(forumServiceDoctor.getId());
+
+        if (articles == null) {
             GrpcClient.get().log((int) doctorId, "Forum", "GET", "No articles found for doctor");
             throw new ArticleNotFoundException(" Not found article by doctor id: " + doctorId);
         }
+
         GrpcClient.get().log((int) doctorId, "Forum", "GET", "Articles found for doctor");
-        return article;
+        return articles;
     }
 
     // Kaskadno brisanje vidi poslije
