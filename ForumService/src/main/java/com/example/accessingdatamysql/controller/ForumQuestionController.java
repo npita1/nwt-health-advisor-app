@@ -71,6 +71,7 @@ public class ForumQuestionController {
     @GetMapping(path="/questions/user/{userId}")
     public @ResponseBody Iterable<ForumQuestionEntity> getForumQuestionsByUserId(@PathVariable Long userId) {
         // treba staviti nejlin user not found exception kad se uvezemo
+        // vidi postoji li taj user u userservice, i vidi kod mene imal u forum, ako ima u user, a nema kod mene onda dodaj
         return forumQuestionService.getForumQuestionsByUserId(userId);
     }
 

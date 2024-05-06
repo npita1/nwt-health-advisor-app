@@ -2,6 +2,7 @@ package com.example.accessingdatamysql.controller;
 import com.example.accessingdatamysql.entity.*;
 import com.example.accessingdatamysql.exceptions.CategoryNotFoundException;
 import com.example.accessingdatamysql.feign.UserInterface;
+import com.example.accessingdatamysql.grpc.GrpcClient;
 import com.example.accessingdatamysql.repository.*;
 
 import com.example.accessingdatamysql.exceptions.ArticleNotFoundException;
@@ -37,6 +38,9 @@ public class ArticleController {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private static GrpcClient grpcClient;
 
 
     @PostMapping(path="/addArticleClassic")
@@ -93,11 +97,12 @@ public class ArticleController {
     @GetMapping(path="/articles/doctor/{doctorId}")
     public @ResponseBody Iterable<ArticleEntity> getArticleByDoctorId(@PathVariable long doctorId) {
         Iterable<ArticleEntity> article = articleService.getArticleByDoctorId(doctorId);
-
+        // vidis ima li taj doktor u user service, ako ima tamo a nema u forum dodaj
         if (article == null) {
+            GrpcClient.get().log((int) doctorId, "Forum", "GET", "No articles found for doctor");
             throw new ArticleNotFoundException(" Not found article by doctor id: " + doctorId);
         }
-
+        GrpcClient.get().log((int) doctorId, "Forum", "GET", "Articles found for doctor");
         return article;
     }
 
