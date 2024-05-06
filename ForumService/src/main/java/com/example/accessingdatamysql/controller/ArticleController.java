@@ -118,12 +118,15 @@ public class ArticleController {
     }
     @GetMapping(path="/userCom/articles/doctor/{doctorId}")
     public @ResponseBody Map<String, String> getTitleAndTextArticleDoctorId(@PathVariable long doctorId) {
-        Iterable<ArticleEntity> articles = articleService.getArticleByDoctorId(doctorId);
+        DoctorInfoEntity userServiceDoctor = userClient.getDoctorID((int)doctorId);
+        DoctorInfoEntity forumServiceDoctor = doctorInfoRepository.findByUserId(userServiceDoctor.getUser().getId());
+        Iterable<ArticleEntity> articles = articleService.getArticleByDoctorId(forumServiceDoctor.getId());
 
         if (articles == null) {
             throw new ArticleNotFoundException("Not found articles by doctor id: " + doctorId);
         }
 
+        // Kljuc (naslov clanka) mora biti unikatan da bi se vratili svi clanci
         Map<String, String> articleMap = new HashMap<>();
         for (ArticleEntity article : articles) {
             articleMap.put(article.getTitle(), article.getText());
@@ -131,6 +134,7 @@ public class ArticleController {
 
         return articleMap;
     }
+
     @PostMapping(path="/reservationCom/event/addArticle")
     public @ResponseBody ResponseEntity<String> addArticleThroughEvent(@RequestParam("doctorId") Long doctorId,
                                               @RequestParam("categoryId") Long categoryId,
