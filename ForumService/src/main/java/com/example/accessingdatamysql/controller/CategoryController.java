@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Controller
 @Validated
-@RequestMapping(path="/nwt")
+@RequestMapping(path="/forum")
 public class CategoryController {
 
     @Autowired

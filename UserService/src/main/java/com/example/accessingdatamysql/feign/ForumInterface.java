@@ -14,7 +14,7 @@ import java.util.Map;
 
 @FeignClient(name = "FORUMSERVICE")
 public interface ForumInterface {
-    @GetMapping(path="/nwt/userCom/articles/doctor/{doctorId}")
+    @GetMapping(path="/forum/userCom/articles/doctor/{doctorId}")
     public Map<String, String> getTitleAndTextArticleDoctorId(@PathVariable long doctorId);
 
 

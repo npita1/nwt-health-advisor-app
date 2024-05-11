@@ -27,7 +27,7 @@ import java.util.List;
 
 @RestController// This means that this class is a Controller
 @Validated
-@RequestMapping(path="/nwt") // This means URL's start with /demo (after Application path)
+@RequestMapping(path="/reservation") // This means URL's start with /demo (after Application path)
 public class EventController {
     @Autowired
     private EventRepository eventRepository;

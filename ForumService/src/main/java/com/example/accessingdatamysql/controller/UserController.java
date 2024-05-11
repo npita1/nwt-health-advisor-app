@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Controller
 @Validated
-@RequestMapping(path="/demo")
+@RequestMapping(path="/forum")
 public class UserController {
 
     @Autowired

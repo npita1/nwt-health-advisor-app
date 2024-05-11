@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping(path="/nwt")
+@RequestMapping(path="/user")
 public class DoctorInfoController {
 
     @Autowired

@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 @FeignClient(name="FORUMSERVICE")
 public interface ForumInterface {
-    @PostMapping(path="/nwt/addArticle1")
+    @PostMapping(path="/forum/reservationCom/event/addArticle")
     public @ResponseBody ResponseEntity<String> addArticle1(@RequestParam("doctorId") Long doctorId,
                                                             @RequestParam("categoryId") Long categoryId,
                                                             @RequestParam("title") String title,

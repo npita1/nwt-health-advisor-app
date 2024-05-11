@@ -15,7 +15,7 @@ import java.util.List;
 
 @RestController// This means that this class is a Controller
 @Validated
-@RequestMapping(path="/nwt")
+@RequestMapping(path="/reservation")
 public class DoctorInfoController {
     @Autowired
     private DoctorInfoRepository doctorInfoRepository;

@@ -12,13 +12,13 @@ import java.util.List;
 
 @FeignClient(name = "USERSERVICE")
 public interface UserInterface {
-    @GetMapping(path="/nwt/users/{userID}")
+    @GetMapping(path="/user/users/{userID}")
     public UserEntity getUserByID(@PathVariable int userID);
-    @GetMapping(path="/nwt/users/firstname/{firstname}")
+    @GetMapping(path="/user/users/firstname/{firstname}")
     public List<UserEntity> getUsersByFirstName(@PathVariable String firstname);
 
-    @GetMapping(path="/nwt/doctors/{doctorID}")
+    @GetMapping(path="/user/doctors/{doctorID}")
     public DoctorInfoEntity getDoctorID(@PathVariable int doctorID);
-    @GetMapping(path="/nwt/doctors/specialist/{specialization}")
+    @GetMapping(path="/user/doctors/specialist/{specialization}")
     public List<DoctorInfoEntity> getDoctorsBySpecialization(@PathVariable String specialization);
 }

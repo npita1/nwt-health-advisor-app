@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping(path="/nwt")
+@RequestMapping(path="/user")
 public class UserController {
     @Autowired
     private UserRepository userRepository;

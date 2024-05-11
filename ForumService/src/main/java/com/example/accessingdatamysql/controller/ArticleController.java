@@ -20,7 +20,7 @@ import java.util.Map;
 
 @Controller
 @Validated
-@RequestMapping(path="/nwt")
+@RequestMapping(path="/forum")
 public class ArticleController {
 
     @Autowired
