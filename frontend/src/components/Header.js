@@ -2,14 +2,17 @@ import * as React from 'react'
 import { ChakraProvider } from '@chakra-ui/react'
 import { Tabs, TabList, TabPanels, Tab, TabPanel, Image } from '@chakra-ui/react'
 import '../styles/Header.css'
+import HomePage from '../pages/HomePage'
 
 function Header() {
   return (
     <ChakraProvider>
       <div className="header">
-        <Image src="images/logo.png" alt="Logo" />
         <Tabs>
-          <TabList>
+          <TabList className="tab">
+          <div className="logo-container">
+            <Image src="images/logo.png" alt="Logo" />
+          </div>
             <Tab>Home</Tab>
             <Tab>Questions and Answers</Tab>
             <Tab>Consultations</Tab>
@@ -18,7 +21,7 @@ function Header() {
           </TabList>
           <TabPanels>
             <TabPanel>
-              <p>Home content goes here!</p>
+              <HomePage />
             </TabPanel>
             <TabPanel>
               <p>Questions and Answers content goes here!</p>
