@@ -7,6 +7,7 @@ import com.example.accessingdatamysql.exceptions.ReservationNotFoundException;
 import com.example.accessingdatamysql.grpc.GrpcClient;
 import com.example.accessingdatamysql.repository.EventRepository;
 import com.example.accessingdatamysql.repository.ReservationRepository;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -47,15 +48,12 @@ public class ReservationController {
         return reservation;
     }
     @GetMapping("reservations/for-user/{userId}")
-    public  @ResponseBody ResponseEntity<List<ReservationEntity>> getReservationsForUser(@PathVariable Integer userId) {
+    public  @ResponseBody ResponseEntity<List<ReservationEntity>> getReservationsForUser(@PathVariable Integer userId, HttpServletRequest request) {
         List<ReservationEntity> reservations = reservationRepository.findByUserId(userId);
+        request.setAttribute("userId", userId);
         if (reservations.isEmpty()) {
-            // Logovanje akcije kada nema rezultata
-            GrpcClient.get().log(userId, "Reservation", "GET", "No reservations found for user");
             return ResponseEntity.noContent().build();
         } else {
-            // Logovanje uspešne akcije
-            GrpcClient.get().log(userId, "Reservation", "GET", "Reservations retrieved successfully");
             return ResponseEntity.ok(reservations);
         }
     }

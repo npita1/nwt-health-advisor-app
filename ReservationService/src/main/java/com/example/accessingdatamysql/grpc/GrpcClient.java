@@ -4,7 +4,6 @@ import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 
 import java.time.LocalDateTime;
-
 public class GrpcClient {
 
     private static ManagedChannel channel;
