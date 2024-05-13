@@ -250,6 +250,9 @@ public class EventControllerTest {
                 .andExpect(MockMvcResultMatchers.content().string("Failed to communicate with the remote service."));
     }
 
+
+
+    
     @Test
     public void testHandleEventConclusion_EventNotFound() throws Exception {
         // Setup

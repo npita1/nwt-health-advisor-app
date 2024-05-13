@@ -191,7 +191,6 @@ public class AppointmentControllerTest {
                 .andExpect(MockMvcResultMatchers.content().string("Failed to communicate with the remote service."));
     }
 
-    // Method to convert object to JSON string
     private String asJsonString(final Object obj) {
         try {
             return new ObjectMapper().writeValueAsString(obj);
