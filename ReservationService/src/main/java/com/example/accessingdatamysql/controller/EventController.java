@@ -15,8 +15,10 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.fge.jsonpatch.JsonPatch;
 import com.github.fge.jsonpatch.JsonPatchException;
+import feign.FeignException;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -82,19 +84,25 @@ public class EventController {
 
     @PutMapping("/eventHeld/{eventId}")
     public @ResponseBody ResponseEntity<String> handleEventConclusion(@PathVariable Long eventId) {
-        EventEntity event = eventRepository.findById(eventId).orElseThrow(() -> new EventNotFoundException("Event not found"));
+        try {
+            EventEntity event = eventRepository.findById(eventId)
+                    .orElseThrow(() -> new EventNotFoundException("Event not found"));
 
-        Long doctorId = event.getDoctorInfo().getId();
-        Long categoryId = 1L;
+            Long doctorId = event.getDoctorInfo().getId();
+            Long categoryId = 1L;
 
-        String title = "Članak o eventu pod nazivom:  " + event.getName() +", " + " održanom na lokaciji: "+ event.getLocation();
-        String text = "Osvrt na događaj: "+ event.getDescription();
+            String title = "Članak o eventu pod nazivom: " + event.getName() + ", održanom na lokaciji: " + event.getLocation();
+            String text = "Osvrt na događaj: " + event.getDescription();
 
-        String date = LocalDate.now().format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
+            String date = LocalDate.now().format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
 
-        forumClient.addArticle1(doctorId, categoryId, title, text, date);
+            forumClient.addArticle1(doctorId, categoryId, title, text, date);
 
-        return ResponseEntity.ok("Event concluded and article created.");
+            return ResponseEntity.ok("Event concluded and article created.");
+        } catch (FeignException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to communicate with the remote service.");
+        }
     }
+
 
 }
