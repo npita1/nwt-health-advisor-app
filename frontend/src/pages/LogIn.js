@@ -29,24 +29,23 @@ function LogIn() {
         console.log('Podaci koji se šalju na server:', formData);
   
         try {
-          // Slanje POST zahtjeva na backend
-          const response = await fetch('http://localhost:8084/user/addUser', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(formData),
-          });
-  
-  
-          if (response.ok) {
-            console.log('Podaci uspješno poslani na server.');
-          } else {
-            console.error('Došlo je do greške prilikom slanja podataka na server.');
+            // Slanje GET zahtjeva na backend
+            const response = await fetch(`http://localhost:8084/user/users/email/${email}`, {
+              method: 'GET',
+            });
+            
+            if (response.ok) {
+              const userData = await response.json();
+              console.log(userData);
+              if(bcrypt.compare(hashedPassword,userData.passwordHash))
+                console.log('Loginovan korisnik');
+            } else {
+              console.error('Došlo je do greške prilikom slanja podataka na server.');
+            }
+          } catch (error) {
+            console.error('Došlo je do greške prilikom slanja podataka:', error);
           }
-        } catch (error) {
-          console.error('Došlo je do greške prilikom slanja podataka:', error);
-        }
+          
       
     };
 
