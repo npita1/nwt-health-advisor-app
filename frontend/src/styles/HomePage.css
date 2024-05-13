@@ -1,0 +1,91 @@
+.gornjiSaDoktoromDiv {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 2%;
+}
+
+.naslov {
+    color: #1F55B3; 
+    font-weight: bold; 
+    font-size: 30px;
+}
+
+.naslovDiv {
+    padding: 5%;
+}
+
+.naslovNabrajanje {
+    color: #1F55B3;
+    font-size: 20px; 
+    padding-bottom: 5%;
+}
+
+.nabrajanje {
+    color: #1F55B3;
+    font-size: 18px; 
+    padding-left: 10%;
+}
+
+.nabrajanjeDiv {
+    padding: 5%;
+}
+
+.tekstIznadDugmadi {
+    color: #FF585F;
+    font-size: 20px; 
+    font-weight: bold; 
+}
+
+.tekstIznadDugmadiDiv {
+    padding: 5%;
+}
+
+.dugmadDiv {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.dugmeLogIn {
+    background-color: #1F55B3;
+    color: white;
+    margin: 0 5px;
+    width: 100px;
+}
+
+.dugmeLogIn:hover {
+    filter: brightness(0.9);
+}
+
+.dugmeSignUp {
+    background-color: #FF585F;
+    color: white;
+    margin: 0 5px;
+    width: 100px;
+}
+
+.dugmeSignUp:hover {
+    filter: brightness(0.9);
+}
+
+.doktorSlikaDiv{
+    padding-left: 5%;
+}
+
+.slikaDoktor {
+    transform: scaleX(-1);
+    width: 300px;
+}
+
+
+
+
+.whyChooseUsDiv {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 0%;
+
+}

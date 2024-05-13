@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
+@CrossOrigin
 @RequestMapping(path="/user")
 public class UserController {
     @Autowired
@@ -113,7 +114,16 @@ public class UserController {
         }
     }
 
+    @GetMapping(path = "/users/email/{email}")
+    public UserEntity getUserByEmail(@PathVariable String email) {
+        UserEntity user = userRepository.findByEmail(email);
 
+        if (user == null) {
+            throw new UserNotFoundException("Not found user with email: " + email);
+        }
+
+        return user;
+    }
 
 }
 

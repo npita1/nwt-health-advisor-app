@@ -3,11 +3,14 @@ import com.example.accessingdatamysql.entity.DoctorInfoEntity;
 import com.example.accessingdatamysql.entity.EventEntity;
 import com.example.accessingdatamysql.entity.ReservationEntity;
 import com.example.accessingdatamysql.entity.UserEntity;
+import com.example.accessingdatamysql.exceptions.EventNotFoundException;
+import com.example.accessingdatamysql.feign.ForumInterface;
 import com.example.accessingdatamysql.repository.DoctorInfoRepository;
 import com.example.accessingdatamysql.repository.EventRepository;
 import com.example.accessingdatamysql.repository.ReservationRepository;
 import com.example.accessingdatamysql.service.EventService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import feign.FeignException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -16,7 +19,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -26,8 +31,10 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import java.util.List;
 import java.util.Optional;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -38,7 +45,6 @@ public class EventControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
-
     @MockBean
     private EventRepository eventRepository;
     @MockBean
@@ -49,7 +55,10 @@ public class EventControllerTest {
     private EventController eventController;
     @MockBean
     private EventService eventService;
+    @MockBean
+    private ForumInterface forumClient;
     private ObjectMapper objectMapper = new ObjectMapper();
+
     @Test
     public void testAddNewEventSuccessfully() throws Exception {
         // Kreiramo testnog korisnika
@@ -65,19 +74,20 @@ public class EventControllerTest {
         event.setDoctorInfo(doctor);
         when(eventRepository.save(any(EventEntity.class))).thenReturn(event);
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/nwt/addEvent")
+        mockMvc.perform(MockMvcRequestBuilders.post("/reservation/addEvent")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(new ObjectMapper().writeValueAsString(event)))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().string("Saved"));
     }
+
     @Test
     public void testAddNewEventUnSuccessfully() throws Exception {
         // Pripremamo JSON tijelo zahtjeva
         String requestJson = "{ \"name\": \"Test Event\", \"description\": \"Description\", \"date\": \"2024-03-30\", \"location\": \"Location\", \"doctorInfo\": { \"id\": 1, \"about\": \"About doctor\", \"user\": { \"id\": 1, \"email\": \"test@example.com\", \"firstName\": \"John\", \"lastName\": \"Doe\", \"type\": 1, \"passwordHash\": \"passwordHash\" } } }";
 
         // Izvršavamo HTTP POST zahtjev s JSON tijelom
-        mockMvc.perform(MockMvcRequestBuilders.post("/nwt/addEvent")
+        mockMvc.perform(MockMvcRequestBuilders.post("/reservation/addEvent")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestJson))
                 // Očekujemo da će status biti 400 Bad Request
@@ -85,9 +95,10 @@ public class EventControllerTest {
                 // Očekujemo da će JSON odgovor sadržavati očekivanu poruku
                 .andExpect(jsonPath("$.message").value("Datum mora biti u formatu 'DD.MM.YYYY'."));
     }
+
     @Test
     public void testGetAllEvents() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/nwt/allEvents"))
+        mockMvc.perform(MockMvcRequestBuilders.get("/reservation/allEvents"))
                 .andExpect(MockMvcResultMatchers.status().isOk());
     }
 
@@ -110,7 +121,7 @@ public class EventControllerTest {
         when(eventRepository.findById(1L)).thenReturn(event);
 
         // Izvršavamo HTTP GET zahtjev za dohvat događaja s ID-om 1
-        mockMvc.perform(MockMvcRequestBuilders.get("/nwt/events/1"))
+        mockMvc.perform(MockMvcRequestBuilders.get("/reservation/events/1"))
                 // Provjeravamo status odgovora da bude OK (200)
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 // Provjeravamo da je ID događaja ispravno postavljen
@@ -123,7 +134,7 @@ public class EventControllerTest {
 
     @Test
     public void testGetEvent_InvalidId() throws Exception {
-        mockMvc.perform(get(String.format("/nwt/events/%d", -1))
+        mockMvc.perform(get(String.format("/reservation/events/%d", -1))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.error").value("not_found"))
@@ -148,7 +159,7 @@ public class EventControllerTest {
         when(reservationRepository.findByEvent(event)).thenReturn(reservations);
 
         // Perform GET request
-        mockMvc.perform(MockMvcRequestBuilders.get("/nwt/reservations-for-events/1"))
+        mockMvc.perform(MockMvcRequestBuilders.get("/reservation/reservations-for-events/1"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.size()").value(2))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].id").value(1))
@@ -161,9 +172,10 @@ public class EventControllerTest {
         when(eventRepository.findById(100)).thenReturn(null);
 
         // Perform GET request
-        mockMvc.perform(MockMvcRequestBuilders.get("/nwt/reservations-for-events/100"))
+        mockMvc.perform(MockMvcRequestBuilders.get("/reservation/reservations-for-events/100"))
                 .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
+
     @Test
     public void testUpdateEventSuccessfully() throws Exception {
         // Priprema testnog događaja i zakrpe
@@ -176,14 +188,79 @@ public class EventControllerTest {
 
         // Izvršavanje HTTP PATCH zahtjeva s JSON tijelom zakrpe
         MockMvc mockMvc = MockMvcBuilders.standaloneSetup(eventController).build();
-        mockMvc.perform(MockMvcRequestBuilders.patch("/nwt/events/1")
+        mockMvc.perform(MockMvcRequestBuilders.patch("/reservation/events/1")
                         .contentType("application/json-patch+json")
                         .content(objectMapper.writeValueAsString(patch)))
                 .andExpect(status().isOk());
     }
 
 
+    @Test
+    public void testHandleEventConclusion_Success() throws Exception {
+        // Setup
+        UserEntity user = new UserEntity("test@example.com", "John", "Doe", 1, "passwordHash");
+        DoctorInfoEntity doctor = new DoctorInfoEntity();
+        doctor.setId(1L);
+        doctor.setAbout("About doctor");
+        doctor.setUser(user);
+
+        Long eventId = 1L;
+        EventEntity event = new EventEntity();
+        event.setId(eventId);
+        event.setName("Test Event");
+        event.setLocation("Test Location");
+        event.setDescription("Test Description");
+        event.setDoctorInfo(doctor);
+
+        // Postavljanje očekivanog odgovora od Feign klijenta
+        when(eventRepository.findById(eventId)).thenReturn(Optional.of(event));
+        ResponseEntity<String> successResponse = ResponseEntity.ok("Article Created");
+        when(forumClient.addArticle1(anyLong(), anyLong(), anyString(), anyString(), anyString())).thenReturn(successResponse);
+
+        // Test and Verify
+        mockMvc.perform(MockMvcRequestBuilders.put("/reservation/eventHeld/{eventId}", eventId))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().string("Event concluded and article created."));
+    }
+
+    @Test
+    public void testHandleEventConclusion_FeignException() throws Exception {
+        // Setup
+        UserEntity user = new UserEntity("test@example.com", "John", "Doe", 1, "passwordHash");
+        DoctorInfoEntity doctor = new DoctorInfoEntity();
+        doctor.setId(1L);
+        doctor.setAbout("About doctor");
+        doctor.setUser(user);
+
+        Long eventId = 1L;
+        EventEntity event = new EventEntity();
+        event.setId(eventId);
+        event.setName("Test Event");
+        event.setLocation("Test Location");
+        event.setDescription("Test Description");
+        event.setDoctorInfo(doctor);
+
+        when(eventRepository.findById(eventId)).thenReturn(Optional.of(event));
+        // Bacanje FeignException kada se pozove metoda addArticle1 na forumClient-u
+        doThrow(FeignException.class).when(forumClient).addArticle1(anyLong(), anyLong(), anyString(), anyString(), anyString());
+
+        // Test and Verify
+        mockMvc.perform(MockMvcRequestBuilders.put("/reservation/eventHeld/{eventId}", eventId))
+                .andExpect(MockMvcResultMatchers.status().isInternalServerError())
+                .andExpect(MockMvcResultMatchers.content().string("Failed to communicate with the remote service."));
+    }
 
 
+
+    
+    @Test
+    public void testHandleEventConclusion_EventNotFound() throws Exception {
+        // Setup
+        Long eventId = 1L;
+        when(eventRepository.findById(eventId)).thenReturn(Optional.empty());
+
+        // Test and Verify
+        mockMvc.perform(MockMvcRequestBuilders.put("/reservation/eventHeld/{eventId}", eventId))
+                .andExpect(MockMvcResultMatchers.status().isNotFound());
+    }
 }
-

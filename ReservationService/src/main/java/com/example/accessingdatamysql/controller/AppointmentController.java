@@ -18,8 +18,10 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.fge.jsonpatch.JsonPatch;
 import com.github.fge.jsonpatch.JsonPatchException;
+import feign.FeignException;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -101,27 +103,40 @@ public class AppointmentController {
     public ResponseEntity<?> addAppointment(
             @RequestParam("userId") int userId,
             @RequestBody AppointmentEntity appointment) {
-            // Dohvatanje korisnika koristeći Feign klijent
+        try {
+            // Dohvaćanje korisnika koristeći Feign klijent
             UserEntity user = userClient.getUserByID(userId);
-        if (user == null) {
-            throw new UserNotFoundException("Not found user by id " + userId);
-        }
-         UserEntity user1= new UserEntity();
-        user1.setEmail(user.getEmail());
-        user1.setFirstName(user.getFirstName());
-        user1.setLastName(user.getLastName());
-        user1.setType(user.getType());
-        user1.setPasswordHash(user.getPasswordHash());
-        userRepository.save(user1);
-            // Postavljanje korisnika  u appointment
-        appointment.setUser(user1);
+
+            // Ako korisnik nije pronađen, izbaci iznimku
+            if (user == null) {
+                throw new UserNotFoundException("User not found for ID: " + userId);
+            }
+
+            // Ako korisnik postoji, kopiraj njegove podatke u novu instancu
+            UserEntity newUser = new UserEntity();
+            newUser.setId(user.getId());
+            newUser.setEmail(user.getEmail());
+            newUser.setFirstName(user.getFirstName());
+            newUser.setLastName(user.getLastName());
+            newUser.setType(user.getType());
+            newUser.setPasswordHash(user.getPasswordHash());
+
+            // Spremi novog korisnika u bazu
+            UserEntity savedUser = userRepository.save(newUser);
+
+            // Postavljanje korisnika u appointment
+            appointment.setUser(savedUser);
+
             // Spremanje appointmenta u bazu
             AppointmentEntity savedAppointment = appointmentRepository.save(appointment);
 
             // Vraćanje odgovora
             return ResponseEntity.ok(savedAppointment);
-
+        } catch (FeignException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to communicate with the remote service.");
+        }
     }
+
 
 
 }
