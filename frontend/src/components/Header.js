@@ -3,6 +3,7 @@ import { ChakraProvider } from '@chakra-ui/react'
 import { Tabs, TabList, TabPanels, Tab, TabPanel, Image } from '@chakra-ui/react'
 import '../styles/Header.css'
 import HomePage from '../pages/HomePage'
+import StaffPage from '../pages/StaffPage'
 
 function Header() {
   return (
@@ -18,6 +19,7 @@ function Header() {
             <Tab>Consultations</Tab>
             <Tab>Workshops and Events</Tab>
             <Tab>Articles</Tab>
+            <Tab>Our Specialists</Tab>
           </TabList>
           <TabPanels>
             <TabPanel>
@@ -35,6 +37,10 @@ function Header() {
             <TabPanel>
               <p>Articles content goes here!</p>
             </TabPanel>
+            <TabPanel>
+              <StaffPage />
+            </TabPanel>
+           
           </TabPanels>
         </Tabs>
       </div>

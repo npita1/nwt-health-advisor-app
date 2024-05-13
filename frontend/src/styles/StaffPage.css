@@ -1,0 +1,36 @@
+ .custom-search-input .ant-input {
+    color: #FF585F; /* Boja teksta */
+  } 
+  
+  .custom-search-input .ant-input::placeholder {
+    color: #FF585F; /* Boja placeholder teksta */
+  }
+  
+  .custom-search-container .ant-input-affix-wrapper {
+    border-color: #FF585F !important; /* Promijenite boju ruba oko Search komponente */
+  }
+  
+  .staff-container {
+    margin-bottom:30px;
+  }
+  
+  .CardFooter {
+    display: flex; /* Postavljanje horizontalnog redoslijeda */
+    /*justify-content: space-between; /* Poravnavanje stavki na krajevima */
+    align-items: center; /* Poravnavanje stavki po sredini vertikalno */
+    padding: 10px; /* Dodavanje unutarnjeg prostora */
+  }
+  
+  .CardFooter > * {
+    margin-right: 10px; /* Dodavanje prostora između stavki */
+  }
+  
+  .TextDiv {
+    display: flex; /* Postavljanje horizontalnog redoslijeda */
+    justify-content: space-between; /* Poravnavanje stavki na krajevima */
+    align-items: center; /* Poravnavanje stavki po sredini vertikalno */
+  }
+  
+  .TextDiv > * {
+    margin-right: 10px; /* Dodavanje prostora između stavki */
+  }
