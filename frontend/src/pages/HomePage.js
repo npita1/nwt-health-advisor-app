@@ -2,10 +2,12 @@ import React, { useState } from 'react';
 import { Button, Flex, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton } from '@chakra-ui/react';
 import '../styles/HomePage.css';
 import SignUp from '../pages/SignUp.js';
+import LogIn from '../pages/LogIn.js';
 
 
 function HomePage() {
   const [showSignUp, setShowSignUp] = useState(false);
+  const [showLogIn, setShowLogIn] = useState(false);
 
   const handleSignUpClick = () => {
     setShowSignUp(true);
@@ -13,6 +15,14 @@ function HomePage() {
 
   const handleCloseSignUp = () => {
     setShowSignUp(false);
+  };
+
+  const handleLogInClick = () => {
+    setShowLogIn(true);
+  };
+
+  const handleCloseLogIn = () => {
+    setShowLogIn(false);
   };
 
   return (
@@ -36,7 +46,7 @@ function HomePage() {
             <p className='tekstIznadDugmadi'>Join us and empower your journey towards better health!</p>
           </div>
           <div className='dugmadDiv'>
-            <Button className='dugmeLogIn' colorScheme='#1F55B3' size="md" mr={2}>
+            <Button className='dugmeLogIn' colorScheme='#1F55B3' size="md" mr={2} onClick={handleLogInClick}>
              Log In
             </Button>
             <Button className='dugmeSignUp'colorScheme="#FF585F" size="md" onClick={handleSignUpClick}>
@@ -64,6 +74,20 @@ function HomePage() {
           <ModalCloseButton />
           <ModalBody>
             <SignUp onClose={handleCloseSignUp} />
+          </ModalBody>
+          <ModalFooter>
+            {/* Dodajte opcionalne kontrole u footeru ako je potrebno */}
+          </ModalFooter>
+        </ModalContent>
+    </Modal>
+
+    <Modal isOpen={showLogIn} onClose={handleCloseLogIn}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Log In</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <LogIn onClose={handleCloseLogIn} />
           </ModalBody>
           <ModalFooter>
             {/* Dodajte opcionalne kontrole u footeru ako je potrebno */}
