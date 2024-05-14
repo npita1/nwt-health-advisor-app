@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +24,8 @@ public class UserEntity {
 
     private Integer type;
 
+    @NotBlank(message = "Lozinka ne smije biti prazna.")
+    @Size(min = 0, max = 1000, message = "Lozinka mora biti dužine između 8 i 20 znakova.")
     private String passwordHash;
     @JsonIgnore
     @OneToOne(mappedBy = "user")

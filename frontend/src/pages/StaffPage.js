@@ -13,7 +13,7 @@ import {
   MenuOptionGroup,
   MenuDivider,
 } from '@chakra-ui/react'
-import { ChevronDownIcon, EmailIcon, PhoneIcon } from '@chakra-ui/icons';
+import { ChevronDownIcon, EmailIcon, PhoneIcon} from '@chakra-ui/icons';
 import { Card, CardHeader, CardBody, CardFooter, Image, Stack, Heading, Text, Button } from '@chakra-ui/react'
 
 const { Search } = Input;

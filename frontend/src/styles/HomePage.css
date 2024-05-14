@@ -86,6 +86,38 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    padding-top: 0%;
+    padding-top: 1.5%;
+    background-color: white;
+    margin-left: 200px;
+    margin-right: 200px;
 
+}
+
+.whyChooseUsFlex {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.boxesContainer {
+    display: flex;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+  
+.box {
+    background-color: rgba(217, 217, 217, 0.17);
+    border-radius: 20px;
+    padding: 2%;
+    margin: 2%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.boxText {
+    color: #1F55B3;
+    font-size: 18px; 
+    font-weight: bold;
 }

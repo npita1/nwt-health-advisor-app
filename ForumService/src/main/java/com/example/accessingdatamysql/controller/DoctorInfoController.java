@@ -12,6 +12,7 @@ import java.util.List;
 
 @RestController// This means that this class is a Controller
 @Validated
+@CrossOrigin
 @RequestMapping(path="/forum")
 public class DoctorInfoController {
     @Autowired
