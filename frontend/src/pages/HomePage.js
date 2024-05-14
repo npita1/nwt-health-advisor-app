@@ -63,8 +63,23 @@ function HomePage() {
 
 
     <div className='whyChooseUsDiv'>
-
-      <p>dalje div</p>
+      <Flex direction="column" className='whyChooseUsFlex'>
+        <h1 className='naslov'>Why Choose Us?</h1>
+        <Flex className='boxesDiv'>
+          <Flex direction="column" className='box'>
+          <img src="images/doktor.png" alt="Slika" className='slikaDoktor' style={{ width: '400px', height: 'auto' }} />
+            <p className='boxText'>All Specialist</p>
+          </Flex>
+          <Flex direction="column" className='box'>
+            <img src="slika1.jpg" alt="Slika 1" />
+            <p className='boxText'>Private & Secure</p>
+          </Flex>
+          <Flex direction="column" className='box'>
+            <img src="slika1.jpg" alt="Slika 1" />
+            <p className='boxText'>Educational</p>
+          </Flex>
+        </Flex>
+      </Flex>
     </div>
 
     <Modal isOpen={showSignUp} onClose={handleCloseSignUp}>
