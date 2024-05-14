@@ -14,7 +14,10 @@ import {
   MenuDivider,
 } from '@chakra-ui/react'
 import { ChevronDownIcon, EmailIcon, PhoneIcon} from '@chakra-ui/icons';
-import { Card, CardHeader, CardBody, CardFooter, Image, Stack, Heading, Text, Button } from '@chakra-ui/react'
+import { Card, Spacer, CardHeader, CardBody, CardFooter, Image, Stack, Heading, Text, Button } from '@chakra-ui/react'
+import DoctorDrawer from '../components/DoctorDrawer';
+
+
 
 const { Search } = Input;
 const suffix = (
@@ -28,6 +31,7 @@ const suffix = (
 const onSearch = (value, _e, info) => console.log(info?.source, value);
 const StaffPage = () => (
   <div>
+    
   <div className='staff-container'>
         <Search
             placeholder="Search"
@@ -84,6 +88,7 @@ const StaffPage = () => (
       <div className='TextDiv'>
       <Text size='md' color={"#1F55B3"}>Chief Medical Officer</Text>
       <Text size='md' color={"#FF585F"}>Doctor</Text>
+
       </div>
       <Heading py='2' size='md' color={"#1F55B3"}>
         Dr. Sarah Turner
@@ -97,8 +102,11 @@ const StaffPage = () => (
       <Text color={"#BCCCE8"}>mail@gmail.com</Text>
       <PhoneIcon color={"#BCCCE8"}></PhoneIcon>
       <Text color={"#BCCCE8"}>(387) 62 111 000</Text>
+      <Spacer />
+      <DoctorDrawer></DoctorDrawer>
 
     </CardFooter>
+
   </Stack>
 </Card>
 </div>
