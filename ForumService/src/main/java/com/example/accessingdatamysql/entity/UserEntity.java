@@ -30,9 +30,7 @@ public class UserEntity {
     private Integer type;
 
     @NotBlank(message = "Lozinka ne smije biti prazna.")
-    @Size(min = 8, max = 20, message = "Lozinka mora biti dužine između 8 i 20 znakova.")
-    @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,20}$",
-            message = "Lozinka mora sadržavati barem jedan broj, jedno veliko slovo, jedno malo slovo i jedan specijalni znak.")
+    @Size(min = 0, max = 1000, message = "Lozinka mora biti dužine između 8 i 20 znakova.")
     private String passwordHash;
     @JsonIgnore
     @OneToOne(mappedBy = "user")

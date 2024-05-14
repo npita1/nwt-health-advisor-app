@@ -8,6 +8,7 @@ import {
   Button,
 } from '@chakra-ui/react';
 import bcrypt from 'bcryptjs';
+import { addUser } from '../services/userService';
 
 
 function SignUp() {
@@ -34,27 +35,12 @@ function SignUp() {
     };
       
       console.log('Podaci koji se šalju na server:', formData);
-
       try {
-        // Slanje POST zahtjeva na backend
-        const response = await fetch('http://localhost:8084/user/addUser', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(formData),
-        });
-
-
-        if (response.ok) {
-          console.log('Podaci uspješno poslani na server.');
-        } else {
-          console.error('Došlo je do greške prilikom slanja podataka na server.');
-        }
-      } catch (error) {
-        console.error('Došlo je do greške prilikom slanja podataka:', error);
+        await addUser(formData);
+      } catch(error) {
+        console.log("greska se desila: ", error)
       }
-    
+      
   };
 
   return (

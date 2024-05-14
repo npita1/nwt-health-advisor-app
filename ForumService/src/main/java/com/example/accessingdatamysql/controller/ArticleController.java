@@ -20,6 +20,7 @@ import java.util.Map;
 
 @Controller
 @Validated
+@CrossOrigin
 @RequestMapping(path="/forum")
 public class ArticleController {
 

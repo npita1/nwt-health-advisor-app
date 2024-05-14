@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Controller
 @Validated
+@CrossOrigin
 @RequestMapping(path="/forum")
 public class ForumAnswerController {
 
