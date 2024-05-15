@@ -27,7 +27,7 @@ const StaffPage = () => {
   const [doctors, setDoctors] = useState([]);
   const [filteredDoctors, setFilteredDoctors] = useState([]);
   const [searchValue, setSearchValue] = useState('');
-  const [categories, setCategories] = useState('')
+  const [categories, setCategories] = useState([]);
   const doctorCardRef = useRef(null);
 
   useEffect(() => {
