@@ -2,6 +2,7 @@ package com.example.accessingdatamysql.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 @Entity
@@ -12,11 +13,12 @@ public class CategoryEntity {
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Long id;
 
-    @NotBlank(message = "Naziv kategorije ne smije biti prazan.")
+    @NotNull(message = "Naziv kategorije ne smije biti prazan.")
     @Column(unique = true)
     private String name;
 
-    @Size(max = 255, message = "Opis kategorije može sadržavati najviše 255 znakova.")
+    @NotBlank(message = "Opis ne smije biti prazan.")
+    @Size(min=0, max = 4500, message = "Text must be at most 5000 characters")
     private String description;
 
     public CategoryEntity() {}

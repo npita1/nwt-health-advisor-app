@@ -3,6 +3,7 @@ import { Button, Flex, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFoot
 import '../styles/HomePage.css';
 import SignUp from '../pages/SignUp.js';
 import LogIn from '../pages/LogIn.js';
+import Categories from '../components/Categories.js';
 
 
 function HomePage() {
@@ -56,7 +57,7 @@ function HomePage() {
         </Flex>
         {/* Slika na desnoj strani */}
         <div className='doktorSlikaDiv' >
-          <img src="images/doktor.png" alt="Slika" className='slikaDoktor' style={{ width: '400px', height: 'auto' }} />
+          <img src="images/HomePage/doktor.png" alt="Slika" className='slikaDoktor' style={{ width: '400px', height: 'auto' }} />
         </div>
       </Flex>
     </div>
@@ -67,20 +68,26 @@ function HomePage() {
         <h1 className='naslov'>Why Choose Us?</h1>
         <Flex className='boxesDiv'>
           <Flex direction="column" className='box'>
-          <img src="images/doktor.png" alt="Slika" className='slikaDoktor' style={{ width: '400px', height: 'auto' }} />
+          <img src="images/HomePage/medical-team.png" alt="Slika" className='whyChooseUsIkone' style={{ width: '150px', height: 'auto' }} />
             <p className='boxText'>All Specialist</p>
           </Flex>
           <Flex direction="column" className='box'>
-            <img src="slika1.jpg" alt="Slika 1" />
+            <img src="images/HomePage/lock.png" alt="Slika" className='whyChooseUsIkone' style={{ width: '150px', height: 'auto' }} />
             <p className='boxText'>Private & Secure</p>
           </Flex>
           <Flex direction="column" className='box'>
-            <img src="slika1.jpg" alt="Slika 1" />
+            <img src="images/HomePage/educational.png" alt="Slika" className='whyChooseUsIkone' style={{ width: '150px', height: 'auto' }} />
             <p className='boxText'>Educational</p>
           </Flex>
         </Flex>
       </Flex>
     </div>
+
+
+    <div className='specialitiesDiv'>
+      <Categories/>
+    </div>
+
 
     <Modal isOpen={showSignUp} onClose={handleCloseSignUp}>
         <ModalOverlay />
