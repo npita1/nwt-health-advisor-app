@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { AudioOutlined } from '@ant-design/icons';
 import { Input, Space } from 'antd';
 import '../styles/StaffPage.css'
@@ -17,99 +17,101 @@ import { ChevronDownIcon, EmailIcon, PhoneIcon} from '@chakra-ui/icons';
 import { Card, Spacer, CardHeader, CardBody, CardFooter, Image, Stack, Heading, Text, Button } from '@chakra-ui/react'
 import DoctorDrawer from '../components/DoctorDrawer';
 
+import { getAllDoctors } from '../services/userService';
+import DoctorCard from '../components/DoctorCard';
 
 
 const { Search } = Input;
-const suffix = (
-  <AudioOutlined
-    style={{
-      fontSize: 16,
-      color: '#FF585F',
-    }}
-  />
-);
-const onSearch = (value, _e, info) => console.log(info?.source, value);
-const StaffPage = () => (
-  <div>
+
+const StaffPage = () => {
+  const [doctors, setDoctors] = useState([]);
+  const [filteredDoctors, setFilteredDoctors] = useState([]);
+  const [searchValue, setSearchValue] = useState('');
+  const [categories, setCategories] = useState('')
+  const doctorCardRef = useRef(null);
+
+  useEffect(() => {
+    const fetchDoctors = async () => {
+      try {
+        const data = await getAllDoctors();
+        setDoctors(data);
+        setFilteredDoctors(data);
+        const specializations = [...new Set(doctors.map(doctor => doctor.specialization.toLowerCase()))];
+    const sortedSpecializations = specializations.sort();
+    setCategories(sortedSpecializations)
+      } catch (error) {
+        console.error('Greška prilikom dohvaćanja podataka o doktorima:', error.message);
+      }
+    };
+
+    fetchDoctors();
     
-  <div className='staff-container'>
+  }, []);
+
+  const handleSearch = (value) => {
+    setSearchValue(value);
+
+    // Pronalazi index prvog doktora koji odgovara pretrazi
+    const index = doctors.findIndex((doctor) =>
+      doctor.user.firstName.toLowerCase().includes(value.toLowerCase()) ||
+      doctor.user.lastName.toLowerCase().includes(value.toLowerCase())
+    );
+
+    // Ako je pronađen, pomičemo se do odgovarajuće kartice
+    if (index !== -1 && doctorCardRef.current) {
+      doctorCardRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  return (
+    <div>
+      <div className='staff-container'>
         <Search
-            placeholder="Search"
-            onSearch={onSearch}
-            colorScheme = "#FF585F"
-            style={{ width: 200, borderColor: "#FF585F" }}
-            className="custom-search-container"
-            borderColor="#FF585F"
+          placeholder="Search"
+          onSearch={handleSearch}
+          colorScheme="#FF585F"
+          style={{ width: 200, borderColor: "#FF585F" }}
+          className="custom-search-container"
+          borderColor="#FF585F"
         />
 
         <Menu>
-  <MenuButton
-    px={4}
-    py={2}
-    transition='all 0.2s'
-    borderRadius='md'
-    borderWidth='1px'
-    marginLeft={'20px'}
-    _hover={{ bg: '#ffa5a8' }}
-    _expanded={{ bg: '#ffa5a8' }}
-    style={{height: 35}}
-    borderColor={"#FF585F"}
-    textColor={"#FF585F"}
-    
-  >
-    Sort <ChevronDownIcon color={"#FF585F"}/>
-  </MenuButton>
-  <MenuList>
-    <MenuItem>All</MenuItem>
-    <MenuItem>Kategorija 1</MenuItem>
-    {/* <MenuDivider /> */}
-    <MenuItem>Kategorija 2</MenuItem>
-    <MenuItem>Kategorija 3</MenuItem>
-  </MenuList>
-</Menu>
-</div>
-<Card
-  direction={{ base: 'column', sm: 'row' }}
-  overflow='hidden'
-  variant='outline'
-  borderRadius='25px'
-  borderColor={"#FF585F"}
->
-  <Image
-    objectFit='cover'
-    maxW={{ base: '100%', sm: '200px' }}
-    src="images/doktorica.png"
-    alt='Doctor'
-    style={{ width: '100%' }} 
-  />
-
-  <Stack>
-    <CardBody>
-      <div className='TextDiv'>
-      <Text size='md' color={"#1F55B3"}>Chief Medical Officer</Text>
-      <Text size='md' color={"#FF585F"}>Doctor</Text>
-
+          <MenuButton
+            px={4}
+            py={2}
+            transition='all 0.2s'
+            borderRadius='md'
+            borderWidth='1px'
+            marginLeft={'20px'}
+            _hover={{ bg: '#ffa5a8' }}
+            _expanded={{ bg: '#ffa5a8' }}
+            style={{ height: 35 }}
+            borderColor={"#FF585F"}
+            textColor={"#FF585F"}
+          >
+            Sort <ChevronDownIcon color={"#FF585F"} />
+          </MenuButton>
+          <MenuList>
+            <MenuItem>All</MenuItem>
+            {
+            categories.map((category, index) => (
+              <div key={index} ref={index === 0 ? doctorCardRef : null}>
+                <MenuItem>{category ? 
+                          category.charAt(0).toUpperCase() + 
+                          category.slice(1) : 'N/A'}</MenuItem>
+              </div>
+            ))}
+          </MenuList>
+        </Menu>
       </div>
-      <Heading py='2' size='md' color={"#1F55B3"}>
-        Dr. Sarah Turner
-      </Heading>
+      
+      {filteredDoctors.map((doctor, index) => (
+        <div key={index} ref={index === 0 ? doctorCardRef : null}>
+          <DoctorCard doctorInfo={doctor} />
+        </div>
+      ))}
+    </div>
+  );
+};
 
-      <Text  color={"#BCCCE8"}>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga.</Text>
-    </CardBody>
-
-    <CardFooter className='CardFooter'>
-      <EmailIcon color={"#BCCCE8"} ></EmailIcon>
-      <Text color={"#BCCCE8"}>mail@gmail.com</Text>
-      <PhoneIcon color={"#BCCCE8"}></PhoneIcon>
-      <Text color={"#BCCCE8"}>(387) 62 111 000</Text>
-      <Spacer />
-      <DoctorDrawer></DoctorDrawer>
-
-    </CardFooter>
-
-  </Stack>
-</Card>
-</div>
-
-);
 export default StaffPage;

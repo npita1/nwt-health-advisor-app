@@ -45,4 +45,23 @@ export async function addUser(formData) {
       }
 }
 
+export async function getAllDoctors() {
+  try {
+    const response = await fetch(`${API_URL}/user/allDoctors`, {
+      method: 'GET',
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      console.log('Uspješno dohvaćeni podaci o doktorima:');
+      return data; 
+    } else {
+      throw new Error('Došlo je do greške prilikom dohvaćanja podataka o doktorima.');
+    }
+  } catch (error) {
+    console.error(`Došlo je do greške prilikom dohvaćanja podataka o doktorima: ${error.message}`);
+    throw error;
+  }
+}
+
   

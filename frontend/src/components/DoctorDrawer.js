@@ -11,7 +11,7 @@ import {
   import { useDisclosure } from '@chakra-ui/react';
   import { Button, Input, Heading, Image, Text } from '@chakra-ui/react'
 
-const  DoctorDrawer =() => {
+const  DoctorDrawer =({doctorInfo}) => {
     const { isOpen, onOpen, onClose } = useDisclosure()
     const btnRef = React.useRef()
   
@@ -41,48 +41,47 @@ const  DoctorDrawer =() => {
                     alt='Doctor'
                 />
                 <Heading size='md' color={"#1F55B3"} py={2}>
-                    Dr. Sarah Turner
+                    Dr. {doctorInfo.user.firstName + " " + doctorInfo.user.lastName}
                 </Heading>
-                <Text size='md' color={"#BCCCE8"} py={2}>
-                    Chief Medical Officer
+                <Text size='lg' color={"#FF585F"} py={2}>
+                {
+                    doctorInfo.specialization ? 
+                    doctorInfo.specialization.charAt(0).toUpperCase() + 
+                    doctorInfo.specialization.slice(1) : 'N/A'
+                }
                 </Text>
 
                
-                <Heading size='sm' color={"#1F55B3"}  paddingTop={10} alignSelf={"start"}>
-                    Specialization
-                </Heading>
-                <Text size='lg' color={"#BCCCE8"} paddingBottom={8} alignSelf={"start"}>
-                    Chief Medical Officer
-                </Text>
+               
                 <Heading size='sm' color={"#1F55B3"} alignSelf={"start"}>
                     Availability
                 </Heading>
                 <Text size='lg' color={"#BCCCE8"} paddingBottom={8} alignSelf={"start"}>
-                    Chief Medical Officer
+                    Nemamo jos
                 </Text>
                 <Heading size='sm' color={"#1F55B3"} alignSelf={"start"}>
                     Service hours
                 </Heading>
                 <Text size='lg' color={"#BCCCE8"} paddingBottom={8} alignSelf={"start"}>
-                    Chief Medical Officer
+                    Nemamo jos
                 </Text>
                 <Heading size='sm' color={"#1F55B3"} alignSelf={"start"}>
                     Email
                 </Heading>
                 <Text size='lg' color={"#BCCCE8"} paddingBottom={8} alignSelf={"start"}>
-                    Chief Medical Officer
+                    {doctorInfo.user.email}
                 </Text>
                 <Heading size='sm' color={"#1F55B3"} alignSelf={"start"}>
                     Phone
                 </Heading>
                 <Text size='lg' color={"#BCCCE8"} paddingBottom={8} alignSelf={"start"}>
-                    Chief Medical Officer
+                    Nemamo jos
                 </Text>
                 <Heading size='sm' color={"#1F55B3"} alignSelf={"start"}>
-                    Responsobilities
+                    About
                 </Heading>
                 <Text size='lg' color={"#BCCCE8"} paddingBottom={8} alignSelf={"start"}>
-                At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga.
+                {doctorInfo.about}
                 </Text>
             </DrawerBody>
 
