@@ -30,7 +30,7 @@ const DoctorCard = ({doctorInfo}) => {
   <Image
     objectFit='cover'
     maxW={{ base: '100%', sm: '200px' }}
-    src="images/doktorica.png"
+    src="images/StaffPage/doktorica.png"
     alt='Doctor'
     style={{ width: '100%' }} 
   />
@@ -61,7 +61,7 @@ const DoctorCard = ({doctorInfo}) => {
       <EmailIcon color={"#BCCCE8"} ></EmailIcon>
       <Text color={"#BCCCE8"}>{doctorInfo.user.email}</Text>
       <PhoneIcon color={"#BCCCE8"}></PhoneIcon>
-      <Text color={"#BCCCE8"}>{doctorInfo.user.email}</Text>
+      <Text color={"#BCCCE8"}>{doctorInfo.phoneNumber}</Text>
       <Spacer />
       <DoctorDrawer doctorInfo={doctorInfo}></DoctorDrawer>
 

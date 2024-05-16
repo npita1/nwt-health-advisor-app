@@ -36,9 +36,6 @@ const StaffPage = () => {
         const data = await getAllDoctors();
         setDoctors(data);
         setFilteredDoctors(data);
-        const specializations = [...new Set(doctors.map(doctor => doctor.specialization.toLowerCase()))];
-    const sortedSpecializations = specializations.sort();
-    setCategories(sortedSpecializations)
       } catch (error) {
         console.error('Greška prilikom dohvaćanja podataka o doktorima:', error.message);
       }
@@ -50,17 +47,28 @@ const StaffPage = () => {
 
   const handleSearch = (value) => {
     setSearchValue(value);
+    const [firstName, lastName] = value.split(' ');
 
-    // Pronalazi index prvog doktora koji odgovara pretrazi
-    const index = doctors.findIndex((doctor) =>
-      doctor.user.firstName.toLowerCase().includes(value.toLowerCase()) ||
-      doctor.user.lastName.toLowerCase().includes(value.toLowerCase())
-    );
-
-    // Ako je pronađen, pomičemo se do odgovarajuće kartice
-    if (index !== -1 && doctorCardRef.current) {
+    const filtered = doctors.filter((doctor) => {
+    const fullName = `${doctor.user.firstName} ${doctor.user.lastName}`;
+    const lowerCasedFullName = fullName.toLowerCase();
+    return lowerCasedFullName.includes(value.toLowerCase()) ||
+           (firstName && lowerCasedFullName.includes(firstName.toLowerCase())) ||
+           (lastName && lowerCasedFullName.includes(lastName.toLowerCase()));
+  });
+    setFilteredDoctors(filtered);
+  
+    if (filtered.length > 0 && doctorCardRef.current) {
       doctorCardRef.current.scrollIntoView({ behavior: 'smooth' });
     }
+  };
+
+  const handleSort = (doctors, category) => {
+    const filtered = doctors.filter((doctor) =>
+      doctor.specialization.toLowerCase() === category.toLowerCase()
+    );
+  
+    setFilteredDoctors(filtered);
   };
 
   return (
@@ -88,17 +96,20 @@ const StaffPage = () => {
             style={{ height: 35 }}
             borderColor={"#FF585F"}
             textColor={"#FF585F"}
+            
           >
             Sort <ChevronDownIcon color={"#FF585F"} />
           </MenuButton>
           <MenuList>
-            <MenuItem>All</MenuItem>
-            {
-            categories.map((category, index) => (
+            <MenuItem
+            style={{ cursor: 'pointer' }} 
+            role="button"
+            onClick={() => {setFilteredDoctors(doctors)}}>All</MenuItem>
+            {categories.map((category, index) => (
               <div key={index} ref={index === 0 ? doctorCardRef : null}>
-                <MenuItem>{category ? 
-                          category.charAt(0).toUpperCase() + 
-                          category.slice(1) : 'N/A'}</MenuItem>
+                <MenuItem>
+                  {category ? category.charAt(0).toUpperCase() + category.slice(1) : 'N/A'}
+                </MenuItem>
               </div>
             ))}
           </MenuList>

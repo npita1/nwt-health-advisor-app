@@ -37,7 +37,7 @@ const  DoctorDrawer =({doctorInfo}) => {
                 <Image
                     objectFit='cover'
                     maxW={{ base: '100%', sm: '200px' }}
-                    src="images/doktorica.png"
+                    src="images/StaffPage/doktorica.png"
                     alt='Doctor'
                 />
                 <Heading size='md' color={"#1F55B3"} py={2}>
@@ -57,14 +57,14 @@ const  DoctorDrawer =({doctorInfo}) => {
                     Availability
                 </Heading>
                 <Text size='lg' color={"#BCCCE8"} paddingBottom={8} alignSelf={"start"}>
-                    Nemamo jos
+                    {doctorInfo.availability}
                 </Text>
-                <Heading size='sm' color={"#1F55B3"} alignSelf={"start"}>
+                {/* <Heading size='sm' color={"#1F55B3"} alignSelf={"start"}>
                     Service hours
                 </Heading>
                 <Text size='lg' color={"#BCCCE8"} paddingBottom={8} alignSelf={"start"}>
                     Nemamo jos
-                </Text>
+                </Text> */}
                 <Heading size='sm' color={"#1F55B3"} alignSelf={"start"}>
                     Email
                 </Heading>
@@ -75,7 +75,7 @@ const  DoctorDrawer =({doctorInfo}) => {
                     Phone
                 </Heading>
                 <Text size='lg' color={"#BCCCE8"} paddingBottom={8} alignSelf={"start"}>
-                    Nemamo jos
+                    {doctorInfo.phoneNumber}
                 </Text>
                 <Heading size='sm' color={"#1F55B3"} alignSelf={"start"}>
                     About
