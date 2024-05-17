@@ -1,3 +1,57 @@
 .tabelaKategorija {
-    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 1.5%;
+    margin-left: 200px;
+    margin-right: 200px;
+}
+
+.kategorija {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 1.5%;
+    margin-left: 25px;
+    margin-right: 25px;
+    margin-bottom: 40px;
+    background-color: rgba(217, 217, 217, 0.17);
+    border-radius: 20px;
+    width: 150px;
+    height: 150px;
+    cursor: pointer;
+}
+
+.kategorija:hover{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 1.5%;
+    margin-left: 25px;
+    margin-right: 25px;
+    margin-bottom: 40px;
+    background-color: rgba(217, 217, 217, 0.17);
+    border-radius: 20px;
+    width: 150px;
+    height: 150px;
+    cursor: pointer;
+    filter: brightness(0.92);
+}
+
+.redovi {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 1.5%;
+}
+  
+.divv{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.nazivKategorije {
+    color: #1F55B3;
+    font-size: 18px; 
 }
