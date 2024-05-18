@@ -252,7 +252,7 @@ public class EventControllerTest {
 
 
 
-    
+
     @Test
     public void testHandleEventConclusion_EventNotFound() throws Exception {
         // Setup

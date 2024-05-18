@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.fge.jsonpatch.JsonPatch;
 import com.github.fge.jsonpatch.JsonPatchException;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,6 +25,7 @@ import java.util.Optional;
 @RestController
 @CrossOrigin
 @RequestMapping(path="/user")
+@RequiredArgsConstructor
 public class UserController {
     @Autowired
     private UserRepository userRepository;
@@ -116,7 +118,7 @@ public class UserController {
 
     @GetMapping(path = "/users/email/{email}")
     public UserEntity getUserByEmail(@PathVariable String email) {
-        UserEntity user = userRepository.findByEmail(email);
+        UserEntity user = userRepository.findByEmail1(email);
 
         if (user == null) {
             throw new UserNotFoundException("Not found user with email: " + email);
