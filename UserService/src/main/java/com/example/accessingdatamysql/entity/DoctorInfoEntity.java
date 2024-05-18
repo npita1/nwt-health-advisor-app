@@ -5,8 +5,12 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor
+@AllArgsConstructor
 @Data
 @Table(name="doctorInfo")
 @Entity
@@ -31,7 +35,7 @@ public class DoctorInfoEntity {
     @Valid
     private UserEntity user;
 
-    protected DoctorInfoEntity() {}
+
 
     @Override
     public String toString() {

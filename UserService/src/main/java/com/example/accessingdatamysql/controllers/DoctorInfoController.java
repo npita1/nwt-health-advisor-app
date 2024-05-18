@@ -1,11 +1,14 @@
 package com.example.accessingdatamysql.controllers;
 
+import com.example.accessingdatamysql.auth.DoctorRequest;
 import com.example.accessingdatamysql.entity.DoctorInfoEntity;
 import com.example.accessingdatamysql.entity.UserEntity;
 import com.example.accessingdatamysql.exceptions.UserNotFoundException;
 import com.example.accessingdatamysql.feign.ForumInterface;
 import com.example.accessingdatamysql.repository.DoctorInfoRepository;
+import com.example.accessingdatamysql.service.DoctorService;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.http.ResponseEntity;
@@ -18,13 +21,14 @@ import java.util.Map;
 @RestController
 @CrossOrigin
 @RequestMapping(path="/user")
+@RequiredArgsConstructor
 public class DoctorInfoController {
 
     @Autowired
     ForumInterface forumClient;
     @Autowired
     private DoctorInfoRepository doctorInfoRepository;
-
+    private final DoctorService doctorService;
     @PostMapping(path="/addDoctor") // Map ONLY POST Requests
     public @ResponseBody ResponseEntity<String> addNewDoctor (@Valid @RequestBody DoctorInfoEntity doctor, BindingResult bindingResult) {
         if(bindingResult.hasErrors()) {
@@ -67,6 +71,23 @@ public class DoctorInfoController {
     public @ResponseBody  Map<String, String> getArticlesForDoctor(@PathVariable int doctorID){
         return  forumClient.getTitleAndTextArticleDoctorId(doctorID);
 
+    }
+    @PostMapping("/addNewDoctor")
+    public ResponseEntity<DoctorInfoEntity> addDoctor( @Valid @RequestBody DoctorRequest doctorRequest) {
+        UserEntity user = new UserEntity();
+        user.setEmail(doctorRequest.getEmail());
+        user.setFirstName(doctorRequest.getFirstName());
+        user.setLastName(doctorRequest.getLastName());
+        user.setPassword(doctorRequest.getPassword());
+
+        DoctorInfoEntity doctorInfo = new DoctorInfoEntity();
+        doctorInfo.setAbout(doctorRequest.getAbout());
+        doctorInfo.setSpecialization(doctorRequest.getSpecialization());
+        doctorInfo.setAvailability(doctorRequest.getAvailability());
+        doctorInfo.setPhoneNumber(doctorRequest.getPhoneNumber());
+
+        DoctorInfoEntity savedDoctorInfo = doctorService.addDoctor(user, doctorInfo);
+        return ResponseEntity.ok(savedDoctorInfo);
     }
 
 }
