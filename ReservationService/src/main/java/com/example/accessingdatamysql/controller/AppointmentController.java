@@ -19,14 +19,18 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.fge.jsonpatch.JsonPatch;
 import com.github.fge.jsonpatch.JsonPatchException;
 import feign.FeignException;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController// This means that this class is a Controller
 @Validated
@@ -118,8 +122,7 @@ public class AppointmentController {
             newUser.setEmail(user.getEmail());
             newUser.setFirstName(user.getFirstName());
             newUser.setLastName(user.getLastName());
-            newUser.setType(user.getType());
-            newUser.setPasswordHash(user.getPasswordHash());
+            newUser.setPassword(user.getPassword());
 
             // Spremi novog korisnika u bazu
             UserEntity savedUser = userRepository.save(newUser);
@@ -136,7 +139,5 @@ public class AppointmentController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to communicate with the remote service.");
         }
     }
-
-
 
 }

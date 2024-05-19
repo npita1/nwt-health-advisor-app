@@ -1,17 +1,22 @@
 package com.example.accessingdatamysql.service;
 
 import com.example.accessingdatamysql.entity.AppointmentEntity;
+import com.example.accessingdatamysql.entity.UserEntity;
 import com.example.accessingdatamysql.exceptions.AppointmentNotFoundException;
+import com.example.accessingdatamysql.feign.UserInterface;
 import com.example.accessingdatamysql.repository.AppointmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Map;
 import java.util.Optional;
 
 @Service
 public class AppointmentServiceImpl implements AppointmentService{
     @Autowired
     private AppointmentRepository appointmentRepository;
+    @Autowired
+    private UserInterface userClient;
     @Override
     public AppointmentEntity Details(Long id) {
         Optional<AppointmentEntity> appointment = appointmentRepository.findById(id);
@@ -44,4 +49,5 @@ public class AppointmentServiceImpl implements AppointmentService{
         Iterable<AppointmentEntity> appointments = appointmentRepository.findAppointmentsByUserAndDescription(userName,description);
         return appointments;
     }
+
 }

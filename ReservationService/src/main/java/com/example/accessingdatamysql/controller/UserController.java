@@ -34,7 +34,7 @@ public class UserController {
         n.setFirstName(firstName);
         n.setLastName(lastName);
         n.setType(type);
-        n.setPasswordHash(passwordHash);
+        n.setPassword(passwordHash);
         userRepository.save(n);
         return "Saved";
     }

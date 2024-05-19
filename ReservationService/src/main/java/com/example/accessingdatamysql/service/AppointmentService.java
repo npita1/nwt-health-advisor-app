@@ -9,4 +9,6 @@ public interface AppointmentService {
     Iterable<AppointmentEntity> ListAppointmentsByDoctorName(String doctorName);
     Iterable<AppointmentEntity> ListAppointmentsByUserName(String userName);
     Iterable<AppointmentEntity>ListAppointmentsByDescriptionAndUserName(String userName,  String description);
+
+
 }

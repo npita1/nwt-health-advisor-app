@@ -26,7 +26,7 @@ public class UserEntity {
 
     @NotBlank(message = "Lozinka ne smije biti prazna.")
     @Size(min = 0, max = 1000, message = "Lozinka mora biti dužine između 8 i 20 znakova.")
-    private String passwordHash;
+    private String password;
     @JsonIgnore
     @OneToOne(mappedBy = "user")
     private DoctorInfoEntity doctorInfo;
@@ -57,18 +57,16 @@ public class UserEntity {
         this.type = type;
     }
 
-    public void setPasswordHash(String passwordHash) {
-        this.passwordHash = passwordHash;
-    }
+
 
     public UserEntity() {}
 
-    public UserEntity(String email, String firstName, String lastName, Integer type, String passwordHash) {
+    public UserEntity(String email, String firstName, String lastName, Integer type, String password) {
         this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
         this.type = type;
-        this.passwordHash = passwordHash;
+        this.password = password;
     }
 
     public UserEntity(String firstName, String lastName) {
@@ -92,16 +90,14 @@ public class UserEntity {
         return type;
     }
 
-    public String getPasswordHash() {
-        return passwordHash;
-    }
+
 
 
     @Override
     public String toString() {
         return String.format(
                 "Customer[id=%d, email='%s', firstName='%s', lastName='%s', type=%d, passwordHash='%s']",
-                id, email, firstName, lastName, type, passwordHash);
+                id, email, firstName, lastName, type, password);
     }
 
 
@@ -128,5 +124,17 @@ public class UserEntity {
 
     public List<ReservationEntity> getReservations() {
         return reservations;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setReservations(List<ReservationEntity> reservations) {
+        this.reservations = reservations;
     }
 }

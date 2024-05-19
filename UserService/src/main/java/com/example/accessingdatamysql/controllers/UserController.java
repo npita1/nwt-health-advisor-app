@@ -4,6 +4,7 @@ import com.example.accessingdatamysql.entity.UserEntity;
 import com.example.accessingdatamysql.exceptions.UserNotFoundException;
 import com.example.accessingdatamysql.grpc.GrpcClient;
 import com.example.accessingdatamysql.repository.UserRepository;
+import com.example.accessingdatamysql.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -20,6 +21,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -33,6 +35,9 @@ public class UserController {
 
     @Autowired
     private static GrpcClient grpcClient;
+
+    @Autowired
+    private UserService userService;
 
     @PostMapping(path = "/addUser")
     public ResponseEntity<String> addNewDoctor(@Valid @RequestBody UserEntity user, BindingResult bindingResult) {
@@ -126,7 +131,14 @@ public class UserController {
 
         return user;
     }
-
+    @GetMapping("/currentUser")
+    public Map<String,String> getCurrentUser() {
+        Map<String, String> userDetails = userService.getUserDetailsFromAuthentication();
+        if (userDetails.isEmpty()) {
+            return null;
+        }
+        return userDetails;
+    }
 }
 
 
