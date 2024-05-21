@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
 
-@FeignClient(name = "USERSERVICE")
+@FeignClient(name = "USERSERVICE", configuration = FeignClientConfiguration.class)
 public interface UserInterface {
     @GetMapping(path="/user/users/{userID}")
     public UserEntity getUserByID(@PathVariable int userID);
@@ -21,5 +21,9 @@ public interface UserInterface {
     public DoctorInfoEntity getDoctorID(@PathVariable int doctorID);
     @GetMapping(path="/user/doctors/specialist/{specialization}")
     public List<DoctorInfoEntity> getDoctorsBySpecialization(@PathVariable String specialization);
+
+
+    @GetMapping("/api/tokens/validate")
+    boolean isTokenValid(@RequestParam("token") String token);
 
 }

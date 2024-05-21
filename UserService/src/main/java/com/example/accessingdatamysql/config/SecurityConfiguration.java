@@ -44,6 +44,7 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/authentication/**").permitAll()
                         .requestMatchers(openApiEndpoints).permitAll()
+                        .requestMatchers(GET,"/api/tokens/validate").permitAll()
                         .requestMatchers("/user/**").hasRole(ADMIN.name())
                         .anyRequest()
                         .authenticated()
