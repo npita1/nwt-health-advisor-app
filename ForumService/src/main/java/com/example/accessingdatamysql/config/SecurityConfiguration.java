@@ -31,12 +31,17 @@ public class SecurityConfiguration {
             "/swagger-ui.html"
     };
 
+    public static final String[] openRoutes = {
+            "/forum/allCategories"
+    };
+
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(openApiEndpoints).permitAll()
+                        .requestMatchers(openRoutes).permitAll()
                         .anyRequest()
                         .authenticated()
                 )

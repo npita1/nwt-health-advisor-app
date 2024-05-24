@@ -4,6 +4,7 @@ import { Tabs, TabList, TabPanels, Tab, TabPanel, Image } from '@chakra-ui/react
 import '../styles/Header.css'
 import HomePage from '../pages/HomePage'
 import StaffPage from '../pages/StaffPage'
+import QuestionsAndAnswers from '../pages/QuestionsAndAnswers'
 
 function Header() {
   return (
@@ -26,7 +27,7 @@ function Header() {
               <HomePage />
             </TabPanel>
             <TabPanel>
-              <p>Questions and Answers content goes here!</p>
+              <QuestionsAndAnswers/>
             </TabPanel>
             <TabPanel>
               <p>Consultations content goes here!</p>
