@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { getAllCategories } from '../services/forumService';
-import { Flex, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, Button, useDisclosure } from '@chakra-ui/react';
+import { Flex, useDisclosure } from '@chakra-ui/react';
 import '../styles/Categories.css'
 
 
@@ -80,25 +80,6 @@ function Categories() {
             </Flex>
 
           </Flex>
-
-
-          {selectedCategory && (
-        <Modal isOpen={isOpen} onClose={onClose}>
-          <ModalOverlay />
-          <ModalContent>
-            <ModalHeader>{selectedCategory.name}</ModalHeader>
-            <ModalCloseButton />
-            <ModalBody>
-              <p>{selectedCategory.description}</p>
-            </ModalBody>
-            <ModalFooter>
-              <Button colorScheme="blue" mr={3} onClick={onClose}>
-                Close
-              </Button>
-            </ModalFooter>
-          </ModalContent>
-        </Modal>
-      )}
       
       </div>
     

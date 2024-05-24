@@ -1,0 +1,34 @@
+.categoryDiv {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    padding-bottom: 2%;
+}
+
+
+.categoryFlex {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    padding-bottom: 2%;
+}
+
+.categoryAndButton {
+    width: 100%;
+    margin-bottom: 20px;
+    margin-left: 200px;
+    margin-right: 200px;
+    margin-top: 20px;
+}
+
+.categoryAndButton h1 {
+    margin-left: 230px;
+    color: #1F55B3; 
+    font-weight: bold; 
+    font-size: 26px;
+}
+
+.categoryAndButton button {
+    margin-right: 230px;
+    background-color: rgba(217, 217, 217, 0.17);
+}

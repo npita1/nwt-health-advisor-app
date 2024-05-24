@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Button, Flex, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton } from '@chakra-ui/react';
 import '../styles/HomePage.css';
+import '../styles/Categories.css';
 import SignUp from '../pages/SignUp.js';
 import LogIn from '../pages/LogIn.js';
 import Categories from '../components/Categories.js';
@@ -85,7 +86,10 @@ function HomePage() {
 
 
     <div className='specialitiesDiv'>
-      <Categories/>
+          <Flex direction="column" className='divv'>
+            <h1 className='naslov'>Our consulting specialities</h1>
+            <Categories/>
+          </Flex>
     </div>
 
 
