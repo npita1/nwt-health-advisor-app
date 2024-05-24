@@ -18,8 +18,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.security.web.authentication.logout.LogoutHandler;
 
 import static org.apache.tomcat.jni.SSLConf.apply;
-import static org.springframework.http.HttpMethod.GET;
-import static org.springframework.http.HttpMethod.POST;
+import static org.springframework.http.HttpMethod.*;
 
 @Configuration
 @EnableWebSecurity
@@ -45,13 +44,25 @@ public class SecurityConfiguration {
         http.csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(openApiEndpoints).permitAll()
-                        .requestMatchers(GET,"reservation/allAppointments").hasAnyRole("ADMIN","DOCTOR")
-                        .requestMatchers(GET, "reservation/appointments/{appointmentId}").hasAnyRole("ADMIN","DOCTOR")
-                        .requestMatchers(GET,"reservation/appointments/doctor/{doctorName}").hasAnyRole("ADMIN","DOCTOR")
-                        .requestMatchers(GET,"reservation/appointments/user/{userName}/description/{description}").hasRole("USER")
-                        .requestMatchers(GET,"reservation//appointments/user/{userId}").hasRole("USER")
-                        .requestMatchers(POST,"reservation/addAppointment").hasAnyRole("DOCTOR","USER")
-                        .requestMatchers(GET,"/reservation/allEvents").hasAnyRole("ADMIN","USER","DOCTOR")
+                        .requestMatchers(GET,"/reservation/allAppointments").hasAnyRole("ADMIN","DOCTOR")
+                        .requestMatchers(GET, "/reservation/appointments/{appointmentId}").hasAnyRole("ADMIN","DOCTOR")
+                        .requestMatchers(GET,"/reservation/appointments/doctor/{doctorName}").hasAnyRole("ADMIN","DOCTOR")
+                        .requestMatchers(GET,"/reservation/appointments/user/{userName}/description/{description}").hasRole("USER")
+                        .requestMatchers(GET,"/reservation/appointments/user/{userId}").hasRole("USER")
+                        .requestMatchers(POST,"/reservation/addAppointment").hasAnyRole("DOCTOR","USER")
+                        .requestMatchers(GET,"/reservation/appointments-for-user/{userId}").hasRole("USER")
+                        .requestMatchers(GET,"/reservation/appointments-for-doctor/{doctorId}").hasRole("DOCTOR")
+                        .requestMatchers(GET,"/reservation/allEvents").hasAnyRole("USER","DOCTOR")
+                        .requestMatchers(POST,"/reservation/addEvent").hasRole("DOCTOR")
+                        .requestMatchers(GET,"/reservation/events/{eventId}").hasRole("DOCTOR")
+                        .requestMatchers(GET,"/reservation/reservations-for-events/{eventId}").hasRole("DOCTOR")
+                        .requestMatchers(PUT,"/reservation/eventHeld/{eventId}").hasRole("DOCTOR")
+                        .requestMatchers(POST,"/reservation/addReservation").hasAnyRole("USER","DOCTOR")
+                        .requestMatchers(GET,"/reservation/allReservations").hasAnyRole("ADMIN","DOCTOR")
+                        .requestMatchers(GET,"/reservation/reservations/{reservationId}").hasAnyRole("USER","DOCTOR")
+                        .requestMatchers(GET,"/reservation/reservations/for-user/{userId}").hasAnyRole("USER","DOCTOR")
+
+
                         .anyRequest()
                         .authenticated()
                 )
