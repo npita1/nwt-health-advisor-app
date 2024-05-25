@@ -21,25 +21,21 @@ function SignUp() {
 
   const handlePasswordVisibility = () => setShowPassword(!showPassword);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = (e) => {
+     e.preventDefault();
 
-    const hashedPassword = await bcrypt.hash(password, 10);
+    // const hashedPassword = await bcrypt.hash(password, 10);
 
     const formData = {
+        firstname: firstName,
+        lastname: lastName,
         email: email,
-        firstName: firstName,
-        lastName: lastName,
-        type: 3,
-        passwordHash: hashedPassword,
+        password: password,
+        role: "USER",
     };
       
       console.log('Podaci koji se šalju na server:', formData);
-      try {
-        await addUser(formData);
-      } catch(error) {
-        console.log("greska se desila: ", error)
-      }
+      addUser(formData)
       
   };
 

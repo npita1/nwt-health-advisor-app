@@ -37,6 +37,10 @@ public class SecurityConfiguration {
             "/swagger-ui.html"
     };
 
+    public static final String[] openRoutes = {
+            "/user/allDoctors"
+    };
+
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -44,6 +48,7 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/authentication/**").permitAll()
                         .requestMatchers(openApiEndpoints).permitAll()
+                       // .requestMatchers(openRoutes).permitAll()
                         .requestMatchers(GET,"/api/tokens/validate").permitAll()
                         .requestMatchers("/user/**").hasRole(ADMIN.name())
                         .anyRequest()

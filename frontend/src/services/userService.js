@@ -1,6 +1,7 @@
 import bcrypt from 'bcryptjs';
+import axios from 'axios';
 
-const API_URL = 'http://localhost:8084';
+const API_URL = 'http://localhost:8086';
 
 export async function logIn(email, inputedPassword) {
     try {
@@ -27,21 +28,21 @@ export async function logIn(email, inputedPassword) {
 
 export async function addUser(formData) {
     try {
-        const response = await fetch(`${API_URL}/user/addUser`, {
-          method: 'POST',
+        const response = await axios.post(`${API_URL}/authentication/register`, formData, {
+        
           headers: {
             'Content-Type': 'application/json',
+            'Accept': '*/*',
           },
-          body: JSON.stringify(formData),
         });
     
-        if (response.ok) {
-          console.log('Korisnik uspješno dodan.');
-        } else {
-          throw new Error('Došlo je do greške prilikom dodavanja korisnika.');
-        }
       } catch (error) {
-        throw new Error(`Došlo je do greške prilikom dodavanja korisnika: ${error.message}`);
+        if (error.response && error.response.status === 409) {
+          alert('Korisnik već postoji');
+        } else {
+          console.log(`login error ${error}`);
+          // throw new Error(`Došlo je do greške prilikom dodavanja korisnika: ${error.message}`);
+        }
       }
 }
 
