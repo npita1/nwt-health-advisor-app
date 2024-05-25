@@ -30,20 +30,24 @@ const StaffPage = () => {
   const [categories, setCategories] = useState([]);
   const doctorCardRef = useRef(null);
 
+  async function fetchDoctors() {
+    try {
+      const doctors = await getAllDoctors();
+      setDoctors(doctors)
+      setFilteredDoctors(doctors)
+      console.log(doctors);
+    } catch (error) {
+      console.error('Error fetching doctors:', error);
+    }
+  };
+  
   useEffect(() => {
-    const fetchDoctors = async () => {
-      try {
-        const data = await getAllDoctors();
-        setDoctors(data);
-        setFilteredDoctors(data);
-      } catch (error) {
-        console.error('Greška prilikom dohvaćanja podataka o doktorima:', error.message);
-      }
-    };
-
     fetchDoctors();
     
+    
   }, []);
+
+
 
   const handleSearch = (value) => {
     setSearchValue(value);

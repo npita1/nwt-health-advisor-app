@@ -14,6 +14,7 @@ public class RouteValidator {
             "/authentication/login",
             "/authentication/refresh-token",
             "/webjars/",
+            "/user/allDoctors",
             "/v2/",
             "/actuator/",
             "/swagger-resources/",

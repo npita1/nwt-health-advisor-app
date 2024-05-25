@@ -1,41 +1,41 @@
 import bcrypt from 'bcryptjs';
 import axios from 'axios';
+import { useState } from 'react';
 
 const API_URL = 'http://localhost:8086';
 
 export async function logIn(email, inputedPassword) {
-    try {
-        const response = await fetch(`${API_URL}/user/users/email/${email}`, {
-        method: 'GET',
-        });
+  try {
+    const response = await axios.post(`${API_URL}/authentication/login`, { email: email, password: inputedPassword }, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': '*/*',
+      },
+    });
+
+    const token = response.data.access_token;
+    localStorage.setItem('token', token);
+    console.log("Uspjesan login")
     
-        if (response.ok) {
-            const userData = await response.json();
-            //console.log(userData);
-            if (bcrypt.compareSync(inputedPassword, userData.passwordHash)) {
-                console.log('Loginovan korisnik');
-            } else {
-                console.log("Netacan password.")
-            }
-        } else {
-            console.error("Netačan email");
-        }
-    } catch (error) {
-        console.error('Došlo je do greške prilikom prijave korisnika:', error);
-        throw error;
-    }
+
+  } catch (error) {
+    console.error(error.message);
+    alert("Netačan email ili adresa.")
+  }
 }
 
 export async function addUser(formData) {
     try {
         const response = await axios.post(`${API_URL}/authentication/register`, formData, {
-        
+
           headers: {
             'Content-Type': 'application/json',
             'Accept': '*/*',
           },
         });
-    
+         const token = await response.data.access_token
+        localStorage.setItem('token', token);
+
       } catch (error) {
         if (error.response && error.response.status === 409) {
           alert('Korisnik već postoji');
@@ -46,23 +46,58 @@ export async function addUser(formData) {
       }
 }
 
-export async function getAllDoctors() {
-  try {
-    const response = await fetch(`${API_URL}/user/allDoctors`, {
-      method: 'GET',
-    });
+// export async function getAllDoctors() {
+//   const token = localStorage.getItem('token');
 
-    if (response.ok) {
-      const data = await response.json();
-      console.log('Uspješno dohvaćeni podaci o doktorima:');
-      return data; 
+//     // Provjeri da li je token dostupan
+//     if (!token) {
+//       throw new Error('Nije pronađen token u local storage-u.');
+//     }
+//   try {
+//     const response = await axios.get(`${API_URL}/user/allDoctors`, {
+//       headers: {
+//         // 'Accept': 'application/json',
+//         'Authorization': `Bearer ${token}`
+//       }
+//     });
+
+//     if (response.status === 200) {
+//       console.log('Uspješno dohvaćeni podaci o doktorima:', response.data);
+//       return response.data;
+//     } else {
+//       throw new Error('Neuspješno dobavljanje podataka o doktorima.');
+//     }
+//   } catch (error) {
+//     console.error('Greška prilikom dohvaćanja doktora:', error);
+//     throw error;
+//   }
+// }
+
+export async function getAllDoctors() {
+  const token = localStorage.getItem('token');
+
+    // Provjeri da li je token dostupan
+    // if (!token) {
+    //   throw new Error('Nije pronađen token u local storage-u.');
+    // }
+  try {
+    const response = await axios.get(`${API_URL}/user/allDoctors`
+    // , {
+    //   headers: {
+    //      'Accept': 'application/json',
+    //     // 'Authorization': `Bearer ${token}`
+    //   }
+    // }
+  );
+
+    if (response.status === 200) {
+      console.log('Uspješno dohvaćeni podaci o doktorima:', response.data);
+      return response.data;
     } else {
-      throw new Error('Došlo je do greške prilikom dohvaćanja podataka o doktorima.');
+      throw new Error('Neuspješno dobavljanje podataka o doktorima.');
     }
   } catch (error) {
-    console.error(`Došlo je do greške prilikom dohvaćanja podataka o doktorima: ${error.message}`);
+    console.error('Greška prilikom dohvaćanja doktora:', error);
     throw error;
   }
 }
-
-  
