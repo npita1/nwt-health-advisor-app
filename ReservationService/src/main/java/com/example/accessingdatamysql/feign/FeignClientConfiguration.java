@@ -15,9 +15,12 @@ public class FeignClientConfiguration {
         return requestTemplate -> {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             if (authentication != null && authentication.getCredentials() != null) {
-                // Assuming the credentials are the JWT token string
                 String token = authentication.getCredentials().toString();
                 requestTemplate.header("Authorization", "Bearer " + token);
+                // Log the token for debugging
+                System.out.println("Added Authorization header with token: " + token);
+            } else {
+                System.out.println("Authentication or credentials are null, cannot add Authorization header.");
             }
         };
     }

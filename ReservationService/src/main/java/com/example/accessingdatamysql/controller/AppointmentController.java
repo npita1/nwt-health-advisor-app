@@ -26,6 +26,8 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -108,6 +110,13 @@ public class AppointmentController {
             @RequestParam("userId") int userId,
             @RequestBody AppointmentEntity appointment) {
         try {
+
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            if (authentication != null && authentication.getCredentials() != null) {
+                System.out.println("Authentication found: " + authentication.getName());
+            } else {
+                System.out.println("No authentication found.");
+            }
             // Dohvaćanje korisnika koristeći Feign klijent
             UserEntity user = userClient.getUserByID(userId);
 

@@ -16,6 +16,7 @@ import org.springframework.security.web.authentication.logout.LogoutHandler;
 
 import static com.example.accessingdatamysql.entity.Role.*;
 import static org.springframework.http.HttpMethod.GET;
+import static org.springframework.http.HttpMethod.POST;
 
 @Configuration
 @EnableWebSecurity
@@ -37,9 +38,6 @@ public class SecurityConfiguration {
             "/swagger-ui.html"
     };
 
-    public static final String[] openRoutes = {
-            "/user/allDoctors"
-    };
 
 
     @Bean
@@ -48,9 +46,17 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/authentication/**").permitAll()
                         .requestMatchers(openApiEndpoints).permitAll()
-                       // .requestMatchers(openRoutes).permitAll()
                         .requestMatchers(GET,"/api/tokens/validate").permitAll()
-                        .requestMatchers("/user/**").hasRole(ADMIN.name())
+                        .requestMatchers(GET,"/user/allDoctors").permitAll()
+                        .requestMatchers(GET,"/user/doctors/specialist/{specialization}").permitAll()
+                        .requestMatchers(GET,"/user/doctors/{doctorID}").hasAnyRole(ADMIN.name(),DOCTOR.name())
+                        .requestMatchers(GET,"/user/doctor/{doctorID}/articles").hasRole(DOCTOR.name())
+                        .requestMatchers(POST,"/user/addNewDoctor").hasRole(ADMIN.name())
+                        .requestMatchers(GET,"/user/allUsers").hasRole(ADMIN.name())
+                        .requestMatchers(GET,"/user/users/{userID}").hasAnyRole(DOCTOR.name(),USER.name())
+                        .requestMatchers(GET,"/user/users/firstname/{firstname}").hasAnyRole(ADMIN.name(),USER.name(),DOCTOR.name())
+                        .requestMatchers(GET,"/user/users/lastname/{lastname}").hasAnyRole(ADMIN.name(),USER.name(),DOCTOR.name())
+                        .requestMatchers(GET,"/user/users/email/{email}").hasAnyRole(ADMIN.name(),DOCTOR.name(),USER.name())
                         .anyRequest()
                         .authenticated()
                 )

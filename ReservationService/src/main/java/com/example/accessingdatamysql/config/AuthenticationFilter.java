@@ -9,7 +9,6 @@ import lombok.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -44,13 +43,14 @@ public class AuthenticationFilter extends OncePerRequestFilter {
                 List<SimpleGrantedAuthority> authorities = jwtService.extractAuthorities(jwt);
                 UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
                         userEmail,
-                        null,
+                        jwt,
                         authorities
                 );
                 authenticationToken.setDetails(
                         new WebAuthenticationDetailsSource().buildDetails(request)
                 );
                 SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+                System.out.println("Authentication set in SecurityContextHolder: " + userEmail);
             }
         }
         filterChain.doFilter(request, response);

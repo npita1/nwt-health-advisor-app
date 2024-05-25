@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.fge.jsonpatch.JsonPatch;
 import com.github.fge.jsonpatch.JsonPatchException;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.apache.catalina.User;
@@ -60,7 +61,12 @@ public class UserController {
     }
 
     @GetMapping(path = "/users/{userID}")
-    public UserEntity getUserByID(@PathVariable int userID) {
+    public UserEntity getUserByID(@PathVariable int userID, HttpServletRequest request) {
+
+
+        String authHeader = request.getHeader("Authorization");
+        System.out.println("Received Authorization header: " + authHeader);
+
         UserEntity user = userRepository.findById(userID);
 
         if (user == null) {
