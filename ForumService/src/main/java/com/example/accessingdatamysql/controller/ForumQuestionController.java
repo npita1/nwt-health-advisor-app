@@ -30,11 +30,6 @@ public class ForumQuestionController {
 
     @PostMapping(path="/addForumQuestionClassic")
     public @ResponseBody ResponseEntity<ForumQuestionEntity> addNewForumQuestion (@RequestBody ForumQuestionEntity forumQuestionEntity) {
-        UserEntity user = userRepository.findById(forumQuestionEntity.getUser().getId())
-                .orElseThrow(() -> new IllegalArgumentException("User not found"));
-
-        // Set the user in forumQuestionEntity to ensure it has a valid role
-        forumQuestionEntity.setUser(user);
         ForumQuestionEntity forumQuestion = forumQuestionService.addForumQuestion(forumQuestionEntity);
         return ResponseEntity.ok(forumQuestion);
     }
@@ -50,8 +45,13 @@ public class ForumQuestionController {
         // Provjeri je li user već spremljen u bazi
         UserEntity forumUser = userRepository.findByUserServiceId(userId);
         if (forumUser == null) {
-            user.setUserServiceId(user.getId());
-            userRepository.save(user);
+            forumUser = new UserEntity();
+            forumUser.setUserServiceId(user.getId());
+            forumUser.setEmail(user.getEmail());
+            forumUser.setFirstName(user.getFirstName());
+            forumUser.setLastName(user.getLastName());
+            forumUser.setPassword(user.getPassword());
+            userRepository.save(forumUser);
         }
 
         ForumQuestionEntity savedForumQuestion = forumQuestionService.addForumQuestionUser(forumQuestion, forumUser);
