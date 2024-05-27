@@ -2,7 +2,7 @@
     display: flex;
     justify-content: left;
     align-items: center;
-    padding-bottom: 2%;
+    padding-bottom: 0.5%;
 }
 
 
@@ -10,7 +10,7 @@
     display: flex;
     justify-content: left;
     align-items: center;
-    padding-bottom: 2%;
+    padding-bottom: 0%;
 }
 
 .categoryAndButton {
@@ -31,4 +31,106 @@
 .categoryAndButton button {
     margin-right: 230px;
     background-color: rgba(217, 217, 217, 0.17);
+}
+
+.zaglavljePitanja {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    padding-bottom: 0%;
+    width: 1500px;
+}
+
+.sortiranje{
+    display: flex;
+    padding-bottom: 1%;
+    padding-right: 1%;
+    padding-left: 1%;
+    justify-content: left;
+    align-items: center;
+}
+
+.newQuestionDugme {
+    background-color: #FF585F;
+    color: white;
+    margin-left: 25px;
+}
+
+.newQuestionDugme:hover {
+    color: white;
+    margin-left: 25px;
+    background-color: rgba(255, 88, 95, 0.8);
+    cursor: pointer;
+}
+
+.zaglavljeFlex {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    width: 1000px;
+    height: auto;
+    margin-left: 200px;
+    padding-bottom: 1%;
+    padding-right: 1%;
+    padding-left: 1%;
+}
+
+.pitanjaDiv {
+    align-items: center;
+    padding-bottom: 2%;
+}
+
+.pitanjaFlex {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    padding-bottom: 2%;
+}
+
+.pitanje {
+    background-color: white;
+    margin-bottom: 1%;
+    width: 1000px;
+    height: 220px;
+    padding: 1%;
+    border-radius: 20px;
+}
+
+.tekstPitanja {
+    padding: 0.5%;
+    margin-top: 0.5%;
+    text-overflow: ellipsis; /* Dodaje '...' na kraju teksta koji se skraćuje */
+    display: -webkit-box;
+    -webkit-line-clamp: 3; /* Broj redova koji će se prikazati */
+    -webkit-box-orient: vertical;
+}
+
+.naslovIIkona {
+    padding: 0.5%;
+    margin-bottom: 0.5%;
+}
+
+.naslovPitanja {
+    color: #1F55B3;
+    font-size: 18px; 
+    font-weight: bold;
+}
+
+.korisnikPitanja {
+    color: #D9D9D9;
+    font-size: 14px;
+}
+
+.datumPitanja {
+    color: #D9D9D9;
+    font-size: 14px;
+}
+
+.tekstPitanja {
+    color: #1F55B3;
+    font-size: 16px; 
+}
+
+.allQuestionsButton.selected {
+    background-color: rgba(210, 221, 240, 1);
 }

@@ -55,3 +55,7 @@
     color: #1F55B3;
     font-size: 18px; 
 }
+
+.kategorija.selected {
+    background-color: rgba(210, 221, 240, 0.7);
+}
