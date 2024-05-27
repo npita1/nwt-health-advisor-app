@@ -112,7 +112,7 @@ function QuestionsAndAnswers() {
                             <Button className={`allQuestionsButton ${!selectedCategory ? 'selected' : ''}`} onClick={() => setSelectedCategory(null)} >All Questions</Button>
                         </Box>
                     </Flex>
-                    <Categories onSelectCategory={handleCategorySelect} selectedCategory={selectedCategory}/>
+                    <Categories onSelectCategory={handleCategorySelect} selectedCategory={selectedCategory} />
                 </Flex>
             </div>
 
