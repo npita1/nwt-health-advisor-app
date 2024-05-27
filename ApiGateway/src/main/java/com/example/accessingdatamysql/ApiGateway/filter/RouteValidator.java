@@ -16,6 +16,8 @@ public class RouteValidator {
             "/webjars/",
             "/user/allDoctors",
             "/forum/allCategories",
+            "forum/allForumQuestions",
+            "forum/questions/category/{category}",
             "/v2/",
             "/actuator/",
             "/swagger-resources/",
