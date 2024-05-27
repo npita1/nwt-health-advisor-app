@@ -134,3 +134,7 @@
 .allQuestionsButton.selected {
     background-color: rgba(210, 221, 240, 1);
 }
+
+.submitButton {
+    background-color: #FF585F;
+}
