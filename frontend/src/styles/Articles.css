@@ -1,0 +1,15 @@
+.naslovDiv {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .articlesContainer {
+    display: flex;
+    flex-wrap: wrap;
+    /* justify-content: center; */
+  }
+  
+  .naslov {
+    font-size: 2em;
+  }
+  
