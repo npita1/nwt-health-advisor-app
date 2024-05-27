@@ -11,7 +11,7 @@ function QuestionsAndAnswers() {
     useEffect(() => {
         const fetchQuestions = async () => {
           try {
-            const fetchedQuestions = await getAllForumQuestions();
+            const fetchedQuestions = await getForumQuestionsByCategory("Cardiology");
             setQuestions(fetchedQuestions);
           } catch (error) {
             console.error('Error fetching questions:', error);
