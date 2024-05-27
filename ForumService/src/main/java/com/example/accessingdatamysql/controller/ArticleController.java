@@ -42,13 +42,11 @@ public class ArticleController {
     @Autowired
     private static GrpcClient grpcClient;
 
-
     @PostMapping(path="/addArticleClassic")
     public @ResponseBody ResponseEntity<String> addArticle (@Valid @RequestBody ArticleEntity article) {
         ArticleEntity newArticle = articleService.addArticle(article);
         return ResponseEntity.ok("Article added.");
     }
-
     @PostMapping(path="/addArticle")
     public @ResponseBody ResponseEntity<?> addArticleNew(
             @RequestParam("doctorId") int doctorId,
@@ -62,15 +60,26 @@ public class ArticleController {
         // Provjera da li je doktor vec spasen u bazi foruma
         DoctorInfoEntity forumDoctor = doctorInfoRepository.findByUserId(doctor.getUser().getId());
         if (forumDoctor == null) {
-            doctor.getUser().setUserServiceId(doctor.getUser().getId());
-            userRepository.save(doctor.getUser());
-            doctorInfoRepository.save(doctor);
+            forumDoctor = new DoctorInfoEntity();
+            UserEntity forumUser = new UserEntity();
+            forumUser.setUserServiceId(doctor.getUser().getId());
+            forumUser.setEmail(doctor.getUser().getEmail());
+            forumUser.setFirstName(doctor.getUser().getFirstName());
+            forumUser.setLastName(doctor.getUser().getLastName());
+            forumUser.setPassword(doctor.getUser().getPassword());
+            userRepository.save(forumUser);
+
+            forumDoctor.setUser(forumUser);
+            forumDoctor.setAbout(doctor.getAbout());
+            forumDoctor.setSpecialization(doctor.getSpecialization());
+            doctorInfoRepository.save(forumDoctor);
         }
 
         ArticleEntity savedArticle = articleService.addArticleDoctor(article, forumDoctor);
 
         return ResponseEntity.ok(savedArticle);
     }
+
 
 
     @GetMapping(path="/allArticles")
