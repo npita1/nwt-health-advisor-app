@@ -26,7 +26,7 @@ export default function Article({ title, description, image }) {
           </div>
           <CardContent>
             <Typography gutterBottom variant="h5" component="div" className='naslov'>
-              {title}
+              {title} + "nestoo"
             </Typography>
             <Typography variant="body2" color="text.secondary">
               {description}
