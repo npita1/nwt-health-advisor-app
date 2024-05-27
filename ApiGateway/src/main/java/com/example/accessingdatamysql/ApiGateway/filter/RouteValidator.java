@@ -21,7 +21,10 @@ public class RouteValidator {
             "/swagger-resources/",
             "/v3/api-docs/",
             "/swagger-ui/",
-            "/swagger-ui.html"
+            "/swagger-ui.html",
+            "/forum/allForumQuestions",
+            "/forum/addForumQuestion",
+            "/forum/questions/category/**"
     );
 
     public Predicate<ServerHttpRequest> isSecured =

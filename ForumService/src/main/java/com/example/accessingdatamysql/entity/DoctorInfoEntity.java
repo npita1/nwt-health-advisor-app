@@ -3,6 +3,7 @@ package com.example.accessingdatamysql.entity;
 import jakarta.persistence.*;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 @Table(name="doctorInfo")
@@ -17,6 +18,12 @@ public class DoctorInfoEntity {
     private String about;
 
     private String specialization;
+
+    @Pattern(regexp = "^[\\p{L} -]+ - [\\p{L} -]+$", message = "Format dostupnosti mora biti 'Rijec - Rijec'.")
+    private String availability;
+
+    @Pattern(regexp = "^\\(\\d{3}\\)\\s*\\d{8}$", message = "Format broja telefona mora biti '(brojbrojbroj) brojbrojbroj'.")
+    private String phoneNumber;
 
     @OneToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
@@ -54,6 +61,22 @@ public class DoctorInfoEntity {
 
     public void setSpecialization(String specialization) {
         this.specialization = specialization;
+    }
+
+    public String getAvailability() {
+        return availability;
+    }
+
+    public void setAvailability(String availability) {
+        this.availability = availability;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
     public Long getId() {

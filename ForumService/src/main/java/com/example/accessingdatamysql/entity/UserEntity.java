@@ -7,10 +7,14 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.List;
 
 @Table(name="user")
 @Entity
-public class UserEntity {
+public class UserEntity implements UserDetails {
 
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
@@ -19,6 +23,7 @@ public class UserEntity {
     //@NotBlank(message="Email ne smije biti prazan.")
     @Email(message="Email adresa nije validna")
     private String email;
+
     @NotBlank(message = "Polje za ime ne smije biti prazno.")
     @Size(min = 3, max = 20, message = "Ime mora biti dužine između 3 i 20 znakova.")
     private String firstName;
@@ -27,90 +32,73 @@ public class UserEntity {
     @Size(min = 3, max = 30, message = "Prezime mora biti dužine između 3 i 30 znakova.")
     private String lastName;
 
-    private Integer type;
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
     @NotBlank(message = "Lozinka ne smije biti prazna.")
-    @Size(min = 0, max = 1000, message = "Lozinka mora biti dužine između 8 i 20 znakova.")
-    private String passwordHash;
+    private String password;
+
+    private Long userServiceId;
+
     @JsonIgnore
     @OneToOne(mappedBy = "user")
     private DoctorInfoEntity doctorInfo;
 
-    private Long userServiceId;
+    @JsonIgnore
+    @OneToMany(mappedBy = "user")
+    private List<Token> tokens;
+
     public void setId(Long id) {
         this.id = id;
     }
 
     public UserEntity() {}
 
-    public UserEntity(String email, String firstName, String lastName, Integer type, String passwordHash) {
-        this.email = email;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.type = type;
-        this.passwordHash = passwordHash;
-    }
-
-    public UserEntity(String firstName, String lastName) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public void setType(Integer type) {
-        this.type = type;
-    }
-
-    public void setPasswordHash(String passwordHash) {
-        this.passwordHash = passwordHash;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public Integer getType() {
-        return type;
-    }
-
-    public String getPasswordHash() {
-        return passwordHash;
+    @Override
+    public List<SimpleGrantedAuthority> getAuthorities() {
+        return role.getAuthorities();
     }
 
 
     @Override
-    public String toString() {
-        return String.format(
-                "Customer[id=%d, email='%s', firstName='%s', lastName='%s', type=%d, passwordHash='%s']",
-                id, email, firstName, lastName, type, passwordHash);
-    }
-
-
-    public String getEmail() {
+    public String getUsername() {
         return email;
     }
 
-    public DoctorInfoEntity getDoctorInfo() {
-        return doctorInfo;
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "{" +
+                "\"id\":\"" + id + "\"," +
+                "\"firstName\":\"" + firstName + "\"," +
+                "\"last_name\":\"" + lastName + "\"," +
+                "\"email\":\"" + email + "\"," +
+                "\"role\":\"" + (role != null ? role.name() : "") + "\"," +
+                "\"doctorInfo\":\"" + (doctorInfo != null ? doctorInfo.getId() : 0) + "\"" +
+                "}";
+    }
+    @Override
+    public String getPassword() {
+        return password;
     }
 
     public Long getUserServiceId() {
@@ -119,5 +107,9 @@ public class UserEntity {
 
     public void setUserServiceId(Long userServiceId) {
         this.userServiceId = userServiceId;
+    }
+
+    public Long getId() {
+        return id;
     }
 }

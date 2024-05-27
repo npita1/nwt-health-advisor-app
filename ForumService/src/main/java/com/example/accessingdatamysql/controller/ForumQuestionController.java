@@ -30,6 +30,11 @@ public class ForumQuestionController {
 
     @PostMapping(path="/addForumQuestionClassic")
     public @ResponseBody ResponseEntity<ForumQuestionEntity> addNewForumQuestion (@RequestBody ForumQuestionEntity forumQuestionEntity) {
+        UserEntity user = userRepository.findById(forumQuestionEntity.getUser().getId())
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+
+        // Set the user in forumQuestionEntity to ensure it has a valid role
+        forumQuestionEntity.setUser(user);
         ForumQuestionEntity forumQuestion = forumQuestionService.addForumQuestion(forumQuestionEntity);
         return ResponseEntity.ok(forumQuestion);
     }
