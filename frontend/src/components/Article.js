@@ -8,7 +8,6 @@ import { CardActionArea } from '@mui/material';
 import { Image } from '@chakra-ui/react';
 import '../styles/Articles.css';
 
-
 const theme = createTheme();
 
 export default function Article({ title, description, image }) {

@@ -26,14 +26,14 @@ const App = () => {
     <Header />
     
     {/* Postavljanje Switch komponente za definiranje ruta */}
-    <Routes>
+    {/* <Routes>
   <Route path="/" element={<HomePage />} />
   <Route path="/questions-and-answers" element={<QuestionsAndAnswers />} />
   <Route path="/consultations" element={<div>consultacije</div>} />
   <Route path="/workshops-and-events" element={<div>cao</div>} />
   <Route path="/articles" element={<Articles />} />
   <Route path="/our-specialists" element={<StaffPage />} />
-</Routes>
+</Routes> */}
   </div>
  
   );
