@@ -35,7 +35,7 @@ function QuestionsAndAnswers() {
     const [questionTitle, setQuestionTitle] = useState('');
     const [questionText, setQuestionText] = useState('');
     const [questionCategory, setQuestionCategory] = useState('');
-    const [anonymity, setAnonymity] = useState(true); 
+    const [anonymity, setAnonymity] = useState(true);
     const [categories, setCategories] = useState([]);
 
     useEffect(() => {
@@ -55,7 +55,6 @@ function QuestionsAndAnswers() {
         fetchQuestions();
     }, [selectedCategory]);
 
-
     useEffect(() => {
         const fetchCategories = async () => {
             try {
@@ -68,7 +67,6 @@ function QuestionsAndAnswers() {
 
         fetchCategories();
     }, []);
-
 
     const handleCategorySelect = (category) => {
         setSelectedCategory(category);
@@ -99,6 +97,27 @@ function QuestionsAndAnswers() {
         handleModalClose();
     };
 
+    const categoryIcons = {
+        Immunology: 'images/CategoryIcons/AllergyIcon.png',
+        Cardiology: 'images/CategoryIcons/CardiologyIcon.png',
+        Dermatology: 'images/CategoryIcons/DermatologyIcon.png',
+        Dentistry: 'images/CategoryIcons/DentistryIcon.png',
+        FamilyMedicine: 'images/CategoryIcons/FamilyMedicine.png',
+        Gastroenterology: '/images/CategoryIcons/GastroenterologyIcon.png',
+        Neurology: 'images/CategoryIcons/NeurologyIcon.png',
+        Ophthalmology: 'images/CategoryIcons/OphthalmologyIcon.png',
+        Orthopedics: 'images/CategoryIcons/OrthopedicsIcon.png',
+        Pediatrics: 'images/CategoryIcons/PediatricsIcon.png'
+    };
+
+    const getCategoryIcon = (categoryId) => {
+        const category = categories.find(cat => cat.id === categoryId);
+        console.log(category)
+        if (category) {
+            return categoryIcons[category.name.replace(/\s/g, '')] || 'images/CategoryIcons/DefaultIcon.png';
+        }
+        return 'images/CategoryIcons/DefaultIcon.png';
+    };
 
     return (
         <div>
@@ -109,20 +128,20 @@ function QuestionsAndAnswers() {
                             <h1>Question categories</h1>
                         </Box>
                         <Box>
-                            <Button className={`allQuestionsButton ${!selectedCategory ? 'selected' : ''}`} onClick={() => setSelectedCategory(null)} >All Questions</Button>
+                            <Button className={`allQuestionsButton ${!selectedCategory ? 'selected' : ''}`} onClick={() => setSelectedCategory(null)}>All Questions</Button>
                         </Box>
                     </Flex>
                     <Categories onSelectCategory={handleCategorySelect} selectedCategory={selectedCategory} />
                 </Flex>
             </div>
 
-            <div className='zaglavljePitanja'> 
+            <div className='zaglavljePitanja'>
                 <Flex justifyContent="space-between" alignItems="center" className='zaglavljeFlex'>
                     <Button className='newQuestionDugme' colorScheme='#FF585F' onClick={() => setShowModal(true)}>New Question</Button>
                 </Flex>
             </div>
 
-            <div className='pitanjaDiv'> 
+            <div className='pitanjaDiv'>
                 <Flex direction="column" className='pitanjaFlex'>
                     {
                         questions.map(question => (
@@ -132,11 +151,17 @@ function QuestionsAndAnswers() {
                                         <Flex direction="column">
                                             <p className='naslovPitanja'>{question.title}</p>
                                             <p className='korisnikPitanja'>
-                                                By: {question.anonymity ? 'Anonymous' : `${question.user.firstName} ${question.user.lastName}`}
+                                                By: {question.anonymity ? 'Anonymous' : (question.user ? `${question.user.firstName} ${question.user.lastName}` : 'Unknown User')}
                                             </p>
                                             <p className='datumPitanja'>{question.date}</p>
                                         </Flex>
-                                        <img src="images/HomePage/doktor.png" alt="Slika" className='slikaDoktor' style={{ width: '80px', height: 'auto' }} />
+                                            <div className='kategorijaPitanjaUnutarPitanjaDiv'>
+                                                <img
+                                                    src={getCategoryIcon(question.category.id)}
+                                                    alt="Category Icon"
+                                                    style={{ width: '50px', height: 'auto' }}
+                                                />
+                                            </div>
                                     </Flex>
                                     <p className='tekstPitanja'> {question.text}</p>
                                 </Flex>
@@ -192,3 +217,4 @@ function QuestionsAndAnswers() {
 }
 
 export default QuestionsAndAnswers;
+

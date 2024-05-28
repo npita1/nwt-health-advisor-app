@@ -138,3 +138,23 @@
 .submitButton {
     background-color: #FF585F;
 }
+
+.kategorijaPitanjaUnutarPitanjaDiv {
+    background-color: rgba(217, 217, 217, 0.4);
+    border-radius: 20px;
+    width: 80px;
+    height: 80px; /* Prilagodite visinu i širinu po potrebi */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative; /* Dodajemo relativni položaj */
+    margin-bottom: 10px; /* Opcionalno: Dodaje razmak ispod ikone */
+}
+
+.kategorijaPitanjaUnutarPitanjaDiv img {
+    width: 50px; /* Prilagodite veličinu ikone po potrebi */
+    height: auto;
+    position: relative; /* Postavljamo relativni položaj za ikonu */
+    display: block; /* Izbjegavamo neželjeni whitespace */
+    margin: auto; /* Centriramo ikonu */
+}

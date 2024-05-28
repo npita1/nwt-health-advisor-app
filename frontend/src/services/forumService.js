@@ -1,5 +1,5 @@
 
-const API_URL = 'http://localhost:8086';
+const API_URL = 'http://localhost:8083';
 
 export async function getAllCategories() {
     try {
