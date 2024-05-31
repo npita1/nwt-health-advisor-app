@@ -13,6 +13,8 @@ public class RouteValidator {
             "/authentication/register",
             "/authentication/login",
             "/authentication/refresh-token",
+            "/authentication/user",
+            "/authentication/user-id",
             "/webjars/",
             "/user/allDoctors",
             "/forum/allCategories",
@@ -23,7 +25,8 @@ public class RouteValidator {
             "/swagger-resources/",
             "/v3/api-docs/",
             "/swagger-ui/",
-            "/swagger-ui.html"
+            "/swagger-ui.html",
+            "/forum/addForumQuestion"
     );
 
     public Predicate<ServerHttpRequest> isSecured =

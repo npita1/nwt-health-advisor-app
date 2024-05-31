@@ -25,8 +25,10 @@ import {
 import {
     getAllForumQuestions,
     getForumQuestionsByCategory,
-    getAllCategories
+    getAllCategories,
+    addForumQuestion
 } from '../services/forumService';
+import { getUserByToken } from '../services/userService';
 
 function QuestionsAndAnswers() {
     const [questions, setQuestions] = useState([]);
@@ -81,19 +83,27 @@ function QuestionsAndAnswers() {
         setAnonymity(true); // Reset to true when modal is closed
     };
 
-    const handleQuestionSubmit = () => {
-        // Here you can handle form submission, e.g., submit data to backend
+    const handleQuestionSubmit = async () => {
+    
         console.log('Question title:', questionTitle);
         console.log('Question text:', questionText);
         console.log('Question category:', questionCategory);
         console.log('Anonymity:', anonymity);
+        try {
+            const userId = await getUserByToken();
+            console.log('User ID:', userId);
+          } catch (error) {
+            console.error('Greška prilikom dohvatanja korisnika:', error);
+          }      
+        
+          // dodaj funkciju za dodavanje pitanja, nadjes sve objekte koji ti trebaju po id
+          // kategorija i user po id nadjes preko servisa i onda dodasw pitanje
 
         setQuestionTitle('');
         setQuestionText('');
         setQuestionCategory('');
-        setAnonymity(true); // Reset to true after submission
+        setAnonymity(true);
 
-        // For demonstration, just close the modal
         handleModalClose();
     };
 
@@ -112,7 +122,6 @@ function QuestionsAndAnswers() {
 
     const getCategoryIcon = (categoryId) => {
         const category = categories.find(cat => cat.id === categoryId);
-        console.log(category)
         if (category) {
             return categoryIcons[category.name.replace(/\s/g, '')] || 'images/CategoryIcons/DefaultIcon.png';
         }
@@ -217,4 +226,3 @@ function QuestionsAndAnswers() {
 }
 
 export default QuestionsAndAnswers;
-

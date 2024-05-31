@@ -1,3 +1,5 @@
+import axios from 'axios';
+import { getUserByToken } from '../services/userService';
 
 const API_URL = 'http://localhost:8083';
 
@@ -57,4 +59,18 @@ export async function getForumQuestionsByCategory(category) {
       console.error(`Došlo je do greške prilikom dohvaćanja podataka o forum pitanjima po kategoriji: ${error.message}`);
       throw error;
     }
+}
+
+
+
+function getCurrentDate() {
+  const date = new Date();
+  const day = String(date.getDate()).padStart(2, '0');
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const year = date.getFullYear();
+  return `${day}.${month}.${year}`;
+}
+
+export async function addForumQuestion(questionData) {
+
 }
