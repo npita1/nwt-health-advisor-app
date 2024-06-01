@@ -20,6 +20,7 @@ public class RouteValidator {
             "/forum/allCategories",
             "/forum/allForumQuestions",
             "/forum/questions/category/",
+            "/forum/forumAnswers/question/",
             "/forum/allArticles",
             "/v2/",
             "/actuator/",

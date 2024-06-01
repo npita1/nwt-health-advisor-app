@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 
 
 @Entity
@@ -29,6 +30,7 @@ public class ForumAnswerEntity {
     private ForumAnswerEntity parent;
 
     @NotNull(message = "Tekst ne smije biti prazan.")
+    @Size(min = 1, max = 1600, message = "Tekst mora imati između 1 i 1600 znakova.")
     private String text;
 
     @NotNull

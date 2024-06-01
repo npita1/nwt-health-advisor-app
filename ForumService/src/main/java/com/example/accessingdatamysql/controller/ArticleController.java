@@ -72,6 +72,8 @@ public class ArticleController {
             forumDoctor.setUser(forumUser);
             forumDoctor.setAbout(doctor.getAbout());
             forumDoctor.setSpecialization(doctor.getSpecialization());
+            forumDoctor.setAvailability(doctor.getAvailability());
+            forumDoctor.setPhoneNumber(doctor.getPhoneNumber());
             doctorInfoRepository.save(forumDoctor);
         }
 

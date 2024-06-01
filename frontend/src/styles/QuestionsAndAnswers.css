@@ -94,6 +94,7 @@
     height: 220px;
     padding: 1%;
     border-radius: 20px;
+    margin-bottom: 20px;
 }
 
 .tekstPitanja {
@@ -130,6 +131,14 @@
     color: #1F55B3;
     font-size: 16px; 
 }
+
+.odgovori {
+    margin-top: 10px; /* Ovde postavljamo razmak između odgovora */
+  }
+  
+  .odgovori p {
+    margin-bottom: 10px; /* Ovde postavljamo razmak između svakog odgovora */
+  }
 
 .allQuestionsButton.selected {
     background-color: rgba(210, 221, 240, 1);

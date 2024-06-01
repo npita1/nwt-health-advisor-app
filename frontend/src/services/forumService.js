@@ -91,3 +91,23 @@ function getCurrentDate() {
 export async function addForumQuestion(questionData) {
 
 }
+
+export async function getForumAnswersByQuestionId(id) {
+  try {
+    const response = await fetch(`${API_URL}/forum/forumAnswers/question/${id}`, {
+      method: 'GET',
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      console.log('Uspješno dohvaćeni podaci o forum odgovorima na pitanje:');
+      return data; 
+    } else {
+      throw new Error('Došlo je do greške prilikom dohvaćanja podataka o forum odgovorima na pitanje.');
+    }
+  } catch (error) {
+    console.error(`Došlo je do greške prilikom dohvaćanja podataka o forum odgovorima na pitanje: ${error.message}`);
+    throw error;
+  }
+}
+

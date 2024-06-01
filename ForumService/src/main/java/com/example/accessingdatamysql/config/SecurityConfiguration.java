@@ -38,8 +38,8 @@ public class SecurityConfiguration {
             "/forum/allCategories",
             "/forum/allArticles",
             "/forum/allForumQuestions",
-            "/forum/questions/category/{category}"
-
+            "/forum/questions/category/{category}",
+            "/forum/forumAnswers/question/{questionId}"
     };
 
 
