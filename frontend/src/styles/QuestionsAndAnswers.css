@@ -133,12 +133,44 @@
 }
 
 .odgovori {
-    margin-top: 10px; /* Ovde postavljamo razmak između odgovora */
-  }
+    margin-top: 10px;
+}
+
+.odgovorPanel {
+    background-color: white;
+    width: 1050px;
+    height: auto;
+    border-radius: 20px;
+    padding: 2%;
+}
+
+.odgovorImeDoktora {
+    color: #1F55B3;
+    font-size: 16px; 
+    font-weight: bold;
+}
+
+.tekstOdgovora {
+    color: #1F55B3;
+    font-size: 14px;
+    margin-top: 1%; 
+    margin-bottom: 1%;
+}
   
-  .odgovori p {
-    margin-bottom: 10px; /* Ovde postavljamo razmak između svakog odgovora */
-  }
+
+
+.divJednogOdgovora {
+    background-color: rgba(217, 217, 217, 0.20);
+    border-radius: 20px;
+    padding: 1%;
+    margin: 1.25%;
+}
+  
+.akordionItem {
+    border-radius: 20px;
+
+}
+
 
 .allQuestionsButton.selected {
     background-color: rgba(210, 221, 240, 1);

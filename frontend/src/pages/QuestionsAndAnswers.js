@@ -172,11 +172,12 @@ function QuestionsAndAnswers() {
 
       <div className='pitanjaDiv'>
         <Flex direction="column" className='pitanjaFlex'>
-        <Accordion allowToggle> 
+        <Accordion allowToggle > 
             {questions.map(question => (
-              <AccordionItem key={question.id} className='pitanje'>
-                  <AccordionButton onClick={() => handleQuestionClick(question)}>
-                    <Box  as='span' flex='1' textAlign='left'>
+              <AccordionItem key={question.id} className='akordionItem'>
+                  <AccordionButton onClick={() => handleQuestionClick(question)} className='akordionItem'>
+                  <Box as='span' flex='1' textAlign='left'>
+                    <div className='pitanje' key={question.id}>
                       <Flex direction="column">
                         <Flex justifyContent="space-between" alignItems="center" className='naslovIIkona'>
                           <Flex direction="column">
@@ -196,19 +197,33 @@ function QuestionsAndAnswers() {
                         </Flex>
                         <p className='tekstPitanja'>{question.text}</p>
                       </Flex>
+                    </div>
                     </Box>
                     <AccordionIcon />
                   </AccordionButton>
-                <AccordionPanel pb={4} className='pitanje'>
+                <AccordionPanel pb={4} className='odgovorPanel'>
                   <div className='odgovori'>
                     {question.answers && question.answers.map((answer, index) => (
-                      <p key={index}>{answer.text}</p>
+                      <div className='divJednogOdgovora'>
+                        <Flex>
+                            <img
+                              src="images/doctorIcon.png"
+                                alt="slika"
+                              style={{ width: '50px', height: '50px' }}
+                            />
+                            <Flex direction="column">
+                                <p className='odgovorImeDoktora'>Dr. {answer.doctor.user.firstName} {answer.doctor.user.lastName}</p>
+                                <p className='datumPitanja'>{answer.date}</p>
+                                <p className='tekstOdgovora'>{answer.text}</p>
+                            </Flex>
+                        </Flex>
+                      </div>
                     ))}
                   </div>
                 </AccordionPanel>
               </AccordionItem>
             ))}
-          </Accordion>
+        </Accordion>
         </Flex>
       </div>
 
