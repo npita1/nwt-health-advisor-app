@@ -61,7 +61,24 @@ export async function getForumQuestionsByCategory(category) {
     }
 }
 
-
+export async function getAllArticles() {
+  try {
+      const response = await fetch(`${API_URL}/forum/allArticles`, {
+        method: 'GET',
+      });
+  
+      if (response.ok) {
+        const data = await response.json();
+        console.log('Uspješno dohvaćeni svi članci:');
+        return data; 
+      } else {
+        throw new Error('Došlo je do greške prilikom dohvaćanja podataka o člancima.');
+      }
+    } catch (error) {
+      console.error(`Došlo je do greške prilikom dohvaćanja podataka o člancima: ${error.message}`);
+      throw error;
+    }
+}
 
 function getCurrentDate() {
   const date = new Date();

@@ -36,6 +36,7 @@ public class SecurityConfiguration {
 
     public static final String[] openRoutes = {
             "/forum/allCategories",
+            "/forum/allArticles",
             "/forum/allForumQuestions",
             "/forum/questions/category/{category}"
 

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -7,15 +7,22 @@ import Typography from '@mui/material/Typography';
 import { CardActionArea } from '@mui/material';
 import { Image } from '@chakra-ui/react';
 import '../styles/Articles.css';
+import ArticleDrawer from './ArticleDrawer';
+import { useDisclosure } from '@chakra-ui/react';
 
 const theme = createTheme();
 
-export default function Article({ title, description, image }) {
+export default function Article({ title, subtitle, image, articleInfo, onClick}) {
+  const [isOpen, setIsOpen] = useState(false)
+
   return (
+    <div>
     <ThemeProvider theme={theme}>
-      <Card sx={{ maxWidth: 345, margin: '10px' }}>
-        <CardActionArea style={{padding: '0'}}>
+      <Card sx={{ width: 300, maxWidth:345, margin: '10px' }}>
+        <CardActionArea style={{padding: '0'}} onClick={() => {setIsOpen(true)}}>
+       
           <div style={{ position: 'relative', paddingBottom: '56.25%', height: 0 }}>
+          
             <CardMedia
               component="img"
               image="images/StaffPage/article.png"
@@ -25,14 +32,20 @@ export default function Article({ title, description, image }) {
           </div>
           <CardContent>
             <Typography gutterBottom variant="h5" component="div" className='naslov'>
-              {title} + "nestoo"
+              {title} 
             </Typography>
             <Typography variant="body2" color="text.secondary">
-              {description}
+              {subtitle.doctor + ", " + subtitle.category}
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+            
             </Typography>
           </CardContent>
         </CardActionArea>
       </Card>
     </ThemeProvider>
+    {isOpen ? <ArticleDrawer articleInfo={articleInfo} isOpen={isOpen} setIsOpen={setIsOpen}/> : <></>}
+    
+    </div>
   );
 }
