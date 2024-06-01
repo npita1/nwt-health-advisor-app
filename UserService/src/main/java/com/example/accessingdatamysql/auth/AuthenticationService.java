@@ -8,10 +8,14 @@ import com.example.accessingdatamysql.exceptions.ErrorDetails;
 import com.example.accessingdatamysql.grpc.GrpcClient;
 import com.example.accessingdatamysql.repository.TokenRepository;
 import com.example.accessingdatamysql.repository.UserRepository;
+import com.example.accessingdatamysql.rmq.RabbitConfig;
+import com.example.accessingdatamysql.rmq.UserCreatedEvent;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -34,7 +38,8 @@ public class AuthenticationService {
     private final AuthenticationManager authenticationManager;
     private final TokenRepository tokenRepository;
     private GrpcClient grpcClient;
-
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
     public ResponseEntity register(RegisterRequest request) {
         grpcClient = GrpcClient.get();
         if (userRepository.existsByEmail(request.getEmail())) {
@@ -49,6 +54,15 @@ public class AuthenticationService {
                 .role(request.getRole())
                 .build();
         var savedUser = userRepository.save(user);
+        // Slanje događaja na RabbitMQ
+        UserCreatedEvent event = new UserCreatedEvent();
+        event.setId(savedUser.getId());
+        event.setEmail(savedUser.getEmail());
+        event.setFirstName(savedUser.getFirstName());
+        event.setLastName(savedUser.getLastName());
+        event.setPassword(savedUser.getPassword());
+        rabbitTemplate.convertAndSend(RabbitConfig.EXCHANGE, RabbitConfig.ROUTING_KEY, event);
+
         var jwtToken = jwtService.generateToken(user);
         var refreshToken = jwtService.generateRefreshToken(user);
         saveUserToken(savedUser, jwtToken);
