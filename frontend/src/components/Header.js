@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { ChakraProvider } from '@chakra-ui/react'
+import { Button, ChakraProvider } from '@chakra-ui/react'
 import { Tabs, TabList, TabPanels, Tab, TabPanel, Image } from '@chakra-ui/react'
 import '../styles/Header.css'
 import HomePage from '../pages/HomePage'
@@ -7,8 +7,18 @@ import StaffPage from '../pages/StaffPage'
 import QuestionsAndAnswers from '../pages/QuestionsAndAnswers'
 import Articles from '../pages/Articles'
 import { useNavigate } from 'react-router-dom';
+import { logout as logoutService } from '../services/userService';
 
 function Header() {
+  // const navigate = useNavigate();
+  const handleLogout = async () => {
+    try {
+      await logoutService();
+      // navigate('/');  // Preusmeri korisnika na početnu stranicu
+    } catch (error) {
+      console.error('Greška prilikom logouta korisnika:', error);
+    }
+  };
   return (
     <ChakraProvider>
       <div className="header">
@@ -23,6 +33,7 @@ function Header() {
             <Tab>Workshops and Events</Tab>
             <Tab>Articles</Tab>
             <Tab>Our Specialists</Tab>
+            <Button onClick={handleLogout}>logout</Button>
           </TabList>
           <TabPanels>
             <TabPanel>

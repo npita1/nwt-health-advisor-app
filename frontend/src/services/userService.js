@@ -18,6 +18,7 @@ export async function logIn(email, inputedPassword) {
     getUserByToken()
 
     console.log("Uspjesan login")
+
     
 
   } catch (error) {
@@ -26,6 +27,24 @@ export async function logIn(email, inputedPassword) {
   }
 }
 
+export async function logout() {
+  try{
+    const response = await axios.get(`${API_URL}/authentication/logout`, {
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      }
+    })
+    localStorage.setItem('token', "")
+    localStorage.setItem('userId', "")
+    localStorage.setItem('userRole', "")
+
+    window.location.reload();
+  }catch(error){
+    console.error('Greška prilikom logouta korisnika:', error);
+    
+    throw error;
+  }
+}
 export async function addUser(formData) {
     try {
         const response = await axios.post(`${API_URL}/authentication/register`, formData, {
@@ -38,6 +57,8 @@ export async function addUser(formData) {
          const token = await response.data.access_token
         localStorage.setItem('token', token);
         getUserByToken();
+    window.location.reload();
+
 
       } catch (error) {
         if (error.response && error.response.status === 409) {
@@ -58,7 +79,8 @@ export async function saveUserIdInStorage(userId){
     })
     const userRole = await response.data.role
     localStorage.setItem('userRole', userRole)
-    console.log("ROLA JEEE", localStorage.userRole)
+    window.location.reload();
+
   }catch (error) {
     console.error('Greška prilikom spasavanja role usera u localStorage:', error);
     throw error;
@@ -122,6 +144,8 @@ export async function getUserByToken() {
 //     throw error;
 //   }
 // }
+
+
 
 export async function getAllDoctors() {
   const token = localStorage.getItem('token');

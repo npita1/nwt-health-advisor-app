@@ -1,8 +1,9 @@
 import React, { useEffect, useState, useRef } from 'react';
 import Article from '../components/Article';
 import { getAllArticles } from '../services/forumService';
-import { getUserByToken } from '../services/userService';
+import { getUserByToken, saveUserIdInStorage } from '../services/userService';
 import '../styles/Articles.css';
+import { Button } from '@chakra-ui/react';
 // const articlesData = [
 //   {
 //     title: "Lizard",
@@ -28,6 +29,7 @@ import '../styles/Articles.css';
 
 const Articles = () => {
   const [articlesData, setArticlesData] = useState([]);
+  const [userRole, setUserRole] = useState(localStorage.getItem('userRole'));
 
   async function fetchArticles() {
     try {
@@ -39,16 +41,33 @@ const Articles = () => {
     }
   };
   
+
   useEffect(() => {
     fetchArticles();
     
   }, []);
 
+  useEffect(() => {
+    setUserRole(localStorage.getItem('userRole'))
+  }, [localStorage.getItem('userRole')])
+
+  // useEffect(() => {
+  //   // setUserRole(localStorage.userRole)
+  //   // console.log("ROULAAA", userRole)
+   
+    
+  // }, []);
+
 
   return (
     <>
       <div className='naslovDiv'>
-        <h1 className='naslov'>Recent Articles</h1>
+        <h1 className='naslov'>Recent Articles {userRole}</h1>
+        {/* {(localStorage.userRole === "DOCTOR" || localStorage.userRole === "ADMIN") ?
+         <Button>Dodaj clanak</Button> 
+         : <></>} */}
+         
+
       </div>
       <div className='articlesContainer'>
         {articlesData.map((article, index) => (
