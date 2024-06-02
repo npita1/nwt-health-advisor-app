@@ -66,6 +66,12 @@
     width: 100px;
 }
 
+.dugmeLogout {
+    background-color: #FF585F;
+    color: white;
+
+}
+
 .dugmeSignUp:hover {
     filter: brightness(0.9);
 }

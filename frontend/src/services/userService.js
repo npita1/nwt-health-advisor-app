@@ -57,7 +57,6 @@ export async function addUser(formData) {
          const token = await response.data.access_token
         localStorage.setItem('token', token);
         getUserByToken();
-    window.location.reload();
 
 
       } catch (error) {
