@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import Article from '../components/Article';
 import { getAllArticles } from '../services/forumService';
-
+import { getUserByToken } from '../services/userService';
 import '../styles/Articles.css';
 // const articlesData = [
 //   {
@@ -41,7 +41,6 @@ const Articles = () => {
   
   useEffect(() => {
     fetchArticles();
-    
     
   }, []);
 

@@ -15,6 +15,7 @@ export async function logIn(email, inputedPassword) {
 
     const token = response.data.access_token;
     localStorage.setItem('token', token);
+    getUserByToken()
     console.log("Uspjesan login")
     
 
@@ -35,6 +36,7 @@ export async function addUser(formData) {
         });
          const token = await response.data.access_token
         localStorage.setItem('token', token);
+        getUserByToken();
 
       } catch (error) {
         if (error.response && error.response.status === 409) {
@@ -64,6 +66,7 @@ export async function getUserByToken() {
     if (response.status === 200) {
       console.log('Uspješno dohvaćeni podaci o korisniku:', response.data);
       localStorage.setItem('userId', response.data);
+     
       return response.data;
     } else {
       throw new Error('Neuspješno dobavljanje podataka o korisniku.');
