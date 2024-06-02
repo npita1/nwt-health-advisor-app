@@ -6,7 +6,7 @@ const API_URL = 'http://localhost:8086';
 
 export async function logIn(email, inputedPassword) {
   try {
-    const response = await axios.post(`http://localhost:8086/authentication/login`, { email: email, password: inputedPassword }, {
+    const response = await axios.post(`${API_URL}/authentication/login`, { email: email, password: inputedPassword }, {
       headers: {
         'Content-Type': 'application/json',
         'Accept': '*/*',
@@ -16,6 +16,7 @@ export async function logIn(email, inputedPassword) {
     const token = response.data.access_token;
     localStorage.setItem('token', token);
     getUserByToken()
+
     console.log("Uspjesan login")
     
 
@@ -27,7 +28,7 @@ export async function logIn(email, inputedPassword) {
 
 export async function addUser(formData) {
     try {
-        const response = await axios.post(`http://localhost:8086/authentication/register`, formData, {
+        const response = await axios.post(`${API_URL}/authentication/register`, formData, {
 
           headers: {
             'Content-Type': 'application/json',
@@ -48,6 +49,22 @@ export async function addUser(formData) {
       }
 }
 
+export async function saveUserIdInStorage(userId){
+  try{
+    const response = await axios.get(`${API_URL}/user/users/${userId}`, {
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      }
+    })
+    const userRole = await response.data.role
+    localStorage.setItem('userRole', userRole)
+    console.log("ROLA JEEE", localStorage.userRole)
+  }catch (error) {
+    console.error('Greška prilikom spasavanja role usera u localStorage:', error);
+    throw error;
+  }
+}
+
 // Vraca user id ciji je token
 export async function getUserByToken() {
   const token = localStorage.getItem('token');
@@ -57,7 +74,7 @@ export async function getUserByToken() {
   }
 
   try {
-    const response = await axios.get(`http://localhost:8086/authentication/user`, {
+    const response = await axios.get(`${API_URL}/authentication/user`, {
       headers: {
         'Authorization': `Bearer ${token}`
       }
@@ -66,6 +83,8 @@ export async function getUserByToken() {
     if (response.status === 200) {
       console.log('Uspješno dohvaćeni podaci o korisniku:', response.data);
       localStorage.setItem('userId', response.data);
+      saveUserIdInStorage(localStorage.userId)
+
      
       return response.data;
     } else {
