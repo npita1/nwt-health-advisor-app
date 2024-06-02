@@ -16,6 +16,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.fge.jsonpatch.JsonPatch;
 import com.github.fge.jsonpatch.JsonPatchException;
 import feign.FeignException;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -46,7 +47,7 @@ public class EventController {
         return "Saved";
     }
     @GetMapping(path = "/allEvents")
-    public @ResponseBody Iterable<EventEntity> getAllEvents(){
+    public @ResponseBody Iterable<EventEntity> getAllEvents(HttpServletRequest request){
         return eventRepository.findAll();
     }
     @GetMapping("/events/{eventId}")
