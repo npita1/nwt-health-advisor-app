@@ -106,6 +106,4 @@ public class UserEntity implements UserDetails {
     public String getPassword() {
         return password;
     }
-
-
 }
