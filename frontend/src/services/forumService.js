@@ -62,17 +62,6 @@ export async function getAllArticles() {
     }
 }
 
-function getCurrentDate() {
-  const date = new Date();
-  const day = String(date.getDate()).padStart(2, '0');
-  const month = String(date.getMonth() + 1).padStart(2, '0');
-  const year = date.getFullYear();
-  return `${day}.${month}.${year}`;
-}
-
-
-
-
 
 export async function getAllForumQuestions() {
   try {
@@ -94,8 +83,6 @@ export async function getAllForumQuestions() {
 }
 
 
-
-
 export async function addForumQuestion(userId, questionData) {
   const token = localStorage.getItem('token');
   if (!token || token === "") {
@@ -107,8 +94,9 @@ export async function addForumQuestion(userId, questionData) {
     const response = await fetch(`${API_URL}/forum/addForumQuestion?userId=${userId}`, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
+        "Content-Type": 'application/json',
+        Accept: 'application/json, text/plain, */*',
+        Authorization: `Bearer ${token}`
       },
       body: JSON.stringify(questionData)
     });
@@ -116,7 +104,7 @@ export async function addForumQuestion(userId, questionData) {
     if (!response.ok) {
       const errorText = await response.text();
       console.error('Failed to add question:', response.status, errorText);
-      throw new Error("Failed to add question:" `${response.status} - ${errorText}`);
+      throw new Error(`Failed to add question: ${response.status} - ${errorText}`);
     }
 
     return response.json();

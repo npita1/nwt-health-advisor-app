@@ -52,7 +52,7 @@ function Categories() {
             <Flex className='redovi'>
             {
               firstRow.map(category => (
-                <Flex direction="column" className='kategorija' onClick={() => handleCategoryClick(category)}>
+                <Flex direction="column" className='kategorija' onClick={() => handleCategoryClick(category)} key={category.id}>
               <img
               src={categoryIcons[category.name.replace(/\s/g, '')] || 'images/CategoryIcons/DefaultIcon.png'}
               alt={category.name}
