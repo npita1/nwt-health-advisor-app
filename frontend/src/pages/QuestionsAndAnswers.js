@@ -34,7 +34,6 @@ import {
   addForumQuestion,
   getForumAnswersByQuestionId
 } from '../services/forumService';
-import { getUserByToken, getUserById } from '../services/userService';
 
 function QuestionsAndAnswers() {
   const [questions, setQuestions] = useState([]);
@@ -112,7 +111,14 @@ function QuestionsAndAnswers() {
         return;
       }
 
-  
+      var isAnonymous;
+      if(anonymity === 'false') {
+        isAnonymous = false;
+      } else {
+        isAnonymous = true;
+      }
+      
+
       const questionData = {
         id: 0,
         user: {
@@ -132,7 +138,7 @@ function QuestionsAndAnswers() {
         title: questionTitle,
         text: questionText,
         date: getCurrentDate(),
-        anonymity: anonymity
+        anonymity: isAnonymous
       };
 
       console.log('Sending request to add question:', JSON.stringify(questionData, null, 2));
@@ -296,7 +302,7 @@ function QuestionsAndAnswers() {
             </FormControl>
             <FormControl id='anonymity' mt={4}>
               <FormLabel>Anonymity</FormLabel>
-              <RadioGroup value={anonymity.toString()} onChange={(value) => setAnonymity(value === 'true')}>
+              <RadioGroup value={anonymity.toString()} onChange={(value) => setAnonymity(value)}>
                 <Stack spacing={5} direction='row'>
                   <Radio value='true'>Yes</Radio>
                   <Radio value='false'>No</Radio>
