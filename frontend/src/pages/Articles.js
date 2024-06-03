@@ -4,6 +4,7 @@ import { getAllArticles } from '../services/forumService';
 import { getUserByToken, saveUserIdInStorage } from '../services/userService';
 import '../styles/Articles.css';
 import { Button } from '@chakra-ui/react';
+import { SmallAddIcon, AddIcon} from '@chakra-ui/icons';
 // const articlesData = [
 //   {
 //     title: "Lizard",
@@ -62,14 +63,16 @@ const Articles = () => {
   return (
     <>
       <div className='naslovDiv'>
-        <h1 className='naslov'>Recent Articles {userRole}</h1>
-        {/* {(localStorage.userRole === "DOCTOR" || localStorage.userRole === "ADMIN") ?
-         <Button>Dodaj clanak</Button> 
-         : <></>} */}
+        <h1 className='naslov'>Recent Articles </h1>
+        
          
 
       </div>
+      {(userRole === "DOCTOR" || userRole === "ADMIN") ?
+         <Button  className='addButton' colorScheme='#1F55B3' leftIcon={<SmallAddIcon />}>Dodaj clanak</Button> 
+         : <></>}
       <div className='articlesContainer'>
+      
         {articlesData.map((article, index) => (
           <Article
             key={index}

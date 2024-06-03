@@ -12,4 +12,12 @@
   .naslov {
     font-size: 2em;
   }
+
+  .addButton{
+    background-color: #1F55B3;
+    color: white;
+    margin: 0 10px;
+   
+   
+  }
   
