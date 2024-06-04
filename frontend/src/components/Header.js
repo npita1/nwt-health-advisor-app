@@ -57,7 +57,6 @@ function Header() {
             </div>
             <Tab>Home</Tab>
             <Tab>Questions and Answers</Tab>
-            <Tab>Consultations</Tab>
             <Tab>Workshops and Events</Tab>
             <Tab>Articles</Tab>
             <Tab>Our Specialists</Tab>
