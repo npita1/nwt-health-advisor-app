@@ -6,7 +6,7 @@ import {
     Input,
     Select
 } from '@chakra-ui/react';
-import { getAllCategories, getCurrentDate } from '../services/forumService';
+import { getAllCategories, getCurrentDate, addArticle } from '../services/forumService';
 import '../styles/Articles.css';
 import { FilePond, registerPlugin } from 'react-filepond';
 import 'filepond/dist/filepond.min.css';
@@ -38,6 +38,17 @@ export default function AddArticle() {
         fetchCategories();
     }, []);
 
+    async function addArticleDB(data) {
+        try {
+            await addArticle(data);
+        } catch (error) {
+            console.error('Error adding articles:', error);
+        }
+    }
+
+    useEffect(() => {
+        fetchCategories();
+    }, []);
     const handleFileChange = (fileItems) => {
         if (fileItems.length > 0) {
             const file = fileItems[0].file;
@@ -54,13 +65,39 @@ export default function AddArticle() {
 
     const handleSubmit = () => {
         const date = getCurrentDate()
+        // const articleData = {
+        //     title,
+        //     category_id: category,
+        //     text: fileContent,
+        //     doctor_id: localStorage.getItem('userId'),
+        //     date: date
+        // };
         const articleData = {
-            title,
-            category_id: category,
-            text: fileContent,
-            doctor_id: localStorage.getItem('userId'),
-            date: date
-        };
+            doctor: {
+                about: "string",
+                specialization: "string",
+                user: {
+                  id: 0,
+                  email: "string",
+                  firstName: "string",
+                  lastName: "string",
+                  type: 0,
+                  password: "string",
+                  userServiceId: 0
+                }
+              },
+              category: {
+                id: category,
+                name: "string",
+                description: "string"
+              },
+              title: title,
+              text: fileContent,
+              date: date
+        }
+        // addArticle(articleData, localStorage.getItem('userId'))
+        addArticle(articleData, 2)
+        
         console.log('Article Data:', articleData);
         // Ovdje možete dodati logiku za slanje podataka na server
     };

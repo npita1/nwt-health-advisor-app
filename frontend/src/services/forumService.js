@@ -144,3 +144,36 @@ export async function getForumAnswersByQuestionId(id) {
     throw error;
   }
 }
+
+
+export async function addArticle(articleData, userId) {
+  const token = localStorage.getItem('token');
+  if (!token || token === "") {
+    throw new Error('No token found');
+  }
+
+  try {
+    console.log('Sending request to add article:', articleData);
+    const response = await fetch(`${API_URL}/forum/addArticle`, {doctorId: userId},{
+      method: 'POST',
+      headers: {
+        "Content-Type": 'application/json',
+        Accept: 'application/json, text/plain, */*',
+        Authorization: `Bearer ${token}`
+      },
+      
+      body: JSON.stringify(articleData)
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error('Failed to add article:', response.status, errorText);
+      throw new Error(`Failed to add article: ${response.status} - ${errorText}`);
+    }
+
+    return response.json();
+  } catch (error) {
+    console.error('Network or server error:', error);
+    throw error;
+  }
+}

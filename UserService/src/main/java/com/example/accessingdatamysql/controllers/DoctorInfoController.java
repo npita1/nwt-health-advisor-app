@@ -55,6 +55,7 @@ public class DoctorInfoController {
         return users;
     }
 
+ 
     @GetMapping(path="/doctors/{doctorID}")
     public DoctorInfoEntity getDoctorID(@PathVariable int doctorID){
         DoctorInfoEntity doctor = doctorInfoRepository.findById(doctorID);
@@ -89,5 +90,7 @@ public class DoctorInfoController {
         DoctorInfoEntity savedDoctorInfo = doctorService.addDoctor(user, doctorInfo);
         return ResponseEntity.ok(savedDoctorInfo);
     }
+
+
 
 }
