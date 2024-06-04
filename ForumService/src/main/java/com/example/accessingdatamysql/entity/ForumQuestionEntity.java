@@ -31,7 +31,6 @@ public class ForumQuestionEntity {
     @Pattern(regexp = "^\\d{2}.\\d{2}.\\d{4}$", message = "Datum mora biti u formatu 'DD.MM.YYYY'.")
     private String date;
 
-    @AssertTrue(message = "Anonimnost mora biti postavljena na true ili false.")
     private boolean anonymity;
 
     public ForumQuestionEntity() {}

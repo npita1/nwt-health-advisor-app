@@ -34,7 +34,6 @@ import {
   addForumQuestion,
   getForumAnswersByQuestionId
 } from '../services/forumService';
-import { getUserByToken } from '../services/userService';
 
 function QuestionsAndAnswers() {
   const [questions, setQuestions] = useState([]);
@@ -89,27 +88,78 @@ function QuestionsAndAnswers() {
     setAnonymity(true);
   };
 
-  const handleQuestionSubmit = async () => {
+  function getCurrentDate() {
+    const date = new Date();
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = date.getFullYear();
+    return `${day}.${month}.${year}`;
+  }
+
+    const handleQuestionSubmit = async () => {
     console.log('Question title:', questionTitle);
     console.log('Question text:', questionText);
     console.log('Question category:', questionCategory);
     console.log('Anonymity:', anonymity);
-    try {
-      const userId = await getUserByToken();
-      console.log('User ID:', userId);
-    } catch (error) {
-      console.error('Greška prilikom dohvatanja korisnika:', error);
-    }
     
-    // Add your question submission logic here
+    try {
+      const userId = localStorage.getItem('userId');
+      console.log('User ID:', userId);
+      
+      if(userId == null || userId === "") {
+        alert("You need to be logged in to post a question. Please log in to continue.");
+        return;
+      }
 
-    setQuestionTitle('');
-    setQuestionText('');
-    setQuestionCategory('');
-    setAnonymity(true);
+      var isAnonymous;
+      if(anonymity === 'false') {
+        isAnonymous = false;
+      } else {
+        isAnonymous = true;
+      }
+      
 
-    handleModalClose();
+      const questionData = {
+        id: 0,
+        user: {
+          id: 0,
+          email: "string",
+          firstName: "string",
+          lastName: "string",
+          type: 0,
+          password: "string",
+          userServiceId: 0
+        },
+        category: {
+          id: parseInt(questionCategory),
+          name: "string",
+          description: "string"
+        },
+        title: questionTitle,
+        text: questionText,
+        date: getCurrentDate(),
+        anonymity: isAnonymous
+      };
+
+      console.log('Sending request to add question:', JSON.stringify(questionData, null, 2));
+  
+      const addedQuestion = await addForumQuestion(userId, questionData);
+      console.log('Added question:', addedQuestion);
+  
+      setQuestions(prevQuestions => [addedQuestion, ...prevQuestions]);
+  
+      setQuestionTitle('');
+      setQuestionText('');
+      setQuestionCategory('');
+      setAnonymity(true);
+  
+      handleModalClose();
+    } catch (error) {
+      console.error('Greška prilikom dodavanja pitanja:', error);
+      alert("Greska se desila");
+    }
   };
+  
 
   const categoryIcons = {
     Immunology: 'images/CategoryIcons/AllergyIcon.png',
@@ -252,7 +302,7 @@ function QuestionsAndAnswers() {
             </FormControl>
             <FormControl id='anonymity' mt={4}>
               <FormLabel>Anonymity</FormLabel>
-              <RadioGroup value={anonymity.toString()} onChange={(value) => setAnonymity(value === 'true')}>
+              <RadioGroup value={anonymity.toString()} onChange={(value) => setAnonymity(value)}>
                 <Stack spacing={5} direction='row'>
                   <Radio value='true'>Yes</Radio>
                   <Radio value='false'>No</Radio>
