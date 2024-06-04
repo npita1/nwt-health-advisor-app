@@ -72,9 +72,6 @@ function Header() {
               <QuestionsAndAnswers />
             </TabPanel>
             <TabPanel>
-              <p>Consultations content goes here!</p>
-            </TabPanel>
-            <TabPanel>
               <p>Workshops and Events content goes here!</p>
             </TabPanel>
             <TabPanel>
