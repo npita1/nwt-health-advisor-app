@@ -20,4 +20,26 @@
    
    
   }
-  
+
+  .input-title {
+    border: 2px solid #3182CE;
+    padding: 8px;
+    border-radius: 4px;
+}
+
+.input-file {
+    border: 2px solid #FF585F;
+    padding: 8px;
+    border-radius: 4px;
+}
+
+.textarea-content {
+    border: 2px solid #48BB78;
+    padding: 8px;
+    border-radius: 4px;
+}
+
+.filepond--root {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
