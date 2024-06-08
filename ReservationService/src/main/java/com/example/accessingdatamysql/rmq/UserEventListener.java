@@ -4,7 +4,9 @@ import com.example.accessingdatamysql.entity.UserEntity;
 import com.example.accessingdatamysql.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,8 +17,9 @@ public class UserEventListener {
 
     @Autowired
     private UserRepository userRepository;
-
-    @RabbitListener(queues = "user-queue" )
+    @Autowired
+    private final RabbitTemplate rabbitTemplate;
+    @RabbitListener(queues = RabbitConfig.QUEUE )
     public void handleUserCreated(UserCreatedEvent event) {
         try {
             UserEntity user = new UserEntity();
@@ -27,13 +30,20 @@ public class UserEventListener {
             user.setPassword(event.getPassword());
 
             userRepository.save(user);
-
-            // Oznaka uspjeha
-            // Slanje potvrde o uspjehu npr. na RabbitMQ ili neki drugi mehanizam
-        } catch (Exception e) {
+        } catch (DataIntegrityViolationException e) {
+            // Jedinstveno ograničenje prekršeno, pokrenite rollback
+            sendRollbackEvent(event);
+        }catch (Exception e) {
             // Rukovanje greškama
             // Slanje rollback događaja npr. na RabbitMQ ili neki drugi mehanizam
             throw e;
         }
     }
+    private void sendRollbackEvent(UserCreatedEvent event) {
+        UserCreationRollbackEvent rollbackEvent = new UserCreationRollbackEvent();
+        rollbackEvent.setId(event.getId());
+        rollbackEvent.setEmail(event.getEmail());
+        rabbitTemplate.convertAndSend(RabbitConfig.EXCHANGE, RabbitConfig.ROLLBACK_ROUTING_KEY, rollbackEvent);
+    }
+
 }

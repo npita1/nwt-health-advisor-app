@@ -10,14 +10,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-@Table(name="user")
+@Table(name="user",uniqueConstraints = {@UniqueConstraint(columnNames = "email")})
 @Entity
 public class UserEntity {
 
     @Id
     //@GeneratedValue(strategy=GenerationType.AUTO)
     private Long id;
+    @Email
     @NotBlank(message="Email ne smije biti prazan.")
+    @Column(nullable = false, unique = true)
     private String email;
     private String firstName;
     private String lastName;

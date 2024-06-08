@@ -2,6 +2,7 @@ package com.example.accessingdatamysql.repository;
 
 import com.example.accessingdatamysql.entity.Token;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
@@ -16,4 +17,8 @@ public interface TokenRepository extends JpaRepository<Token, Integer> {
 
     @Query("SELECT t.user.id FROM Token t WHERE t.token = :token AND t.expired = false AND t.revoked = false")
     Long findUserIdByToken(String token);
+
+    @Modifying
+    @Query("DELETE FROM Token t WHERE t.user.id = :userId")
+    void deleteByUserId(Long userId);
 }

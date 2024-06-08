@@ -10,12 +10,14 @@ import com.example.accessingdatamysql.repository.TokenRepository;
 import com.example.accessingdatamysql.repository.UserRepository;
 import com.example.accessingdatamysql.rmq.RabbitConfig;
 import com.example.accessingdatamysql.rmq.UserCreatedEvent;
+import com.example.accessingdatamysql.rmq.UserCreationRollbackEvent;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -43,8 +45,8 @@ public class AuthenticationService {
     public ResponseEntity register(RegisterRequest request) {
         grpcClient = GrpcClient.get();
         if (userRepository.existsByEmail(request.getEmail())) {
-            grpcClient.log(0,"UserService","register","Fail");
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(new ErrorDetails(LocalDateTime.now(),"email","Email already present in database"));
+            grpcClient.log(0, "UserService", "register", "Fail");
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(new ErrorDetails(LocalDateTime.now(), "email", "Email already present in database"));
         }
         var user = UserEntity.builder()
                 .firstName(request.getFirstname())
@@ -53,24 +55,32 @@ public class AuthenticationService {
                 .password(passwordEncoder.encode(request.getPassword()))
                 .role(request.getRole())
                 .build();
-        var savedUser = userRepository.save(user);
-        // Slanje događaja na RabbitMQ
-        UserCreatedEvent event = new UserCreatedEvent();
-        event.setId(savedUser.getId());
-        event.setEmail(savedUser.getEmail());
-        event.setFirstName(savedUser.getFirstName());
-        event.setLastName(savedUser.getLastName());
-        event.setPassword(savedUser.getPassword());
-        rabbitTemplate.convertAndSend(RabbitConfig.EXCHANGE, RabbitConfig.ROUTING_KEY, event);
+        try {
+            var savedUser = userRepository.save(user);
+            // Slanje događaja na RabbitMQ
+            UserCreatedEvent event = new UserCreatedEvent();
+            event.setId(savedUser.getId());
+            event.setEmail(savedUser.getEmail());
+            event.setFirstName(savedUser.getFirstName());
+            event.setLastName(savedUser.getLastName());
+            event.setPassword(savedUser.getPassword());
+            rabbitTemplate.convertAndSend(RabbitConfig.EXCHANGE, RabbitConfig.ROUTING_KEY, event);
 
-        var jwtToken = jwtService.generateToken(user);
-        var refreshToken = jwtService.generateRefreshToken(user);
-        saveUserToken(savedUser, jwtToken);
-        grpcClient.log(user.getId().intValue(),"UserService","register","Success");
-        return ResponseEntity.ok(AuthenticationResponse.builder()
-                .accessToken(jwtToken)
-                .refreshToken(refreshToken)
-                .build());
+            var jwtToken = jwtService.generateToken(user);
+            var refreshToken = jwtService.generateRefreshToken(user);
+            saveUserToken(savedUser, jwtToken);
+            grpcClient.log(user.getId().intValue(), "UserService", "register", "Success");
+            return ResponseEntity.ok(AuthenticationResponse.builder()
+                    .accessToken(jwtToken)
+                    .refreshToken(refreshToken)
+                    .build());
+        } catch (DataIntegrityViolationException e) {
+            UserCreationRollbackEvent rollbackEvent = new UserCreationRollbackEvent();
+            rollbackEvent.setId(user.getId());
+            rollbackEvent.setEmail(user.getEmail());
+            rabbitTemplate.convertAndSend(RabbitConfig.EXCHANGE, RabbitConfig.ROLLBACK_ROUTING_KEY, rollbackEvent);
+            throw e;
+        }
     }
 
 
