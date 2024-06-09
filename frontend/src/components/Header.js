@@ -20,6 +20,7 @@ import '../styles/Header.css';
 import HomePage from '../pages/HomePage';
 import StaffPage from '../pages/StaffPage';
 import QuestionsAndAnswers from '../pages/QuestionsAndAnswers';
+import Event from '../pages/Event';
 import Articles from '../pages/Articles';
 import { logout as logoutService } from '../services/userService';
 import '../styles/HomePage.css';
@@ -72,7 +73,7 @@ function Header() {
               <QuestionsAndAnswers />
             </TabPanel>
             <TabPanel>
-              <p>Workshops and Events content goes here!</p>
+              <Event />
             </TabPanel>
             <TabPanel>
               <Articles />
