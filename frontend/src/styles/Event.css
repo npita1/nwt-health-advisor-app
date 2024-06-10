@@ -16,5 +16,59 @@
     justify-content: center;
     align-items: center;
     padding-bottom: 2%;
-    
+}
+
+.sviEventiFlex {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    padding-bottom: 2%;
+}
+
+.eventItem {
+    background-color: white;
+    margin-bottom: 1%;
+    width: 1020px;
+    height: 260px;
+    padding: 0.5%;
+    border-radius: 20px;
+    margin-bottom: 20px;
+}
+
+.slikaEvent {
+    border-radius: 20px;
+}
+
+.naslovEventa {
+    color: #1F55B3;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 0.25%;
+}
+
+.lokDatDokTekst {
+    color: #D9D9D9;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 0.25%;
+}
+
+.opisEventa {
+    color: #1F55B3;
+    font-size: 12px;
+    padding: 0.25%;
+}
+
+.infoFlex {
+    margin: 0.25%;
+    display: flex;
+    justify-content: left;
+    align-items: left;
+}
+
+.informacije {
+    display: flex;
+    justify-content: left;
+    align-items: left;
+    margin: 0%;
 }

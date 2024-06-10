@@ -1,4 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
+import { Flex } from '@chakra-ui/react';
 import { MapContainer, TileLayer } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import '../styles/Event.css';
@@ -31,17 +32,35 @@ function Event() {
                 </MapContainer>
             </div>
             <div className='eventiDiv'>
-                {events.length > 0 ? (
-                    events.map((event, index) => (
-                        <div key={index} className='eventItem'>
-                            <h3>{event.name}</h3>
-                            <p>{event.location}</p>
-                            <p>{event.date}</p>
-                        </div>
-                    ))
-                ) : (
-                    <p>No events available</p>
-                )}
+                <Flex direction="column" className='sviEventiFlex'>
+                    {events.length > 0 ? (
+                        events.map((event, index) => (
+                            <Flex className='eventItem'>
+                                <img src="images/EventPage/physical.jpg" className='slikaEvent' alt="Slika" style={{ width: '280px', height: 'auto' }} />
+                                <Flex direction="column" key={index}>
+                                    <h3 className='naslovEventa'>{event.name}</h3>
+                                    <Flex direction="column" className='informacije'>
+                                    <Flex className='infoFlex'>
+                                        <img src="images/EventPage/location.png"  alt="Slika" style={{ width: '20px', height: 'auto' }} />
+                                        <p className='lokDatDokTekst'>{event.location}</p>
+                                    </Flex>
+                                    <Flex className='infoFlex'>
+                                        <img src="images/EventPage/calendar.png"  alt="Slika" style={{ width: '20px', height: 'auto' }} />
+                                        <p className='lokDatDokTekst'>{event.date}</p>
+                                    </Flex>
+                                    <Flex className='infoFlex'>
+                                        <img src="images/EventPage/lecturer.png"  alt="Slika" style={{ width: '20px', height: 'auto' }} />
+                                        <p className='lokDatDokTekst'>Dr. {event.doctorInfo.user.firstName} {event.doctorInfo.user.lastName}</p>
+                                    </Flex>
+                                    </Flex>
+                                    <p className='opisEventa'>{event.description}</p>
+                                </Flex>
+                            </Flex>
+                        ))
+                    ) : (
+                        <p>No events available</p>
+                    )}
+                </Flex>
             </div>
         </div>
     );
