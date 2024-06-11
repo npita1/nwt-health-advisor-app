@@ -18,5 +18,5 @@ Web aplikacija namjenjena za pružanje savjetovanja i konzultacija sa zdravstven
 ## Linkovi
 - [Link na dokumentaciju](https://drive.google.com/drive/folders/1fwPgdHgZS7a2KZohop9mhsw21TrYb8e_)
 - [Repozitorij za config server](https://github.com/dmuhic1/server_properties)
-- [Demo video za backend](https://drive.google.com/drive/folders/1KK8eMx89gd9zdu4PTZa4AfMZtyr3n4uE)
+- [Video za backend](https://drive.google.com/drive/folders/1KK8eMx89gd9zdu4PTZa4AfMZtyr3n4uE)
 
