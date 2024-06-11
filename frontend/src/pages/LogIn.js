@@ -8,6 +8,7 @@ import {
     InputRightElement,
   } from '@chakra-ui/react';
 import { logIn } from '../services/userService';
+import '../styles/HomePage.css';
 
 function LogIn() {
     const [email, setEmail] = useState('');
@@ -53,7 +54,7 @@ function LogIn() {
           </InputGroup>
         </FormControl>
 
-        <Button type='submit' colorScheme='teal' mt={4}>
+        <Button type='submit' colorScheme='#1F55B3' className='dugmeLogIn' mt={4}>
           Log In
         </Button>
       </form>

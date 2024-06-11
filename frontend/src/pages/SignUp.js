@@ -9,7 +9,7 @@ import {
 } from '@chakra-ui/react';
 import bcrypt from 'bcryptjs';
 import { addUser } from '../services/userService';
-
+import '../styles/HomePage.css';
 
 function SignUp() {
   const [firstName, setFirstName] = useState('');
@@ -89,7 +89,7 @@ function SignUp() {
           onChange={(e) => setConfirmPassword(e.target.value)}
         />
       </FormControl>
-      <Button type='submit' colorScheme='teal' mt={4}>
+      <Button type='submit' colorScheme='#FF585F' className='dugmeSignUp' mt={4}>
         Sign Up
       </Button>
     </form>
