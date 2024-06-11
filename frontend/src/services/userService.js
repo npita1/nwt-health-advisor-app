@@ -174,3 +174,31 @@ export async function getAllDoctors() {
     throw error;
   }
 }
+
+export async function getDoctorIdByUserId(id) {
+  const token = localStorage.getItem('token');
+  if (!token || token === "") {
+    throw new Error('Token nije pronađen');
+  }
+  try {
+    const response = await fetch(`${API_URL}/user/doctor/getbyuserid?doctorId=${id}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json, text/plain, */*',
+        Authorization: `Bearer ${token}`
+      }
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      console.log('Uspješno dohvaćeni podaci o doktoru:', data.id);
+      return data.id; 
+    } else {
+      throw new Error('Došlo je do greške prilikom dohvaćanja podataka o doktoru.');
+    }
+  } catch (error) {
+    console.error("Došlo je do greške prilikom dohvaćanja podataka o doktoru:" `${error.message}`);
+    throw error;
+  }
+}

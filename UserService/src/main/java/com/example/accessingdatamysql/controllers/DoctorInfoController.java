@@ -67,6 +67,17 @@ public class DoctorInfoController {
         //return ResponseEntity.ok(user);
         return doctor;
     }
+    @GetMapping(path="/doctor/getbyuserid")
+    public DoctorInfoEntity getDoctorByUserId(@RequestParam("doctorId") int userID){
+        DoctorInfoEntity doctor = doctorInfoRepository.getDoctorByUserId(userID);
+
+        if(doctor == null) {
+            throw new UserNotFoundException("Not found doctor by id: " + userID);
+        }
+
+        //return ResponseEntity.ok(user);
+        return doctor;
+    }
 
     @GetMapping(path="/doctor/{doctorID}/articles")
     public @ResponseBody  Map<String, String> getArticlesForDoctor(@PathVariable int doctorID){

@@ -54,6 +54,7 @@ public class SecurityConfiguration {
                         .requestMatchers(POST,"/user/addNewDoctor").permitAll()
                         .requestMatchers(GET,"/user/allUsers").hasRole(ADMIN.name())
                         .requestMatchers(GET,"/user/doctors/{doctorID}").hasAnyRole(ADMIN.name(),DOCTOR.name())
+                        .requestMatchers(GET,"/user/doctor/getbyuserid").hasAnyRole(ADMIN.name(),DOCTOR.name(), USER.name())
                         .requestMatchers(GET,"/user/doctor/{doctorID}/articles").hasRole(DOCTOR.name())
                         .requestMatchers(GET,"/user/users/{userID}").hasAnyRole(DOCTOR.name(),USER.name())
                         .requestMatchers(GET,"/user/users/firstname/{firstname}").hasAnyRole(ADMIN.name(),USER.name(),DOCTOR.name())

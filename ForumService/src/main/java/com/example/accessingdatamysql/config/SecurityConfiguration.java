@@ -40,6 +40,7 @@ public class SecurityConfiguration {
             "/forum/allForumQuestions",
             "/forum/questions/category/{category}",
             "/forum/forumAnswers/question/{questionId}"
+
     };
 
 
@@ -50,6 +51,7 @@ public class SecurityConfiguration {
                         .requestMatchers(openApiEndpoints).permitAll()
                         .requestMatchers(openRoutes).permitAll()
                         .requestMatchers(POST,"/forum/addForumQuestion").hasRole("USER")
+                        .requestMatchers(POST,"/forum/addArticle").hasAnyRole("ADMIN","USER","DOCTOR")
                         .anyRequest()
                         .authenticated()
                 )
