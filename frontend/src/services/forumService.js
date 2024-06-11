@@ -125,34 +125,68 @@ export async function addForumQuestion(userId, questionData) {
   }
 }
 
-export async function addArticle(articleData, userId) {
+// export async function addArticle(articleData, userId, image) {
+//   const token = localStorage.getItem('token');
+//   if (!token || token === "") {
+//     throw new Error('Token nije pronađen');
+//   }
+
+//   try {
+//     console.log('Šaljem zahtjev za dodavanje članka:', articleData);
+//     const response = await fetch(`${API_URL}/forum/addArticle?doctorId=${userId}`, {
+//       method: 'POST',
+//       headers: {
+//         'Content-Type': 'application/json',
+//         Accept: 'application/json, text/plain, */*',
+//         Authorization: `Bearer ${token}`
+//       },
+//       body: JSON.stringify(articleData) // tijelo zahtjeva s podacima članka
+//     });
+
+//     if (!response.ok) {
+//       const errorText = await response.text();
+//       console.error('Dodavanje članka nije uspjelo:', response.status, errorText);
+//       throw new Error(`Dodavanje članka nije uspjelo: ${response.status} - ${errorText}`);
+//     }
+
+//     return response.json();
+//   } catch (error) {
+//     console.error('Mrežna ili serverska greška:', error);
+//     throw error;
+//   }
+// }
+export async function addArticle(articleData, userId, image) {
   const token = localStorage.getItem('token');
   if (!token || token === "") {
-    throw new Error('Token nije pronađen');
+      throw new Error('Token nije pronađen');
   }
 
+  const formData = new FormData();
+  formData.append('doctorId', userId);
+  formData.append('image', image);
+  formData.append('article', new Blob([JSON.stringify(articleData)], { type: 'application/json' }));
+
   try {
-    console.log('Šaljem zahtjev za dodavanje članka:', articleData);
-    const response = await fetch(`${API_URL}/forum/addArticle?doctorId=${userId}`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json, text/plain, */*',
-        Authorization: `Bearer ${token}`
-      },
-      body: JSON.stringify(articleData) // tijelo zahtjeva s podacima članka
-    });
+      console.log('Šaljem zahtjev za dodavanje članka:', articleData);
+      const response = await fetch(`${API_URL}/forum/addArticle`, {
+          method: 'POST',
+          headers: {
+              'Accept': 'application/json, text/plain, */*',
+              'Authorization': `Bearer ${token}`
+          },
+          body: formData
+      });
 
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error('Dodavanje članka nije uspjelo:', response.status, errorText);
-      throw new Error(`Dodavanje članka nije uspjelo: ${response.status} - ${errorText}`);
-    }
+      if (!response.ok) {
+          const errorText = await response.text();
+          console.error('Dodavanje članka nije uspjelo:', response.status, errorText);
+          throw new Error(`Dodavanje članka nije uspjelo: ${response.status} - ${errorText}`);
+      }
 
-    return response.json();
+      return response.json();
   } catch (error) {
-    console.error('Mrežna ili serverska greška:', error);
-    throw error;
+      console.error('Mrežna ili serverska greška:', error);
+      throw error;
   }
 }
 

@@ -1,5 +1,6 @@
 package com.example.accessingdatamysql.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -7,6 +8,7 @@ import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name="article")
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class ArticleEntity {
 
     @Id
@@ -35,15 +37,18 @@ public class ArticleEntity {
     @Pattern(regexp = "^\\d{2}.\\d{2}.\\d{4}$", message = "Datum mora biti u formatu 'DD.MM.YYYY'.")
     private String date;
 
+    private String imagePath;
+
 
     public ArticleEntity() {}
 
-    public ArticleEntity(DoctorInfoEntity doctor, CategoryEntity categoryEntity, String text, String date, String title) {
+    public ArticleEntity(DoctorInfoEntity doctor, CategoryEntity categoryEntity, String text, String date, String title, String imagePath) {
         this.doctor = doctor;
         this.category = categoryEntity;
         this.text = text;
         this.date = date;
         this.title = title;
+        this.imagePath = imagePath;
     }
 
     public Long getId() {
@@ -85,13 +90,23 @@ public class ArticleEntity {
     public void setDate(String date) {
         this.date = date;
     }
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
+    }
 
     @Override
     public String toString() {
         return String.format(
-                "ArticleEntity[id=%d, doctor='%s', categoryEntity='%s', text='%s', date='%s']",
-                id, doctor.toString(), category.toString(), text, date.toString());
+                "ArticleEntity[id=%d, doctor='%s', category='%s', text='%s', date='%s', imagePath='%s']",
+                id, doctor.toString(), category.toString(), text, date, imagePath);
     }
+
+
+
 
     public String getTitle() {
         return title;

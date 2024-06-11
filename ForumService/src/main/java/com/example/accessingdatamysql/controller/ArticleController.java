@@ -7,17 +7,24 @@ import com.example.accessingdatamysql.repository.*;
 
 import com.example.accessingdatamysql.exceptions.ArticleNotFoundException;
 import com.example.accessingdatamysql.service.ArticleService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
-
 @Controller
 @Validated
 @CrossOrigin
@@ -47,40 +54,111 @@ public class ArticleController {
         ArticleEntity newArticle = articleService.addArticle(article);
         return ResponseEntity.ok("Article added.");
     }
-    @PostMapping(path="/addArticle")
-    public @ResponseBody ResponseEntity<?> addArticleNew(
-            @RequestParam("doctorId") int doctorId,
-            @RequestBody ArticleEntity article) {
-
-        DoctorInfoEntity doctor = userClient.getDoctorID(doctorId);
-        if (doctor == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Doktor s ID-om " + doctorId + " nije pronađen.");
+//    @PostMapping(path = "/addArticle", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+//    public @ResponseBody ResponseEntity<?> addArticleNew(
+//            @RequestParam("doctorId") int doctorId,
+//            @RequestParam("image") MultipartFile image,
+//            @RequestPart("article") ArticleEntity article) {
+//        // Spremanje slike u folder
+//        String imagePath = null;
+//        if (!image.isEmpty()) {
+//            try {
+//                byte[] bytes = image.getBytes();
+//                Path path = Paths.get("images/" + image.getOriginalFilename());
+//                Files.write(path, bytes);
+//                imagePath = path.toString();
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Greška pri spremanju slike.");
+//            }
+//        }
+//
+//        DoctorInfoEntity doctor = userClient.getDoctorID(doctorId);
+//        if (doctor == null) {
+//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Doktor s ID-om " + doctorId + " nije pronađen.");
+//        }
+//
+//        // Provjera da li je doktor vec spasen u bazi foruma
+//        DoctorInfoEntity forumDoctor = doctorInfoRepository.findByUserId(doctor.getUser().getId());
+//        if (forumDoctor == null) {
+//            forumDoctor = new DoctorInfoEntity();
+//            UserEntity forumUser = new UserEntity();
+//            forumUser.setUserServiceId(doctor.getUser().getId());
+//            forumUser.setEmail(doctor.getUser().getEmail());
+//            forumUser.setFirstName(doctor.getUser().getFirstName());
+//            forumUser.setLastName(doctor.getUser().getLastName());
+//            forumUser.setPassword(doctor.getUser().getPassword());
+//            userRepository.save(forumUser);
+//
+//            forumDoctor.setUser(forumUser);
+//            forumDoctor.setAbout(doctor.getAbout());
+//            forumDoctor.setSpecialization(doctor.getSpecialization());
+//            forumDoctor.setAvailability(doctor.getAvailability());
+//            forumDoctor.setPhoneNumber(doctor.getPhoneNumber());
+//            doctorInfoRepository.save(forumDoctor);
+//        }
+//        article.setImagePath(imagePath);
+//        ArticleEntity savedArticle = articleService.addArticleDoctor(article, forumDoctor);
+//
+//        return ResponseEntity.ok(savedArticle);
+//    }
+@PostMapping(path = "/addArticle", consumes = "multipart/form-data")
+public @ResponseBody ResponseEntity<?> addArticleNew(
+        @RequestParam("doctorId") int doctorId,
+        @RequestParam("image") @ModelAttribute MultipartFile image,
+        @RequestParam("title") String title,
+        @RequestParam("text") String text,
+        @RequestParam("date") String date
+        ) {
+    // Spremanje slike u folder
+    String imagePath = null;
+    if (!image.isEmpty()) {
+        try {
+            byte[] bytes = image.getBytes();
+            Path path = Paths.get(System.getProperty("user.dir") + "/uploads/"
+                    + image.getOriginalFilename());
+            Files.write(path, bytes);
+            imagePath = path.toString();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Greška pri spremanju slike: " + e.getMessage());
         }
-
-        // Provjera da li je doktor vec spasen u bazi foruma
-        DoctorInfoEntity forumDoctor = doctorInfoRepository.findByUserId(doctor.getUser().getId());
-        if (forumDoctor == null) {
-            forumDoctor = new DoctorInfoEntity();
-            UserEntity forumUser = new UserEntity();
-            forumUser.setUserServiceId(doctor.getUser().getId());
-            forumUser.setEmail(doctor.getUser().getEmail());
-            forumUser.setFirstName(doctor.getUser().getFirstName());
-            forumUser.setLastName(doctor.getUser().getLastName());
-            forumUser.setPassword(doctor.getUser().getPassword());
-            userRepository.save(forumUser);
-
-            forumDoctor.setUser(forumUser);
-            forumDoctor.setAbout(doctor.getAbout());
-            forumDoctor.setSpecialization(doctor.getSpecialization());
-            forumDoctor.setAvailability(doctor.getAvailability());
-            forumDoctor.setPhoneNumber(doctor.getPhoneNumber());
-            doctorInfoRepository.save(forumDoctor);
-        }
-
-        ArticleEntity savedArticle = articleService.addArticleDoctor(article, forumDoctor);
-
-        return ResponseEntity.ok(savedArticle);
     }
+
+    DoctorInfoEntity doctor = userClient.getDoctorID(doctorId);
+    if (doctor == null) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Doktor s ID-om " + doctorId + " nije pronađen.");
+    }
+
+    // Provjera da li je doktor vec spasen u bazi foruma
+    DoctorInfoEntity forumDoctor = doctorInfoRepository.findByUserId(doctor.getUser().getId());
+    if (forumDoctor == null) {
+        forumDoctor = new DoctorInfoEntity();
+        UserEntity forumUser = new UserEntity();
+        forumUser.setUserServiceId(doctor.getUser().getId());
+        forumUser.setEmail(doctor.getUser().getEmail());
+        forumUser.setFirstName(doctor.getUser().getFirstName());
+        forumUser.setLastName(doctor.getUser().getLastName());
+        forumUser.setPassword(doctor.getUser().getPassword());
+        userRepository.save(forumUser);
+
+        forumDoctor.setUser(forumUser);
+        forumDoctor.setAbout(doctor.getAbout());
+        forumDoctor.setSpecialization(doctor.getSpecialization());
+        forumDoctor.setAvailability(doctor.getAvailability());
+        forumDoctor.setPhoneNumber(doctor.getPhoneNumber());
+        doctorInfoRepository.save(forumDoctor);
+    }
+   ArticleEntity article = new ArticleEntity();
+    article.setImagePath(imagePath);
+    article.setTitle(title);
+    article.setText(text);
+    article.setDate(date);
+   ArticleEntity savedArticle = articleService.addArticleDoctor(article, forumDoctor);
+
+    return ResponseEntity.ok(savedArticle);
+}
+
 
 
 

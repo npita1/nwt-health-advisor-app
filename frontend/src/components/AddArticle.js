@@ -17,6 +17,7 @@ export default function AddArticle() {
     const [fajlovi, postaviFajlove] = useState([]);
     const [naslov, postaviNaslov] = useState('');
     const [kategorija, postaviKategoriju] = useState('');
+    const [slika, postaviSliku] = useState([]);
 
     async function dohvatiKategorije() {
         try {
@@ -34,9 +35,8 @@ export default function AddArticle() {
 
     async function dodajClanakUBazu(articleData) {
         try {
-           const doctorID = await getDoctorIdByUserId(localStorage.getItem('userId'))
-            await addArticle(articleData, doctorID);
-            // await addArticle(articleData, 2);
+            const doctorID = await getDoctorIdByUserId(localStorage.getItem('userId'));
+            await addArticle(articleData, doctorID, slika[0].file);
         } catch (error) {
             console.error('Greška pri dodavanju članka:', error);
         }
@@ -56,32 +56,39 @@ export default function AddArticle() {
         postaviFajlove(fileItems);
     };
 
+    const handleImageChange = (fileItems) => {
+        postaviSliku(fileItems);
+    };
+
     const handleSubmit = () => {
         const datum = getCurrentDate();
         const podaciClanka = {
-            doctor: {
-                about: "string",
-                specialization: "string",
-                user: {
-                  id: localStorage.getItem('userId'),
-                  email: "string",
-                  firstName: "string",
-                  lastName: "string",
-                  type: 0,
-                  password: "string",
-                  userServiceId: 0
+
+                doctor: {
+                    about: "string",
+                    specialization: "string",
+                    user: {
+                        id: localStorage.getItem('userId'),
+                        email: "string",
+                        firstName: "string",
+                        lastName: "string",
+                        type: 0,
+                        password: "string",
+                        userServiceId: 0
+                    },
+                    availability: "Dostupnost",
+                    phoneNumber: "(123) 456-7890"
                 },
-                availability: "Dostupnost",
-                phoneNumber: "(123) 456-7890"
-              },
-              category: {
-                id: kategorija,
-                name: "string",
-                description: "string"
-              },
-              title: naslov,
-              text: sadrzajFajla,
-              date: datum
+                category: {
+                    id: kategorija,
+                    name: "string",
+                    description: "string"
+                },
+                title: naslov,
+                text: sadrzajFajla,
+                date: datum,
+                imagePath: "string"
+          
         };
         console.log('Podaci članka:', podaciClanka);
         dodajClanakUBazu(podaciClanka);
@@ -121,6 +128,18 @@ export default function AddArticle() {
                     onupdatefiles={handleFileChange}
                     acceptedFileTypes={['text/plain']}
                     labelIdle='Povucite i otpustite vaš fajl ili <span class="filepond--label-action">Pretražite</span>'
+                    maxFileSize='10MB'
+                />
+            </FormControl>
+            
+            <FormControl>
+                <FormLabel>Postavi sliku</FormLabel>
+                <FilePond
+                    files={slika}
+                    allowMultiple={false}
+                    onupdatefiles={handleImageChange}
+                    acceptedFileTypes={['image/jpeg', 'image/png']}
+                    labelIdle='Povucite i otpustite vašu sliku ili <span class="filepond--label-action">Pretražite</span> <br/> (samo JPEG i PNG formati)'
                     maxFileSize='10MB'
                 />
             </FormControl>
