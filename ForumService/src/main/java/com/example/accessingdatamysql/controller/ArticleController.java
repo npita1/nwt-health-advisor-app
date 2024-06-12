@@ -25,6 +25,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
+
 @Controller
 @Validated
 @CrossOrigin
@@ -108,17 +110,22 @@ public @ResponseBody ResponseEntity<?> addArticleNew(
         @RequestParam("image") @ModelAttribute MultipartFile image,
         @RequestParam("title") String title,
         @RequestParam("text") String text,
-        @RequestParam("date") String date
+        @RequestParam("date") String date,
+        @RequestParam("categoryId") Long categoryId
+
         ) {
     // Spremanje slike u folder
     String imagePath = null;
     if (!image.isEmpty()) {
         try {
             byte[] bytes = image.getBytes();
-            Path path = Paths.get(System.getProperty("user.dir") + "/uploads/"
-                    + image.getOriginalFilename());
+//            Path path = Paths.get(System.getProperty("user.dir") + "/uploads/"
+//                    + image.getOriginalFilename());
+//            Files.write(path, bytes);
+//            imagePath = path.toString();
+            Path path = Paths.get("uploads/" + image.getOriginalFilename());
             Files.write(path, bytes);
-            imagePath = path.toString();
+            imagePath = "/uploads/" + image.getOriginalFilename(); // Relativna putanja
         } catch (IOException e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Greška pri spremanju slike: " + e.getMessage());
@@ -149,11 +156,22 @@ public @ResponseBody ResponseEntity<?> addArticleNew(
         forumDoctor.setPhoneNumber(doctor.getPhoneNumber());
         doctorInfoRepository.save(forumDoctor);
     }
-   ArticleEntity article = new ArticleEntity();
+    // Učitajte kategoriju
+    Optional<CategoryEntity> categoryOpt = categoryRepository.findById(categoryId);
+    if (categoryOpt.isEmpty()) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Kategorija s ID-om " + categoryId + " nije pronađena.");
+    }
+    CategoryEntity category = categoryOpt.get();
+
+    // Kreirajte članak
+    ArticleEntity article = new ArticleEntity();
     article.setImagePath(imagePath);
     article.setTitle(title);
     article.setText(text);
     article.setDate(date);
+    article.setDoctor(forumDoctor);
+    article.setCategory(category);
+
    ArticleEntity savedArticle = articleService.addArticleDoctor(article, forumDoctor);
 
     return ResponseEntity.ok(savedArticle);

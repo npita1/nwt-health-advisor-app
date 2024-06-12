@@ -63,33 +63,11 @@ export default function AddArticle() {
     const handleSubmit = () => {
         const datum = getCurrentDate();
         const podaciClanka = {
-
-                doctor: {
-                    about: "string",
-                    specialization: "string",
-                    user: {
-                        id: localStorage.getItem('userId'),
-                        email: "string",
-                        firstName: "string",
-                        lastName: "string",
-                        type: 0,
-                        password: "string",
-                        userServiceId: 0
-                    },
-                    availability: "Dostupnost",
-                    phoneNumber: "(123) 456-7890"
-                },
-                category: {
-                    id: kategorija,
-                    name: "string",
-                    description: "string"
-                },
-                title: naslov,
-                text: sadrzajFajla,
-                date: datum,
-                imagePath: "string"
-          
-        };
+            title: naslov,
+            text: sadrzajFajla,
+            date: datum,
+            categoryId: kategorija        
+    };
         console.log('Podaci članka:', podaciClanka);
         dodajClanakUBazu(podaciClanka);
     };

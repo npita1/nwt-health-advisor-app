@@ -25,7 +25,7 @@ export default function Article({ title, subtitle, image, articleInfo, onClick})
           
             <CardMedia
               component="img"
-              image="images/StaffPage/article.png"
+              image={`http://localhost:8083${articleInfo.imagePath}`}
               alt="green iguana"
               style={{ position: 'absolute', top: 0, left: -30, width: '100%', height: '100%' }}
             />

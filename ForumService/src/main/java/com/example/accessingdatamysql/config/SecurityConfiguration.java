@@ -39,7 +39,8 @@ public class SecurityConfiguration {
             "/forum/allArticles",
             "/forum/allForumQuestions",
             "/forum/questions/category/{category}",
-            "/forum/forumAnswers/question/{questionId}"
+            "/forum/forumAnswers/question/{questionId}",
+            "/uploads/**"
 
     };
 

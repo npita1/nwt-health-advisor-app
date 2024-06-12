@@ -163,15 +163,18 @@ export async function addArticle(articleData, userId, image) {
 
   const formData = new FormData();
   formData.append('doctorId', userId);
+  formData.append('title', articleData.title);
+  formData.append('text', articleData.text);
+  formData.append('date', articleData.date);
   formData.append('image', image);
-  formData.append('article', new Blob([JSON.stringify(articleData)], { type: 'application/json' }));
+  formData.append('categoryId', articleData.categoryId);
 
   try {
       console.log('Šaljem zahtjev za dodavanje članka:', articleData);
       const response = await fetch(`${API_URL}/forum/addArticle`, {
           method: 'POST',
           headers: {
-              'Accept': 'application/json, text/plain, */*',
+              'Accept': '*/*',
               'Authorization': `Bearer ${token}`
           },
           body: formData
@@ -182,13 +185,14 @@ export async function addArticle(articleData, userId, image) {
           console.error('Dodavanje članka nije uspjelo:', response.status, errorText);
           throw new Error(`Dodavanje članka nije uspjelo: ${response.status} - ${errorText}`);
       }
-
+      window.location.reload();
       return response.json();
   } catch (error) {
       console.error('Mrežna ili serverska greška:', error);
       throw error;
   }
 }
+
 
 
 
