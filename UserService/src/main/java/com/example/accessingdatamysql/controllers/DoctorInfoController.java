@@ -11,10 +11,16 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
 
@@ -37,6 +43,32 @@ public class DoctorInfoController {
         doctorInfoRepository.save(doctor);
         return ResponseEntity.ok("Doctor cretaed successfully");
     }
+
+//        @PostMapping(path="/addDoctor", consumes = "multipart/form-data") // Map ONLY POST Requests
+//    public @ResponseBody ResponseEntity<String> addNewDoctor (@Valid @RequestBody DoctorInfoEntity doctor,
+//                                                              BindingResult bindingResult,
+//                                                              @RequestParam("image") @ModelAttribute MultipartFile image) {
+//            // Spremanje slike u folder
+//            String imagePath = null;
+//            if (!image.isEmpty()) {
+//                try {
+//                    byte[] bytes = image.getBytes();
+//                    Path path = Paths.get("uploads/" + image.getOriginalFilename());
+//                    Files.write(path, bytes);
+//                    imagePath = "/uploads/" + image.getOriginalFilename(); // Relativna putanja
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Greška pri spremanju slike: " + e.getMessage());
+//                }
+//            }
+//        if(bindingResult.hasErrors()) {
+//            return ResponseEntity.badRequest().body("Validation failed: " + bindingResult.getAllErrors());
+//        }
+//        doctor.setImagePath(imagePath);
+//        doctorInfoRepository.save(doctor);
+//        return ResponseEntity.ok("Doctor cretaed successfully");
+//    }
+
 
     @GetMapping(path="/allDoctors")
     public @ResponseBody Iterable<DoctorInfoEntity> getAllDoctors() {
@@ -84,24 +116,47 @@ public class DoctorInfoController {
         return  forumClient.getTitleAndTextArticleDoctorId(doctorID);
 
     }
-    @PostMapping("/addNewDoctor")
-    public ResponseEntity<DoctorInfoEntity> addDoctor( @Valid @RequestBody DoctorRequest doctorRequest) {
+    @PostMapping(path = "/addNewDoctor", consumes = "multipart/form-data")
+    public ResponseEntity<DoctorInfoEntity> addDoctor(@Valid @RequestParam("email") String email,
+                                                      @Valid @RequestParam("firstName") String firstName,
+                                                      @Valid @RequestParam("lastName") String lastName,
+                                                      @Valid @RequestParam("password") String password,
+                                                      @Valid @RequestParam("about") String about,
+                                                      @Valid @RequestParam("specialization") String specialization,
+                                                      @Valid @RequestParam("availability") String availability,
+                                                      @Valid @RequestParam("phoneNumber") String phoneNumber,
+                                                      @RequestParam("image") @ModelAttribute MultipartFile image
+    ) {
+        // Spremanje slike u folder
+        String imagePath = null;
+        if (!image.isEmpty()) {
+            try {
+                byte[] bytes = image.getBytes();
+                Path path = Paths.get("uploads/" + image.getOriginalFilename());
+                Files.write(path, bytes);
+                imagePath = "/uploads/" + image.getOriginalFilename(); // Relativna putanja
+            } catch (IOException e) {
+                e.printStackTrace();
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+            }
+        }
+
         UserEntity user = new UserEntity();
-        user.setEmail(doctorRequest.getEmail());
-        user.setFirstName(doctorRequest.getFirstName());
-        user.setLastName(doctorRequest.getLastName());
-        user.setPassword(doctorRequest.getPassword());
+        user.setEmail(email);
+        user.setFirstName(firstName);
+        user.setLastName(lastName);
+        user.setPassword(password);
 
         DoctorInfoEntity doctorInfo = new DoctorInfoEntity();
-        doctorInfo.setAbout(doctorRequest.getAbout());
-        doctorInfo.setSpecialization(doctorRequest.getSpecialization());
-        doctorInfo.setAvailability(doctorRequest.getAvailability());
-        doctorInfo.setPhoneNumber(doctorRequest.getPhoneNumber());
+        doctorInfo.setAbout(about);
+        doctorInfo.setSpecialization(specialization);
+        doctorInfo.setAvailability(availability);
+        doctorInfo.setPhoneNumber(phoneNumber);
+        doctorInfo.setImagePath(imagePath);
 
         DoctorInfoEntity savedDoctorInfo = doctorService.addDoctor(user, doctorInfo);
         return ResponseEntity.ok(savedDoctorInfo);
     }
-
 
 
 }

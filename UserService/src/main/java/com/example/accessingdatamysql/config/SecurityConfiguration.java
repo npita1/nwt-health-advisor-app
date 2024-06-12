@@ -38,6 +38,7 @@ public class SecurityConfiguration {
             "/swagger-ui.html",
             "/authentication/user",
             "/authentication/user-id",
+            "/uploads/**"
     };
 
 
@@ -51,7 +52,7 @@ public class SecurityConfiguration {
                         .requestMatchers(GET,"/api/tokens/validate").permitAll()
                         .requestMatchers(GET,"/user/allDoctors").permitAll()
                         .requestMatchers(GET,"/user/doctors/specialist/{specialization}").permitAll()
-                        .requestMatchers(POST,"/user/addNewDoctor").permitAll()
+                        .requestMatchers(POST,"/user/addNewDoctor").hasAnyRole(ADMIN.name(),DOCTOR.name(), USER.name())
                         .requestMatchers(GET,"/user/allUsers").hasRole(ADMIN.name())
                         .requestMatchers(GET,"/user/doctors/{doctorID}").hasAnyRole(ADMIN.name(),DOCTOR.name())
                         .requestMatchers(GET,"/user/doctor/getbyuserid").hasAnyRole(ADMIN.name(),DOCTOR.name(), USER.name())

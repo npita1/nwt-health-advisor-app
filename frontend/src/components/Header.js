@@ -29,6 +29,7 @@ function Header() {
   const [isOpen, setIsOpen] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
   const cancelRef = React.useRef();
+  const [userRole, setUserRole] = useState(localStorage.getItem('userRole'));
 
   const handleLogout = async () => {
     try {
@@ -61,6 +62,10 @@ function Header() {
             <Tab>Workshops and Events</Tab>
             <Tab>Articles</Tab> 
             <Tab>Our Specialists</Tab>
+            {(userRole === "DOCTOR" || userRole === "ADMIN") ?
+        <Tab>Add doctor</Tab> 
+         : <></>}
+            
             {localStorage.token ?
               <Button className='dugmeLogout' colorScheme="#FF585F" size='xs' onClick={onOpen} style={{ marginLeft: 'auto' }}>Logout</Button>
               : <></>}

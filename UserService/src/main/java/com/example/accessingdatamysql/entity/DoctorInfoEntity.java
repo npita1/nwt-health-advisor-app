@@ -35,13 +35,15 @@ public class DoctorInfoEntity {
     @Valid
     private UserEntity user;
 
+    private String imagePath;
+
 
 
     @Override
     public String toString() {
         return String.format(
-                "DoctorInfoEntity[id=%d, about='%s', specialization ='%s', availability='%s', user='%s']",
-                id, about, specialization, availability, user);
+                "DoctorInfoEntity[id=%d, about='%s', specialization ='%s', availability='%s', user='%s', imagePath='%s]",
+                id, about, specialization, availability, user, imagePath);
     }
 
     public String getAbout() {
@@ -82,6 +84,14 @@ public class DoctorInfoEntity {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
     }
 }
 

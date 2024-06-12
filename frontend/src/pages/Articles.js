@@ -6,28 +6,6 @@ import '../styles/Articles.css';
 import { Button, Flex, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton } from '@chakra-ui/react';
 import { SmallAddIcon, AddIcon} from '@chakra-ui/icons';
 import AddArticle from '../components/AddArticle';
-// const articlesData = [
-//   {
-//     title: "Lizard",
-//     description: "Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica.",
-//     image: "images/StaffPage/article.png"
-//   },
-//   {
-//     title: "Chameleon",
-//     description: "Chameleons are known for their distinct abilities to change color and their unique eyes which can move independently of each other.",
-//     image: "images/StaffPage/chameleon.png"
-//   },
-//   {
-//     title: "Gecko",
-//     description: "Geckos are small to medium-sized lizards belonging to the infraorder Gekkota, found in warm climates throughout the world.",
-//     image: "images/StaffPage/gecko.png"
-//   },
-//   {
-//     title: "Gecko",
-//     description: "Geckos are small to medium-sized lizards belonging to the infraorder Gekkota, found in warm climates throughout the world.",
-//     image: "images/StaffPage/gecko.png"
-//   }
-// ];
 
 const Articles = () => {
   const [articlesData, setArticlesData] = useState([]);
@@ -43,9 +21,6 @@ const Articles = () => {
     setShowAddArticle(false);
   };
 
-  
-
-
   async function fetchArticles() {
     try {
       const articles = await getAllArticles();
@@ -56,7 +31,6 @@ const Articles = () => {
     }
   };
   
-
   useEffect(() => {
     fetchArticles();
     
@@ -65,14 +39,6 @@ const Articles = () => {
   useEffect(() => {
     setUserRole(localStorage.getItem('userRole'))
   }, [localStorage.getItem('userRole')])
-
-  // useEffect(() => {
-  //   // setUserRole(localStorage.userRole)
-  //   // console.log("ROULAAA", userRole)
-   
-    
-  // }, []);
-
 
   return (
     <>
