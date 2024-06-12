@@ -199,3 +199,13 @@
     display: block; /* Izbjegavamo neželjeni whitespace */
     margin: auto; /* Centriramo ikonu */
 }
+
+.textFieldOdgovor {
+    width: 1000px;
+    margin: 1%;
+}
+
+.dugmeOdgovor {
+    margin: 1%;
+    background-color: #FF585F;
+}

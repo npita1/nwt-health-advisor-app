@@ -100,7 +100,7 @@ public class DoctorInfoController {
         return doctor;
     }
     @GetMapping(path="/doctor/getbyuserid")
-    public DoctorInfoEntity getDoctorByUserId(@RequestParam("doctorId") int userID){
+    public @ResponseBody ResponseEntity<?> getDoctorByUserId(@RequestParam("doctorId") int userID){
         DoctorInfoEntity doctor = doctorInfoRepository.getDoctorByUserId(userID);
 
         if(doctor == null) {
@@ -108,7 +108,7 @@ public class DoctorInfoController {
         }
 
         //return ResponseEntity.ok(user);
-        return doctor;
+        return ResponseEntity.ok(doctor);
     }
 
     @GetMapping(path="/doctor/{doctorID}/articles")

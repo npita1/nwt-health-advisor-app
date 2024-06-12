@@ -32,8 +32,10 @@ import {
   getForumQuestionsByCategory,
   getAllCategories,
   addForumQuestion,
-  getForumAnswersByQuestionId
+  getForumAnswersByQuestionId,
+  addForumAnswer // Import the function to add an answer
 } from '../services/forumService';
+import { getDoctorIdByUserId } from '../services/userService';
 
 function QuestionsAndAnswers() {
   const [questions, setQuestions] = useState([]);
@@ -45,6 +47,8 @@ function QuestionsAndAnswers() {
   const [anonymity, setAnonymity] = useState(true);
   const [categories, setCategories] = useState([]);
   const [expandedQuestionId, setExpandedQuestionId] = useState(null);
+  const [userRole, setUserRole] = useState(localStorage.getItem('userRole'));
+  const [answerText, setAnswerText] = useState('');
 
   useEffect(() => {
     const fetchQuestions = async () => {
@@ -96,28 +100,27 @@ function QuestionsAndAnswers() {
     return `${day}.${month}.${year}`;
   }
 
-    const handleQuestionSubmit = async () => {
+  const handleQuestionSubmit = async () => {
     console.log('Question title:', questionTitle);
     console.log('Question text:', questionText);
     console.log('Question category:', questionCategory);
     console.log('Anonymity:', anonymity);
-    
+
     try {
       const userId = localStorage.getItem('userId');
       console.log('User ID:', userId);
-      
-      if(userId == null || userId === "") {
+
+      if (userId == null || userId === "") {
         alert("You need to be logged in to post a question. Please log in to continue.");
         return;
       }
 
       var isAnonymous;
-      if(anonymity === 'false') {
+      if (anonymity === 'false') {
         isAnonymous = false;
       } else {
         isAnonymous = true;
       }
-      
 
       const questionData = {
         id: 0,
@@ -142,24 +145,90 @@ function QuestionsAndAnswers() {
       };
 
       console.log('Sending request to add question:', JSON.stringify(questionData, null, 2));
-  
+
       const addedQuestion = await addForumQuestion(userId, questionData);
       console.log('Added question:', addedQuestion);
-  
+
       setQuestions(prevQuestions => [addedQuestion, ...prevQuestions]);
-  
+
       setQuestionTitle('');
       setQuestionText('');
       setQuestionCategory('');
       setAnonymity(true);
-  
+
       handleModalClose();
     } catch (error) {
       console.error('Greška prilikom dodavanja pitanja:', error);
       alert("Greska se desila");
     }
   };
-  
+
+  const handleAnswerSubmit = async (questionId) => {
+    try {
+      const userId = localStorage.getItem('userId');
+      const doctorID = await getDoctorIdByUserId(userId);
+
+      const answerData = {
+        id: 0,
+        question: {
+          id: parseInt(questionId),
+          user: {
+            id: 0,
+            email: "string",
+            firstName: "string",
+            lastName: "string",
+            type: 0,
+            password: "string",
+            userServiceId: 0
+          },
+          category: {
+            id: 0,
+            name: "string",
+            description: "string"
+          },
+          title: "string",
+          text: "string",
+          date: "06|37]9260",
+          anonymity: true
+        },
+        doctor: {
+          id: doctorID,
+          about: "string",
+          specialization: "string",
+          user: {
+            id: 0,
+            email: "string",
+            firstName: "string",
+            lastName: "string",
+            type: 0,
+            password: "string",
+            userServiceId: 0
+          },
+          availability: "- -L  pp -p p}pL}L {-LL-}-p L}p-{-LL{  pLpLL{p} -   -pL L -}-}L{ {-{p{}{ L }{ p{ -L LL{- -LL} { L L p-}}-L}{L}L L}{}{ L}}  p{} -}{L-L {} ",
+          phoneNumber: "(556)              42265979"
+        },
+        text: answerText,
+        date: getCurrentDate()
+      };
+
+      console.log('Sending request to add answer:', JSON.stringify(answerData, null, 2));
+
+      const addedAnswer = await addForumAnswer(answerData);
+      console.log('Added answer:', addedAnswer);
+
+      // Update the questions state to include the new answer
+      setQuestions(prevQuestions => 
+        prevQuestions.map(question =>
+          question.id === questionId ? { ...question, answers: [...question.answers, addedAnswer] } : question
+        )
+      );
+
+      setAnswerText(''); // Clear the answer text field
+    } catch (error) {
+      console.error('Error submitting answer:', error);
+      alert("An error occurred while submitting the answer.");
+    }
+  };
 
   const categoryIcons = {
     Immunology: 'images/CategoryIcons/AllergyIcon.png',
@@ -222,10 +291,10 @@ function QuestionsAndAnswers() {
 
       <div className='pitanjaDiv'>
         <Flex direction="column" className='pitanjaFlex'>
-        <Accordion allowToggle > 
+          <Accordion allowToggle > 
             {questions.map(question => (
               <AccordionItem key={question.id} className='akordionItem'>
-                  <AccordionButton onClick={() => handleQuestionClick(question)} className='akordionItem'>
+                <AccordionButton onClick={() => handleQuestionClick(question)} className='akordionItem'>
                   <Box as='span' flex='1' textAlign='left'>
                     <div className='pitanje' key={question.id}>
                       <Flex direction="column">
@@ -248,32 +317,50 @@ function QuestionsAndAnswers() {
                         <p className='tekstPitanja'>{question.text}</p>
                       </Flex>
                     </div>
-                    </Box>
-                    <AccordionIcon />
-                  </AccordionButton>
+                  </Box>
+                  <AccordionIcon />
+                </AccordionButton>
                 <AccordionPanel pb={4} className='odgovorPanel'>
                   <div className='odgovori'>
                     {question.answers && question.answers.map((answer, index) => (
-                      <div className='divJednogOdgovora'>
+                      <div className='divJednogOdgovora' key={index}>
                         <Flex>
-                            <img
-                              src="images/doctorIcon.png"
-                                alt="slika"
-                              style={{ width: '50px', height: '50px' }}
-                            />
-                            <Flex direction="column">
-                                <p className='odgovorImeDoktora'>Dr. {answer.doctor.user.firstName} {answer.doctor.user.lastName}</p>
-                                <p className='datumPitanja'>{answer.date}</p>
-                                <p className='tekstOdgovora'>{answer.text}</p>
-                            </Flex>
+                          <img
+                            src="images/doctorIcon.png"
+                            alt="Doctor Icon"
+                            style={{ width: '50px', height: '50px' }}
+                          />
+                          <Flex direction="column">
+                            <p className='odgovorImeDoktora'>Dr. {answer.doctor.user.firstName} {answer.doctor.user.lastName}</p>
+                            <p className='datumPitanja'>{answer.date}</p>
+                            <p className='tekstOdgovora'>{answer.text}</p>
+                          </Flex>
                         </Flex>
                       </div>
                     ))}
                   </div>
+                  {userRole === "DOCTOR" ? (
+                    <>
+                      <Textarea
+                        placeholder='Type your answer here...'
+                        className='textFieldOdgovor'
+                        value={answerText}
+                        onChange={(e) => setAnswerText(e.target.value)}
+                      />
+                      <Button
+                        size='sm'
+                        className='dugmeOdgovor'
+                        colorScheme='#FF585F'
+                        onClick={() => handleAnswerSubmit(question.id)}
+                      >
+                        Post Answer
+                      </Button>
+                    </>
+                  ) : null}
                 </AccordionPanel>
               </AccordionItem>
             ))}
-        </Accordion>
+          </Accordion>
         </Flex>
       </div>
 

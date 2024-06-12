@@ -17,7 +17,6 @@ public class ForumAnswerEntity {
 
     @ManyToOne
     @JoinColumn(name = "question_id", referencedColumnName = "id")
-    @JsonIgnore
     private ForumQuestionEntity question;
 
     @ManyToOne

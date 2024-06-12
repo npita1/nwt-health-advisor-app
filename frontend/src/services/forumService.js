@@ -185,4 +185,34 @@ export async function getForumAnswersByQuestionId(id) {
   }
 }
 
+export async function addForumAnswer(answerData) {
+  const token = localStorage.getItem('token');
+  if (!token || token === "") {
+    throw new Error('No token found');
+  }
+
+  try {
+    console.log('Sending request to add question:', answerData);
+    const response = await fetch(`${API_URL}/forum/addForumAnswer`, {
+      method: 'POST',
+      headers: {
+        "Content-Type": 'application/json',
+        Accept: 'application/json, text/plain, */*',
+        Authorization: `Bearer ${token}`
+      },
+      body: JSON.stringify(answerData)
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error('Failed to add question:', response.status, errorText);
+      throw new Error(`Failed to add question: ${response.status} - ${errorText}`);
+    }
+
+    return response.json();
+  } catch (error) {
+    console.error('Network or server error:', error);
+    throw error;
+  }
+}
 
