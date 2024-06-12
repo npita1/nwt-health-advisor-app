@@ -24,6 +24,7 @@ import Event from '../pages/Event';
 import Articles from '../pages/Articles';
 import { logout as logoutService } from '../services/userService';
 import '../styles/HomePage.css';
+import AddDoctor from '../pages/addDoctor';
 
 function Header() {
   const [isOpen, setIsOpen] = useState(false);
@@ -86,7 +87,11 @@ function Header() {
             <TabPanel>
               <StaffPage />
             </TabPanel>
+            <TabPanel>
+            <AddDoctor />
+          </TabPanel>
           </TabPanels>
+          
         </Tabs>
       </div>
       

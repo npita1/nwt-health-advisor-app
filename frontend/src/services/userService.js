@@ -117,32 +117,51 @@ export async function getUserByToken() {
   }
 }
 
-// export async function getAllDoctors() {
-//   const token = localStorage.getItem('token');
+export async function addDoctor(doctorData, image) {
+  const token = localStorage.getItem('token');
+  if (!token || token === "") {
+    throw new Error('Token not found');
+  }
 
-//     // Provjeri da li je token dostupan
-//     if (!token) {
-//       throw new Error('Nije pronađen token u local storage-u.');
-//     }
-//   try {
-//     const response = await axios.get(`${API_URL}/user/allDoctors`, {
-//       headers: {
-//         // 'Accept': 'application/json',
-//         'Authorization': `Bearer ${token}`
-//       }
-//     });
+  const formData = new FormData();
+  formData.append('email', doctorData.email);
+  formData.append('firstName', doctorData.firstName);
+  formData.append('lastName', doctorData.lastName);
+  formData.append('password', doctorData.password);
+  formData.append('about', doctorData.about);
+  formData.append('specialization', doctorData.specialization);
+  formData.append('availability', doctorData.availability);
+  formData.append('phoneNumber', doctorData.phoneNumber);
+  formData.append('image', image);
 
-//     if (response.status === 200) {
-//       console.log('Uspješno dohvaćeni podaci o doktorima:', response.data);
-//       return response.data;
-//     } else {
-//       throw new Error('Neuspješno dobavljanje podataka o doktorima.');
-//     }
-//   } catch (error) {
-//     console.error('Greška prilikom dohvaćanja doktora:', error);
-//     throw error;
-//   }
-// }
+  try {
+    console.log('Sending request to add doctor:', doctorData);
+    const response = await fetch(`${API_URL}/user/addNewDoctor`, {
+      method: 'POST',
+      headers: {
+        'Accept': '*/*',
+        'Authorization': `Bearer ${token}`
+      },
+      body: formData
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error('Adding doctor failed:', response.status, errorText);
+      alert('Adding doctor failed');
+      throw new Error(`Adding doctor failed: ${response.status} - ${errorText}`);
+    }
+
+    const responseData = await response.json();
+    console.log('Doctor added successfully:', responseData);
+    alert('Doctor added successfully');
+
+    return responseData;
+  } catch (error) {
+    console.error('Network or server error:', error);
+    throw error;
+  }
+}
 
 
 
