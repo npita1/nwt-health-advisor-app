@@ -27,9 +27,9 @@ public class ReservationController {
     @Autowired
     private EventRepository eventRepository;
     @PostMapping(path="/addReservation")
-    public  @ResponseBody String addNewReservation(@Valid @RequestBody ReservationEntity reservation){
+    public  @ResponseBody ResponseEntity<?> addNewReservation(@Valid @RequestBody ReservationEntity reservation){
         reservationRepository.save(reservation);
-        return "Saved";
+        return ResponseEntity.ok(reservation);
     }
     @GetMapping(path = "/allReservations")
     public @ResponseBody Iterable<ReservationEntity> getAllReservations(){

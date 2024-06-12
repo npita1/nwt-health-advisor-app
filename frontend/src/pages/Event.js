@@ -49,7 +49,7 @@ function Event() {
         console.log('User ID:', userId);
         
         if(userId == null || userId === "") {
-          alert("You need to be logged in to post a question. Please log in to continue.");
+          alert("You need to be logged in to make a reservation. Please log in to continue.");
           return;
         }
 
@@ -86,12 +86,13 @@ function Event() {
               }
           };
         
-        console.log(JSON.stringify(eventReservationData, null, 2));
+        //console.log(JSON.stringify(eventReservationData, null, 2));
 
         const addedReservation = await addReservation(eventReservationData);
+        alert("Event reservation successful!");
         
         } catch (error) {
-            console.error('Greška prilikom dodavanja pitanja:', error);
+            console.error('Greška prilikom dodavanja rezervacije:', error);
             alert("Greska se desila");
         }
         
