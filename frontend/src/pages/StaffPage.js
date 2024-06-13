@@ -12,6 +12,7 @@ import {
   MenuGroup,
   MenuOptionGroup,
   MenuDivider,
+  Box
 } from '@chakra-ui/react'
 import { ChevronDownIcon, EmailIcon, PhoneIcon} from '@chakra-ui/icons';
 import { Card, Spacer, CardHeader, CardBody, CardFooter, Image, Stack, Heading, Text, Button } from '@chakra-ui/react'
@@ -76,7 +77,7 @@ const StaffPage = () => {
   };
 
   return (
-    <div>
+    <Box width="100%" maxWidth="1000px" mx="auto" p={4}>
       <div className='staff-container'>
         <Search
           placeholder="Search"
@@ -125,7 +126,7 @@ const StaffPage = () => {
           <DoctorCard doctorInfo={doctor} />
         </div>
       ))}
-    </div>
+    </Box>
   );
 };
 

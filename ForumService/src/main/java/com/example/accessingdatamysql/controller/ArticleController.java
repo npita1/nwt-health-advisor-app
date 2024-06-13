@@ -154,6 +154,7 @@ public @ResponseBody ResponseEntity<?> addArticleNew(
         forumDoctor.setSpecialization(doctor.getSpecialization());
         forumDoctor.setAvailability(doctor.getAvailability());
         forumDoctor.setPhoneNumber(doctor.getPhoneNumber());
+        forumDoctor.setImagePath(doctor.getImagePath());
         doctorInfoRepository.save(forumDoctor);
     }
     // Učitajte kategoriju

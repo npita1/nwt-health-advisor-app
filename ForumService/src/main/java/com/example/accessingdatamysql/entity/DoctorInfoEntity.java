@@ -30,6 +30,8 @@ public class DoctorInfoEntity {
     @Pattern(regexp = "^\\(\\d{3}\\)\\s*\\d{8}$", message = "Format broja telefona mora biti '(brojbrojbroj) brojbrojbroj'.")
     private String phoneNumber;
 
+    private String imagePath;
+
     public DoctorInfoEntity() {}
 
     @Override
@@ -86,6 +88,14 @@ public class DoctorInfoEntity {
 
     public String getPhoneNumber() {
         return phoneNumber;
+    }
+
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
     }
 }
 

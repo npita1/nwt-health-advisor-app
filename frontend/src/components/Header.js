@@ -68,7 +68,7 @@ function Header() {
          : <></>}
             
             {localStorage.token ?
-              <Button className='dugmeLogout' colorScheme="#FF585F" size='xs' onClick={onOpen} style={{ marginLeft: 'auto' }}>Logout</Button>
+              <Button className='dugmeLogout' colorScheme="#FF585F" size='sm' onClick={onOpen} style={{ marginLeft: 'auto' }}>Logout</Button>
               : <></>}
           </TabList>
           <TabPanels>
@@ -103,19 +103,19 @@ function Header() {
         <AlertDialogOverlay>
           <AlertDialogContent>
             <AlertDialogHeader fontSize="lg" fontWeight="bold">
-              Potvrda logout-a
+              Logout confimation
             </AlertDialogHeader>
 
             <AlertDialogBody>
-              Da li ste sigurni da želite da se odjavite?
+              Are you sure you want to log out?
             </AlertDialogBody>
 
             <AlertDialogFooter>
               <Button ref={cancelRef} onClick={onClose}>
-                Odustani
+                Cancel
               </Button>
               <Button colorScheme="red" onClick={handleConfirmLogout} ml={3}>
-                Nastavi
+                Log out
               </Button>
             </AlertDialogFooter>
           </AlertDialogContent>

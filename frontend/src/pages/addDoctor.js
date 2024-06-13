@@ -178,7 +178,7 @@ export default function AddDoctor() {
         </FormControl>
 
         <Button colorScheme="blue" mt={4} onClick={handleSubmit}>
-            Pošaljite
+            Add Doctor
         </Button>
     </Flex>
 </Box>

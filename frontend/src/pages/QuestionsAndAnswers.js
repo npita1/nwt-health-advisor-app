@@ -326,9 +326,9 @@ function QuestionsAndAnswers() {
                       <div className='divJednogOdgovora' key={index}>
                         <Flex>
                           <img
-                            src="images/doctorIcon.png"
+                            src={`http://localhost:8084${answer.doctor.imagePath}`}
                             alt="Doctor Icon"
-                            style={{ width: '50px', height: '50px' }}
+                            style={{ width: '50px', height: '50px', border: '50%' }}
                           />
                           <Flex direction="column">
                             <p className='odgovorImeDoktora'>Dr. {answer.doctor.user.firstName} {answer.doctor.user.lastName}</p>

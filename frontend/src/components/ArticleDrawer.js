@@ -7,6 +7,7 @@ import {
     DrawerOverlay,
     DrawerContent,
     DrawerCloseButton,
+    CardMedia
   } from '@chakra-ui/react'
   import { useDisclosure } from '@chakra-ui/react';
 
@@ -34,9 +35,14 @@ const  ArticleDrawer =({articleInfo, isOpen, setIsOpen}) => {
           <DrawerOverlay  />
           <DrawerContent overflowY="auto">
             <DrawerCloseButton color={"#FF585F"}></DrawerCloseButton>
-            <DrawerHeader color={"#FF585F"}>{articleInfo.title}</DrawerHeader>
+            <DrawerHeader color={"#FF585F"} style={{ fontSize: '40px' }}>{articleInfo.title}</DrawerHeader>
   
             <DrawerBody display="flex" flexDirection="column" alignItems="center">
+                <img
+                  src={`http://localhost:8083${articleInfo.imagePath}`}
+                  alt="green iguana"
+                  style={{ width: '100%', height: 'auto' }}
+                />
                 <Text>{articleInfo.text}</Text>
             </DrawerBody>
 

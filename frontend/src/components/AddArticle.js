@@ -74,57 +74,57 @@ export default function AddArticle() {
 
     return (
         <div>
-            <FormControl isRequired>
-                <FormLabel>Naslov članka</FormLabel>
-                <Input 
-                    placeholder='Naslov'
-                    value={naslov}
-                    onChange={(e) => postaviNaslov(e.target.value)}
-                />
-            </FormControl>
-
-            <FormControl>
-                <FormLabel>Kategorija</FormLabel>
-                <Select
-                    placeholder='Izaberite kategoriju'
-                    value={kategorija}
-                    onChange={(e) => postaviKategoriju(e.target.value)}
-                >
-                    {kategorije.map((kategorija) => (
-                        <option key={kategorija.id} value={kategorija.id}>
-                            {kategorija.name}
-                        </option>
-                    ))}
-                </Select>
-            </FormControl>
-
-            <FormControl>
-                <FormLabel>Dodajte tekst fajl</FormLabel>
-                <FilePond
-                    files={fajlovi}
-                    allowMultiple={false}
-                    onupdatefiles={handleFileChange}
-                    acceptedFileTypes={['text/plain']}
-                    labelIdle='Povucite i otpustite vaš fajl ili <span class="filepond--label-action">Pretražite</span>'
-                    maxFileSize='10MB'
-                />
-            </FormControl>
-            
-            <FormControl>
-                <FormLabel>Postavi sliku</FormLabel>
-                <FilePond
-                    files={slika}
-                    allowMultiple={false}
-                    onupdatefiles={handleImageChange}
-                    acceptedFileTypes={['image/jpeg', 'image/png']}
-                    labelIdle='Povucite i otpustite vašu sliku ili <span class="filepond--label-action">Pretražite</span> <br/> (samo JPEG i PNG formati)'
-                    maxFileSize='10MB'
-                />
-            </FormControl>
-
-            <Button colorScheme="blue" mt={4} onClick={handleSubmit}>
-                Pošaljite
-            </Button>
-        </div>
+        <FormControl isRequired>
+          <FormLabel>Title</FormLabel>
+          <Input 
+            placeholder='Title'
+            value={naslov}
+            onChange={(e) => postaviNaslov(e.target.value)}
+          />
+        </FormControl>
+  
+        <FormControl>
+          <FormLabel>Category</FormLabel>
+          <Select
+            placeholder='Choose a category'
+            value={kategorija}
+            onChange={(e) => postaviKategoriju(e.target.value)}
+          >
+            {kategorije.map((kategorija) => (
+              <option key={kategorija.id} value={kategorija.id}>
+                {kategorija.name}
+              </option>
+            ))}
+          </Select>
+        </FormControl>
+  
+        <FormControl>
+          <FormLabel>Add text file</FormLabel>
+          <FilePond
+            files={fajlovi}
+            allowMultiple={false}
+            onupdatefiles={handleFileChange}
+            acceptedFileTypes={['text/plain']}
+            labelIdle='Drag & drop your file or <span class="filepond--label-action">Browse</span>'
+            maxFileSize='10MB'
+          />
+        </FormControl>
+        
+        <FormControl>
+          <FormLabel>Upload image</FormLabel>
+          <FilePond
+            files={slika}
+            allowMultiple={false}
+            onupdatefiles={handleImageChange}
+            acceptedFileTypes={['image/jpeg', 'image/png']}
+            labelIdle='Drag & drop your image or <span class="filepond--label-action">Browse</span> <br/> (JPEG and PNG only)'
+            maxFileSize='10MB'
+          />
+        </FormControl>
+  
+        <Button colorScheme="blue" mt={4} onClick={handleSubmit}>
+          Submit
+        </Button>
+      </div>
     );
 }

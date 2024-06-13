@@ -30,7 +30,7 @@ public class ArticleEntity {
     private String title;
 
     @NotNull
-    @Size(min = 1, max = 2500)
+    @Size(min = 1, max = 10000)
     private String text;
 
     @NotNull

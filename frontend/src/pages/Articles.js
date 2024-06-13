@@ -3,7 +3,7 @@ import Article from '../components/Article';
 import { getAllArticles } from '../services/forumService';
 import { getUserByToken, saveUserIdInStorage } from '../services/userService';
 import '../styles/Articles.css';
-import { Button, Flex, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton } from '@chakra-ui/react';
+import { Button, Flex, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, Box} from '@chakra-ui/react';
 import { SmallAddIcon, AddIcon} from '@chakra-ui/icons';
 import AddArticle from '../components/AddArticle';
 
@@ -41,7 +41,7 @@ const Articles = () => {
   }, [localStorage.getItem('userRole')])
 
   return (
-    <>
+    <Box width="100%" maxWidth="1000px" mx="auto" p={4}>
       <div className='naslovDiv'>
         <h1 className='naslov'>Recent Articles </h1>
         
@@ -49,7 +49,7 @@ const Articles = () => {
 
       </div>
       {(userRole === "DOCTOR" || userRole === "ADMIN") ?
-         <Button  onClick={handleAddArticle} className='addButton' colorScheme='#1F55B3' leftIcon={<SmallAddIcon />}>Dodaj clanak</Button> 
+         <Button  onClick={handleAddArticle} className='addButton' colorScheme='#1F55B3' leftIcon={<SmallAddIcon />}>Add Article</Button> 
          : <></>}
       <div className='articlesContainer'>
       
@@ -81,7 +81,7 @@ const Articles = () => {
           </ModalFooter>
         </ModalContent>
     </Modal>
-    </>
+    </Box>
   );
 };
 
