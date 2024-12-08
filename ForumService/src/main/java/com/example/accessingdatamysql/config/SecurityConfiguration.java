@@ -52,7 +52,7 @@ public class SecurityConfiguration {
                         .requestMatchers(openApiEndpoints).permitAll()
                         .requestMatchers(openRoutes).permitAll()
                         .requestMatchers(POST,"/forum/addForumQuestion").hasRole("USER")
-                        .requestMatchers(POST,"/forum/addArticle").hasAnyRole("DOCTOR")
+                        .requestMatchers(POST,"/forum/addArticle").hasRole("DOCTOR")
                         .requestMatchers(POST,"/forum/addForumAnswer").hasRole("DOCTOR")
                         .requestMatchers(GET,"/forum/forumAnswers/question/{questionId}").hasAnyRole("USER","DOCTOR","ADMIN")
                         .anyRequest()
