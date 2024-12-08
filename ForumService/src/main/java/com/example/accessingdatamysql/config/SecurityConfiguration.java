@@ -14,6 +14,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
 
+import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpMethod.POST;
 
 @Configuration
@@ -39,7 +40,6 @@ public class SecurityConfiguration {
             "/forum/allArticles",
             "/forum/allForumQuestions",
             "/forum/questions/category/{category}",
-            "/forum/forumAnswers/question/{questionId}",
             "/uploads/**"
 
     };
@@ -52,7 +52,9 @@ public class SecurityConfiguration {
                         .requestMatchers(openApiEndpoints).permitAll()
                         .requestMatchers(openRoutes).permitAll()
                         .requestMatchers(POST,"/forum/addForumQuestion").hasRole("USER")
-                        .requestMatchers(POST,"/forum/addArticle").hasAnyRole("ADMIN","USER","DOCTOR")
+                        .requestMatchers(POST,"/forum/addArticle").hasAnyRole("DOCTOR")
+                        .requestMatchers(POST,"/forum/addForumAnswer").hasRole("DOCTOR")
+                        .requestMatchers(GET,"/forum/forumAnswers/question/{questionId}").hasAnyRole("USER","DOCTOR","ADMIN")
                         .anyRequest()
                         .authenticated()
                 )
