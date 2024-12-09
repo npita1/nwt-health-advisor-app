@@ -1,9 +1,9 @@
 package com.example.accessingdatamysql.controller;
-import com.example.accessingdatamysql.entity.AppointmentEntity;
+
 import com.example.accessingdatamysql.entity.DoctorInfoEntity;
 import com.example.accessingdatamysql.entity.ReservationEntity;
 import com.example.accessingdatamysql.entity.UserEntity;
-import com.example.accessingdatamysql.repository.AppointmentRepository;
+
 import com.example.accessingdatamysql.repository.DoctorInfoRepository;
 import com.example.accessingdatamysql.repository.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -37,8 +37,7 @@ public class UserControllerTest {
     @MockBean
     private UserRepository userRepository;
 
-    @MockBean
-    private AppointmentRepository appointmentRepository;
+
     @MockBean
     private DoctorInfoRepository doctorInfoRepository;
 
@@ -53,7 +52,7 @@ public class UserControllerTest {
     }
     private UserEntity user,user1;
     private DoctorInfoEntity doctor;
-    private AppointmentEntity app1,app2;
+
     private void setup(){
         // Kreiramo testnog korisnika
         user = new UserEntity("test@example.com", "John", "Doe", 1, "passwordHash");
@@ -66,12 +65,7 @@ public class UserControllerTest {
         doctor.setAbout("About doctor");
         doctor.setUser(user); // Povezujemo liječnika s korisnikom
         when(doctorInfoRepository.findById(1L)).thenReturn(doctor);
-        app1=new AppointmentEntity("otorinolarniglogoija");
-        app1.setDoctorInfo(doctor);
-        app1.setId(1L);
-        app2=new AppointmentEntity("traumatologija");
-        app2.setDoctorInfo(doctor);
-        app2.setId(2L);
+
 
     }
     @Test
@@ -98,41 +92,8 @@ public class UserControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.length()").value(1));
     }
 
-    @Test
-    public void testGetAppointmentsForUser() throws Exception {
-        UserEntity user = new UserEntity("test@example.com", "John", "Doe", 1, "passwordHash");
-        when(userRepository.findById(1)).thenReturn(user);
-        when(appointmentRepository.findByUser(user)).thenReturn(List.of());
-        mockMvc.perform(MockMvcRequestBuilders.get("/nwt/appointments-for-user/1")
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.length()").value(0));
-    }
 
-    @Test
-    public void testGetAppointmentsForUser1() throws Exception {
-        setup();
-        List<AppointmentEntity> mockAppointments = new ArrayList<>();
-        mockAppointments.add(app1);
-        mockAppointments.add(app2);
-        when(appointmentRepository.findByUser(user)).thenReturn(mockAppointments);
-        mockMvc.perform(MockMvcRequestBuilders.get("/nwt/appointments-for-user/1")
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.length()").value(2))
-                .andExpect(jsonPath("$[0].description").value("otorinolarniglogoija"))
-                .andExpect(jsonPath("$[1].description").value("traumatologija"));
-    }
-    @Test
-    public void testGetAppointmentsForUserInvalidId() throws Exception {
-        setup();
-        List<AppointmentEntity> mockAppointments = new ArrayList<>();
-        mockAppointments.add(app1);
-        mockAppointments.add(app2);
-        when(appointmentRepository.findByUser(user)).thenReturn(mockAppointments);
-        mockMvc.perform(MockMvcRequestBuilders.get("/nwt/appointments-for-user/8")
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.status().isNotFound())
-                .andExpect(jsonPath("$.message").value("Not found user by id 8"));;
-    }
+
+
+
 }

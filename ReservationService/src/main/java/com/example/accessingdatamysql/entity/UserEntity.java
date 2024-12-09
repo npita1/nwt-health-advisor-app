@@ -33,9 +33,7 @@ public class UserEntity {
     @OneToOne(mappedBy = "user")
     private DoctorInfoEntity doctorInfo;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "user")
-    private List<AppointmentEntity> appointments;
+
     @JsonIgnore
     @OneToMany(mappedBy = "user")
     private List<ReservationEntity> reservations;
@@ -102,14 +100,6 @@ public class UserEntity {
                 id, email, firstName, lastName, type, password);
     }
 
-
-    public List<AppointmentEntity> getAppointments() {
-        return appointments;
-    }
-
-    public void setAppointments(List<AppointmentEntity> appointments) {
-        this.appointments = appointments;
-    }
 
     public DoctorInfoEntity getDoctorInfo() {
         return doctorInfo;

@@ -1,8 +1,8 @@
 package com.example.accessingdatamysql.service;
 
-import com.example.accessingdatamysql.entity.AppointmentEntity;
+
 import com.example.accessingdatamysql.entity.EventEntity;
-import com.example.accessingdatamysql.exceptions.AppointmentNotFoundException;
+
 import com.example.accessingdatamysql.exceptions.EventNotFoundException;
 import com.example.accessingdatamysql.repository.EventRepository;
 import org.springframework.beans.factory.annotation.Autowired;

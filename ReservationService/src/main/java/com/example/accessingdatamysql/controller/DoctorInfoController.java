@@ -1,9 +1,9 @@
 package com.example.accessingdatamysql.controller;
 
-import com.example.accessingdatamysql.entity.AppointmentEntity;
+
 import com.example.accessingdatamysql.entity.DoctorInfoEntity;
 import com.example.accessingdatamysql.exceptions.DoctorInfoNotFoundException;
-import com.example.accessingdatamysql.repository.AppointmentRepository;
+
 import com.example.accessingdatamysql.repository.DoctorInfoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -19,8 +19,7 @@ import java.util.List;
 public class DoctorInfoController {
     @Autowired
     private DoctorInfoRepository doctorInfoRepository;
-    @Autowired
-    private AppointmentRepository appointmentRepository;
+
     @PostMapping(path="/addDoctor") // Map ONLY POST Requests
     public @ResponseBody String addNewDoctor (@RequestBody DoctorInfoEntity doctor) {
 
@@ -32,14 +31,6 @@ public class DoctorInfoController {
         // This returns a JSON or XML with the users
         return doctorInfoRepository.findAll();
     }
-    @GetMapping(path = "/appointments-for-doctor/{doctorId}")
-    public List<AppointmentEntity> getAppointmentsForDoctor(@PathVariable int doctorId){
-        DoctorInfoEntity doctor=doctorInfoRepository.findById(doctorId);
-        if (doctor==null) {
-            throw new DoctorInfoNotFoundException("Not found doctor by id " + doctorId);
-        }
-        return appointmentRepository.findByDoctorInfo(doctor);
 
-    }
 
 }

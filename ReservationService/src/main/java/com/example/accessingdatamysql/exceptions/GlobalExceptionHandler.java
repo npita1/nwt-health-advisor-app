@@ -33,7 +33,7 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler({ReservationNotFoundException.class, EventNotFoundException.class, UserNotFoundException.class, DoctorInfoNotFoundException.class,AppointmentNotFoundException.class})
+    @ExceptionHandler({ReservationNotFoundException.class, EventNotFoundException.class, UserNotFoundException.class, DoctorInfoNotFoundException.class})
     @ResponseBody
     public ResponseEntity<Object> handleNotFoundExceptions(Exception exc) {
         Map<String, String> errorResponse = new HashMap<>();

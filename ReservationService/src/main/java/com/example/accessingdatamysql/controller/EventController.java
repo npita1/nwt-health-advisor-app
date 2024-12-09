@@ -1,6 +1,6 @@
 package com.example.accessingdatamysql.controller;
 
-import com.example.accessingdatamysql.entity.AppointmentEntity;
+
 import com.example.accessingdatamysql.entity.EventEntity;
 import com.example.accessingdatamysql.entity.ReservationEntity;
 import com.example.accessingdatamysql.exceptions.EventNotFoundException;
@@ -8,7 +8,6 @@ import com.example.accessingdatamysql.exceptions.ReservationNotFoundException;
 import com.example.accessingdatamysql.feign.ForumInterface;
 import com.example.accessingdatamysql.repository.EventRepository;
 import com.example.accessingdatamysql.repository.ReservationRepository;
-import com.example.accessingdatamysql.service.AppointmentService;
 import com.example.accessingdatamysql.service.EventService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
