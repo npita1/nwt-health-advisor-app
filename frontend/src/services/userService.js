@@ -144,11 +144,11 @@ export async function addDoctor(doctorData, image) {
       },
       body: formData
     });
-
+  
     if (!response.ok) {
       const errorText = await response.text();
       console.error('Adding doctor failed:', response.status, errorText);
-      alert('Adding doctor failed');
+      alert('Adding doctor failed : Doctor with this email or phone number already exist');
       throw new Error(`Adding doctor failed: ${response.status} - ${errorText}`);
     }
 

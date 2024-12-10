@@ -117,7 +117,7 @@ public class DoctorInfoController {
 
     }
     @PostMapping(path = "/addNewDoctor", consumes = "multipart/form-data")
-    public ResponseEntity<DoctorInfoEntity> addDoctor(@Valid @RequestParam("email") String email,
+    public ResponseEntity<?> addDoctor(@Valid @RequestParam("email") String email,
                                                       @Valid @RequestParam("firstName") String firstName,
                                                       @Valid @RequestParam("lastName") String lastName,
                                                       @Valid @RequestParam("password") String password,
@@ -127,35 +127,42 @@ public class DoctorInfoController {
                                                       @Valid @RequestParam("phoneNumber") String phoneNumber,
                                                       @RequestParam("image") @ModelAttribute MultipartFile image
     ) {
-        // Spremanje slike u folder
-        String imagePath = null;
-        if (!image.isEmpty()) {
-            try {
-                byte[] bytes = image.getBytes();
-                Path path = Paths.get("uploads/" + image.getOriginalFilename());
-                Files.write(path, bytes);
-                imagePath = "/uploads/" + image.getOriginalFilename(); // Relativna putanja
-            } catch (IOException e) {
-                e.printStackTrace();
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+
+
+        try {
+            // Spremanje slike u folder
+            String imagePath = null;
+            if (!image.isEmpty()) {
+                try {
+                    byte[] bytes = image.getBytes();
+                    Path path = Paths.get("uploads/" + image.getOriginalFilename());
+                    Files.write(path, bytes);
+                    imagePath = "/uploads/" + image.getOriginalFilename(); // Relativna putanja
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+                }
             }
+
+            UserEntity user = new UserEntity();
+            user.setEmail(email);
+            user.setFirstName(firstName);
+            user.setLastName(lastName);
+            user.setPassword(password);
+
+            DoctorInfoEntity doctorInfo = new DoctorInfoEntity();
+            doctorInfo.setAbout(about);
+            doctorInfo.setSpecialization(specialization);
+            doctorInfo.setAvailability(availability);
+            doctorInfo.setPhoneNumber(phoneNumber);
+            doctorInfo.setImagePath(imagePath);
+
+            DoctorInfoEntity savedDoctorInfo = doctorService.addDoctor(user, doctorInfo);
+            return ResponseEntity.ok(savedDoctorInfo);
         }
-
-        UserEntity user = new UserEntity();
-        user.setEmail(email);
-        user.setFirstName(firstName);
-        user.setLastName(lastName);
-        user.setPassword(password);
-
-        DoctorInfoEntity doctorInfo = new DoctorInfoEntity();
-        doctorInfo.setAbout(about);
-        doctorInfo.setSpecialization(specialization);
-        doctorInfo.setAvailability(availability);
-        doctorInfo.setPhoneNumber(phoneNumber);
-        doctorInfo.setImagePath(imagePath);
-
-        DoctorInfoEntity savedDoctorInfo = doctorService.addDoctor(user, doctorInfo);
-        return ResponseEntity.ok(savedDoctorInfo);
+         catch (IllegalArgumentException ex) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
+        }
     }
 
 

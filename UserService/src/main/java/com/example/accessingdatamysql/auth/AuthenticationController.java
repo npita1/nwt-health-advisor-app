@@ -24,11 +24,13 @@ public class AuthenticationController {
     public ResponseEntity register( @RequestBody AuthenticationRequest request) {
         return authenticationService.authenticate(request);
     }
-
+/*
     @PostMapping("/refresh-token")
     public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
         authenticationService.refreshToken(request, response);
     }
+
+ */
 
     @GetMapping("/user")
     public ResponseEntity<?> getUserByToken(@RequestHeader("Authorization") String authorizationHeader) {
