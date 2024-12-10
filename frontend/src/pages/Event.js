@@ -10,6 +10,7 @@ import { getAllEvents, addReservation } from '../services/reservationService';
 function Event() {
     const [center, setCenter] = useState({ lat: 43.8663, lng: 18.4031 });
     const [events, setEvents] = useState([]);
+    const [userRole, setUserRole] = useState(localStorage.getItem('userRole'));
     const [selectedEvent, setSelectedEvent] = useState(null);
     const [numTickets, setNumTickets] = useState(1);
     const ZOOM_LEVEL = 13;
@@ -133,6 +134,8 @@ function Event() {
                                     </Flex>
                                     <p className='opisEventa'>{event.description}</p>
                                 </Flex>
+                                {(userRole === "DOCTOR" || userRole === "USER" || userRole === "ADMIN") ?(
+                                    <>
                                 <Button 
                                     position="absolute" 
                                     size='sm'
@@ -143,6 +146,8 @@ function Event() {
                                     onClick={() => handleReserveClick(event)}>
                                     Reserve Spot
                                 </Button>
+                                </>
+                               ):null }
                             </Flex>
                         ))
                     ) : (

@@ -48,7 +48,7 @@ const Articles = () => {
          
 
       </div>
-      {(userRole === "DOCTOR" || userRole === "ADMIN") ?
+      {(userRole === "DOCTOR" ) ?
          <Button  onClick={handleAddArticle} className='addButton' colorScheme='#1F55B3' leftIcon={<SmallAddIcon />}>Add Article</Button> 
          : <></>}
       <div className='articlesContainer'>

@@ -294,7 +294,7 @@ function QuestionsAndAnswers() {
           <Accordion allowToggle > 
             {questions.map(question => (
               <AccordionItem key={question.id} className='akordionItem'>
-                <AccordionButton onClick={() => handleQuestionClick(question)} className='akordionItem'>
+                <AccordionButton onClick={() => (userRole === "DOCTOR" || userRole === "USER" || userRole === "ADMIN") && handleQuestionClick(question)} className='akordionItem'>
                   <Box as='span' flex='1' textAlign='left'>
                     <div className='pitanje' key={question.id}>
                       <Flex direction="column">
