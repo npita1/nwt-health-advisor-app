@@ -25,9 +25,39 @@ public class ForumAnswerController {
     @Autowired
     private DoctorInfoRepository doctorInfoRepository;
 
-
+    @Autowired
+    private UserRepository userRepository;
     @PostMapping(path="/addForumAnswer")
     public @ResponseBody ResponseEntity<ForumAnswerEntity> addNewForumAnswer (@RequestBody ForumAnswerEntity forumAnswerEntity) {
+        // Dohvatite doctor iz zahtjeva
+        DoctorInfoEntity doctor1 = forumAnswerEntity.getDoctor();
+        int did=doctor1.getId().intValue();
+        DoctorInfoEntity doctor = userClient.getDoctorID(did);
+        // Provjerite da li doctor postoji i modifikujte njegov ID
+        if (doctor != null) {
+            // Provjera da li je doktor vec spasen u bazi foruma
+            DoctorInfoEntity forumDoctor = doctorInfoRepository.findByUserId(doctor.getUser().getId());
+            if (forumDoctor == null) {
+                forumDoctor = new DoctorInfoEntity();
+                UserEntity forumUser = new UserEntity();
+                forumUser.setUserServiceId(doctor.getUser().getId());
+                forumUser.setEmail(doctor.getUser().getEmail());
+                forumUser.setFirstName(doctor.getUser().getFirstName());
+                forumUser.setLastName(doctor.getUser().getLastName());
+                forumUser.setPassword(doctor.getUser().getPassword());
+                userRepository.save(forumUser);
+
+                forumDoctor.setUser(forumUser);
+                forumDoctor.setAbout(doctor.getAbout());
+                forumDoctor.setSpecialization(doctor.getSpecialization());
+                forumDoctor.setAvailability(doctor.getAvailability());
+                forumDoctor.setPhoneNumber(doctor.getPhoneNumber());
+                forumDoctor.setImagePath(doctor.getImagePath());
+                doctorInfoRepository.save(forumDoctor);
+            }
+            doctor1.setId(forumDoctor.getId());
+        }
+
         ForumAnswerEntity forumAnswer = forumAnswerService.addForumAnswer(forumAnswerEntity);
         return ResponseEntity.ok(forumAnswer);
     }

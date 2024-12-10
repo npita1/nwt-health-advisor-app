@@ -63,7 +63,7 @@ function Header() {
             <Tab>Workshops and Events</Tab>
             <Tab>Articles</Tab> 
             <Tab>Our Specialists</Tab>
-            {(userRole === "DOCTOR" || userRole === "ADMIN") ?
+            {( userRole === "ADMIN") ?
         <Tab>Add doctor</Tab> 
          : <></>}
             

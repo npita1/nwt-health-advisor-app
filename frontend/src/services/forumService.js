@@ -167,9 +167,18 @@ export async function addArticle(articleData, userId, image) {
 
 
 export async function getForumAnswersByQuestionId(id) {
+  const token = localStorage.getItem('token');
+  if (!token || token === "") {
+    throw new Error('No token found');
+  }
   try {
     const response = await fetch(`${API_URL}/forum/forumAnswers/question/${id}`, {
       method: 'GET',
+      headers: {
+        "Content-Type": 'application/json',
+        Accept: 'application/json, text/plain, */*',
+        Authorization: `Bearer ${token}`
+      }
     });
 
     if (response.ok) {
