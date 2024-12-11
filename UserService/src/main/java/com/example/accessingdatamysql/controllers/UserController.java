@@ -1,5 +1,6 @@
 package com.example.accessingdatamysql.controllers;
 
+import com.example.accessingdatamysql.auth.ChangePasswordRequest;
 import com.example.accessingdatamysql.entity.UserEntity;
 import com.example.accessingdatamysql.exceptions.UserNotFoundException;
 import com.example.accessingdatamysql.grpc.GrpcClient;
@@ -16,12 +17,14 @@ import lombok.RequiredArgsConstructor;
 import org.apache.catalina.User;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.Map;
 
@@ -145,6 +148,16 @@ public class UserController {
             return null;
         }
         return userDetails;
+    }
+    @PatchMapping(path = "/changePassword")
+    public ResponseEntity<?> changePassword(
+            @RequestBody ChangePasswordRequest request,
+            Principal connectedUser,
+            HttpServletRequest request2
+    ) {
+        String authHeader = request2.getHeader("Authorization");
+        userService.changePassword(request, connectedUser, authHeader);
+        return ResponseEntity.ok("Password changed successfully, user logged out.");
     }
 }
 

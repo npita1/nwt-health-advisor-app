@@ -42,6 +42,7 @@ public class UserEntity implements UserDetails {
     private Role role;
 
     @NotBlank(message = "Lozinka ne smije biti prazna.")
+    @Size(min = 0, max = 1000, message = "Lozinka mora biti dužine između 8 i 20 znakova.")
     private String password;
     @JsonIgnore
     @OneToOne(mappedBy = "user")
