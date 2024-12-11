@@ -36,7 +36,7 @@ public class ForumAnswerController {
         // Provjerite da li doctor postoji i modifikujte njegov ID
         if (doctor != null) {
             // Provjera da li je doktor vec spasen u bazi foruma
-            DoctorInfoEntity forumDoctor = doctorInfoRepository.findByUserId(doctor.getUser().getId());
+            DoctorInfoEntity forumDoctor = doctorInfoRepository.findByUserServiceId(doctor.getUser().getId());
             if (forumDoctor == null) {
                 forumDoctor = new DoctorInfoEntity();
                 UserEntity forumUser = new UserEntity();

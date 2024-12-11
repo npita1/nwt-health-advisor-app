@@ -12,4 +12,8 @@ public interface DoctorInfoRepository extends CrudRepository<DoctorInfoEntity, L
 
     @Query("SELECT a FROM DoctorInfoEntity a WHERE a.user.id = :id")
     DoctorInfoEntity findByUserId(long id);
+
+    @Query("SELECT a FROM DoctorInfoEntity a WHERE a.user.userServiceId = :userServiceId")
+    DoctorInfoEntity findByUserServiceId(long userServiceId);
+
 }

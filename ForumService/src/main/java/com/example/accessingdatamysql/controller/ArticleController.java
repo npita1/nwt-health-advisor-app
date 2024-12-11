@@ -138,7 +138,7 @@ public @ResponseBody ResponseEntity<?> addArticleNew(
     }
 
     // Provjera da li je doktor vec spasen u bazi foruma
-    DoctorInfoEntity forumDoctor = doctorInfoRepository.findByUserId(doctor.getUser().getId());
+    DoctorInfoEntity forumDoctor = doctorInfoRepository.findByUserServiceId(doctor.getUser().getId());
     if (forumDoctor == null) {
         forumDoctor = new DoctorInfoEntity();
         UserEntity forumUser = new UserEntity();
