@@ -155,7 +155,7 @@ export async function addDoctor(doctorData, image) {
     const responseData = await response.json();
     console.log('Doctor added successfully:', responseData);
     alert('Doctor added successfully');
-
+    window.location.reload();
     return responseData;
   } catch (error) {
     console.error('Network or server error:', error);
