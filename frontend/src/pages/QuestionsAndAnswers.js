@@ -282,12 +282,17 @@ function QuestionsAndAnswers() {
           <Categories onSelectCategory={handleCategorySelect} selectedCategory={selectedCategory} />
         </Flex>
       </div>
-
+     { (userRole === "DOCTOR" || userRole === "USER"  ) ? 
+     (
+      <>
       <div className='zaglavljePitanja'>
         <Flex justifyContent="space-between" alignItems="center" className='zaglavljeFlex'>
           <Button className='newQuestionDugme' colorScheme='#FF585F' onClick={() => setShowModal(true)}>New Question</Button>
         </Flex>
       </div>
+      </>
+     ):null
+}
 
       <div className='pitanjaDiv'>
         <Flex direction="column" className='pitanjaFlex'>
