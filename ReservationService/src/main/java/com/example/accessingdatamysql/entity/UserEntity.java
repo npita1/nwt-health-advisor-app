@@ -15,7 +15,7 @@ import java.util.Set;
 public class UserEntity {
 
     @Id
-    //@GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private Long id;
     @Email
     @NotBlank(message="Email ne smije biti prazan.")
@@ -33,6 +33,9 @@ public class UserEntity {
     @OneToOne(mappedBy = "user")
     private DoctorInfoEntity doctorInfo;
 
+
+    @Column(unique = true)
+    private Long userServiceId;
 
     @JsonIgnore
     @OneToMany(mappedBy = "user")
@@ -128,5 +131,13 @@ public class UserEntity {
 
     public void setReservations(List<ReservationEntity> reservations) {
         this.reservations = reservations;
+    }
+
+    public Long getUserServiceId() {
+        return userServiceId;
+    }
+
+    public void setUserServiceId(Long userServiceId) {
+        this.userServiceId = userServiceId;
     }
 }

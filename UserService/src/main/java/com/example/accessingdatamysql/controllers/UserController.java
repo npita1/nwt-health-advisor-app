@@ -3,7 +3,6 @@ package com.example.accessingdatamysql.controllers;
 import com.example.accessingdatamysql.auth.ChangePasswordRequest;
 import com.example.accessingdatamysql.entity.UserEntity;
 import com.example.accessingdatamysql.exceptions.UserNotFoundException;
-import com.example.accessingdatamysql.grpc.GrpcClient;
 import com.example.accessingdatamysql.repository.UserRepository;
 import com.example.accessingdatamysql.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -38,8 +37,7 @@ public class UserController {
     private UserRepository userRepository;
     private ObjectMapper objectMapper = new ObjectMapper();
 
-    @Autowired
-    private static GrpcClient grpcClient;
+
 
     @Autowired
     private UserService userService;
@@ -73,11 +71,10 @@ public class UserController {
         UserEntity user = userRepository.findById(userID);
 
         if (user == null) {
-            GrpcClient.get().log(userID, "User", "GET", "No user found by id");
             throw new UserNotFoundException("Not found user by id: " + userID);
         }
 
-        GrpcClient.get().log(userID, "User", "GET", "User found by id");
+
         //return ResponseEntity.ok(user);
         return user;
     }

@@ -39,7 +39,6 @@ function HomePage() {
           <p className='naslovNabrajanje'>Our platform offers:</p>
             <ul className='nabrajanje'>
               <li>Q&A forum for health-related questions</li>
-              <li>Consultation booking with doctors</li>
               <li>Overview of health workshops and events with reservation options</li>
               <li>Access to health articles</li>
             </ul>

@@ -4,7 +4,7 @@ import com.example.accessingdatamysql.entity.EventEntity;
 import com.example.accessingdatamysql.entity.ReservationEntity;
 import com.example.accessingdatamysql.exceptions.EventNotFoundException;
 import com.example.accessingdatamysql.exceptions.ReservationNotFoundException;
-import com.example.accessingdatamysql.grpc.GrpcClient;
+
 import com.example.accessingdatamysql.repository.EventRepository;
 import com.example.accessingdatamysql.repository.ReservationRepository;
 import jakarta.servlet.http.HttpServletRequest;
@@ -20,8 +20,7 @@ import java.util.List;
 @Validated
 @RequestMapping(path="/reservation") // This means URL's start with /demo (after Application path)
 public class ReservationController {
-    @Autowired
-    private static GrpcClient grpcClient;
+
     @Autowired
     private ReservationRepository reservationRepository;
     @Autowired

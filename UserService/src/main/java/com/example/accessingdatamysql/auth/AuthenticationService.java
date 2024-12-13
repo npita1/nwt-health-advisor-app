@@ -5,12 +5,8 @@ import com.example.accessingdatamysql.entity.Token;
 import com.example.accessingdatamysql.entity.TokenType;
 import com.example.accessingdatamysql.entity.UserEntity;
 import com.example.accessingdatamysql.exceptions.ErrorDetails;
-import com.example.accessingdatamysql.grpc.GrpcClient;
 import com.example.accessingdatamysql.repository.TokenRepository;
 import com.example.accessingdatamysql.repository.UserRepository;
-import com.example.accessingdatamysql.rmq.RabbitConfig;
-import com.example.accessingdatamysql.rmq.UserCreatedEvent;
-import com.example.accessingdatamysql.rmq.UserCreationRollbackEvent;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -39,13 +35,13 @@ public class AuthenticationService {
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
     private final TokenRepository tokenRepository;
-    private GrpcClient grpcClient;
+
     @Autowired
     private RabbitTemplate rabbitTemplate;
     public ResponseEntity register(RegisterRequest request) {
-        grpcClient = GrpcClient.get();
+
         if (userRepository.existsByEmail(request.getEmail())) {
-            grpcClient.log(0, "UserService", "register", "Fail");
+
             return ResponseEntity.status(HttpStatus.CONFLICT).body(new ErrorDetails(LocalDateTime.now(), "email", "Email already present in database"));
         }
         var user = UserEntity.builder()
@@ -57,37 +53,24 @@ public class AuthenticationService {
                 .build();
         try {
             var savedUser = userRepository.save(user);
-            // Slanje događaja na RabbitMQ
-            UserCreatedEvent event = new UserCreatedEvent();
-            event.setId(savedUser.getId());
-            event.setEmail(savedUser.getEmail());
-            event.setFirstName(savedUser.getFirstName());
-            event.setLastName(savedUser.getLastName());
-            event.setPassword(savedUser.getPassword());
-            rabbitTemplate.convertAndSend(RabbitConfig.EXCHANGE, RabbitConfig.ROUTING_KEY, event);
 
             var jwtToken = jwtService.generateToken(user);
             var refreshToken = jwtService.generateRefreshToken(user);
             saveUserToken(savedUser, jwtToken);
-            grpcClient.log(user.getId().intValue(), "UserService", "register", "Success");
             return ResponseEntity.ok(AuthenticationResponse.builder()
                     .accessToken(jwtToken)
                     .refreshToken(refreshToken)
                     .build());
         } catch (DataIntegrityViolationException e) {
-            UserCreationRollbackEvent rollbackEvent = new UserCreationRollbackEvent();
-            rollbackEvent.setId(user.getId());
-            rollbackEvent.setEmail(user.getEmail());
-            rabbitTemplate.convertAndSend(RabbitConfig.EXCHANGE, RabbitConfig.ROLLBACK_ROUTING_KEY, rollbackEvent);
+
             throw e;
         }
     }
 
 
     public ResponseEntity authenticate(AuthenticationRequest request) {
-        grpcClient = GrpcClient.get();
+
         if (!userRepository.existsByEmail(request.getEmail())) {
-            grpcClient.log(0,"UserService","register","Fail");
             return ResponseEntity.status(HttpStatus.CONFLICT).body(new ErrorDetails(LocalDateTime.now(),"email","Email not present in database"));
         }
         authenticationManager.authenticate(
@@ -102,7 +85,7 @@ public class AuthenticationService {
         revokeAllUserTokens(user);
         saveUserToken(user, jwtToken);
 
-        grpcClient.log(user.getId().intValue(),"UserService","authenticate","Success");
+
 
         return ResponseEntity.ok(AuthenticationResponse.builder()
                 .accessToken(jwtToken)

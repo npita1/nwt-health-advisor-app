@@ -2,7 +2,7 @@ package com.example.accessingdatamysql.controller;
 import com.example.accessingdatamysql.entity.*;
 import com.example.accessingdatamysql.exceptions.CategoryNotFoundException;
 import com.example.accessingdatamysql.feign.UserInterface;
-import com.example.accessingdatamysql.grpc.GrpcClient;
+
 import com.example.accessingdatamysql.repository.*;
 
 import com.example.accessingdatamysql.exceptions.ArticleNotFoundException;
@@ -48,8 +48,7 @@ public class ArticleController {
     @Autowired
     private UserRepository userRepository;
 
-    @Autowired
-    private static GrpcClient grpcClient;
+
 
     @PostMapping(path="/addArticleClassic")
     public @ResponseBody ResponseEntity<String> addArticle (@Valid @RequestBody ArticleEntity article) {
@@ -209,11 +208,11 @@ public @ResponseBody ResponseEntity<?> addArticleNew(
         Iterable<ArticleEntity> articles = articleService.getArticleByDoctorId(forumServiceDoctor.getId());
 
         if (articles == null) {
-            GrpcClient.get().log((int) doctorId, "Forum", "GET", "No articles found for doctor");
+
             throw new ArticleNotFoundException(" Not found article by doctor id: " + doctorId);
         }
 
-        GrpcClient.get().log((int) doctorId, "Forum", "GET", "Articles found for doctor");
+
         return articles;
     }
 

@@ -4,7 +4,6 @@ package com.example.accessingdatamysql.service;
 import com.example.accessingdatamysql.auth.ChangePasswordRequest;
 import com.example.accessingdatamysql.entity.UserEntity;
 import com.example.accessingdatamysql.exceptions.UserNotFoundException;
-import com.example.accessingdatamysql.grpc.GrpcClient;
 import com.example.accessingdatamysql.repository.TokenRepository;
 import com.example.accessingdatamysql.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -25,9 +24,9 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final TokenRepository tokenRepository;
-    private GrpcClient grpcClient;
+
     public String getUsers() {
-        grpcClient = GrpcClient.get();
+
         List<UserEntity> users = userRepository.findAll();
         String json = null;
         try {
@@ -49,7 +48,7 @@ public class UserService {
     }
 
     public Long getUserIdFromAuthentication() {
-        grpcClient = GrpcClient.get();
+
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserEntity userDetails = (UserEntity) authentication.getPrincipal();
         return userDetails.getId();
