@@ -59,7 +59,7 @@ function QuestionsAndAnswers() {
         } else {
           fetchedQuestions = await getAllForumQuestions();
         }
-        setQuestions(fetchedQuestions);
+        setQuestions(fetchedQuestions.map(question => ({ ...question, answers: question.answers || [] })));
       } catch (error) {
         console.error('Error fetching questions:', error);
       }
