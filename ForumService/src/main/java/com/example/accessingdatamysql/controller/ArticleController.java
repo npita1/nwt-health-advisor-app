@@ -130,7 +130,9 @@ public @ResponseBody ResponseEntity<?> addArticleNew(
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Greška pri spremanju slike: " + e.getMessage());
         }
     }
-
+    if (categoryId == null ) {
+        return ResponseEntity.badRequest().body("Moraš odabrati kategoriju");
+    }
     DoctorInfoEntity doctor = userClient.getDoctorID(doctorId);
     if (doctor == null) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Doktor s ID-om " + doctorId + " nije pronađen.");

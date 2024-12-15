@@ -128,7 +128,28 @@ public class DoctorInfoController {
                                                       @RequestParam("image") @ModelAttribute MultipartFile image
     ) {
 
-
+        // Validacija parametara
+        if (!email.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")) {
+            return ResponseEntity.badRequest().body("Email adresa nije validna.");
+        }
+        if (firstName == null || firstName.length() < 3 || firstName.length() > 20) {
+            return ResponseEntity.badRequest().body("Ime mora biti dužine između 3 i 20 znakova.");
+        }
+        if (lastName == null || lastName.length() < 3 || lastName.length() > 30) {
+            return ResponseEntity.badRequest().body("Prezime mora biti dužine između 3 i 30 znakova.");
+        }
+        if (!password.matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9]).{8,}$")) {
+            return ResponseEntity.badRequest().body("Lozinka mora sadržavati najmanje jedno malo slovo, jedno veliko slovo, jedan broj i jedan specijalni znak.");
+        }
+        if (about == null || about.length() < 20) {
+            return ResponseEntity.badRequest().body("Opis mora biti najmanje dužine 20 znakova.");
+        }
+        if (!availability.matches("^[\\p{L} -]+ - [\\p{L} -]+$")) {
+            return ResponseEntity.badRequest().body("Format dostupnosti mora biti 'Rijec - Rijec'.");
+        }
+        if (!phoneNumber.matches("^\\(\\d{3}\\)\\s*\\d{8}$")) {
+            return ResponseEntity.badRequest().body("Format broja telefona mora biti '(brojbrojbroj) brojbrojbroj'.");
+        }
         try {
             // Spremanje slike u folder
             String imagePath = null;

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -28,7 +29,10 @@ public class UserEntity implements UserDetails {
     private Long id;
 
     //@NotBlank(message="Email ne smije biti prazan.")
-    @Email(message="Email adresa nije validna")
+    @Pattern(
+            regexp = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$",
+            message = "Email adresa nije validna."
+    )
     private String email;
     @NotBlank(message = "Polje za ime ne smije biti prazno.")
     @Size(min = 3, max = 20, message = "Ime mora biti dužine između 3 i 20 znakova.")
@@ -41,8 +45,11 @@ public class UserEntity implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @NotBlank(message = "Lozinka ne smije biti prazna.")
-    @Size(min = 0, max = 1000, message = "Lozinka mora biti dužine između 8 i 20 znakova.")
+
+    @Pattern(
+            regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9]).{8,}$",
+            message = "Lozinka mora sadržavati najmanje jedno malo slovo, jedno veliko slovo, jedan broj i jedan znak koji nije slovo ili broj."
+    )
     private String password;
     @JsonIgnore
     @OneToOne(mappedBy = "user")

@@ -59,6 +59,10 @@ export default function AddDoctor() {
     };
 
     const handleSubmit = () => {
+        if (slika.length === 0) {
+            alert('Morate dodati sliku doktora');
+            return;
+        }
         const doctorData = {
              email: email,
              firstName: firstName,

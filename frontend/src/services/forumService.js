@@ -121,6 +121,14 @@ export async function addForumQuestion(userId, questionData) {
     return response.json();
   } catch (error) {
     console.error('Network or server error:', error);
+    // Parsiraj grešku da dobiješ samo poruku iza "message"
+    try {
+      const errorData = JSON.parse(error.message.split(' - ')[1]);
+      const validationMessage = errorData.message;
+      alert(validationMessage);  // Prikazujemo samo poruku validacije
+    } catch (parseError) {
+      alert('Nepoznata greška: ' + error.message);  // Ako parsing ne uspije
+    }
     throw error;
   }
 }
@@ -159,6 +167,14 @@ export async function addArticle(articleData, userId, image) {
       return response.json();
   } catch (error) {
       console.error('Mrežna ili serverska greška:', error);
+      // Parsiraj grešku da dobiješ samo poruku iza "message"
+    try {
+      const errorData = JSON.parse(error.message.split(' - ')[1]);
+      const validationMessage = errorData.message;
+      alert(validationMessage);  // Prikazujemo samo poruku validacije
+    } catch (parseError) {
+      alert('Nepoznata greška: ' + error.message);  // Ako parsing ne uspije
+    }
       throw error;
   }
 }

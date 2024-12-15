@@ -148,7 +148,7 @@ public class UserController {
     }
     @PatchMapping(path = "/changePassword")
     public ResponseEntity<?> changePassword(
-            @RequestBody ChangePasswordRequest request,
+           @Valid @RequestBody ChangePasswordRequest request,
             Principal connectedUser,
             HttpServletRequest request2
     ) {

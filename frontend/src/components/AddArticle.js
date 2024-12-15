@@ -61,6 +61,14 @@ export default function AddArticle() {
     };
 
     const handleSubmit = () => {
+      if (slika.length === 0) {
+        alert('Morate dodati sliku prije nego što pošaljete članak!');
+        return;
+    }
+    if(kategorija===""){
+      alert('Morate odabrati kategoriju!');
+      return;
+    }
         const datum = getCurrentDate();
         const podaciClanka = {
             title: naslov,

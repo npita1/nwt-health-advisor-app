@@ -159,7 +159,7 @@ function QuestionsAndAnswers() {
       handleModalClose();
     } catch (error) {
       console.error('Greška prilikom dodavanja pitanja:', error);
-      alert("Greska se desila");
+      
     }
   };
 

@@ -5,13 +5,17 @@ import com.example.accessingdatamysql.repository.*;
 
 import com.example.accessingdatamysql.exceptions.ForumQuestionNotFoundException;
 import com.example.accessingdatamysql.service.ForumQuestionService;
+import jakarta.validation.Valid;
 import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+
 
 @Controller
 @Validated
@@ -35,7 +39,9 @@ public class ForumQuestionController {
     }
 
     @PostMapping(path="/addForumQuestion")
-    public @ResponseBody ResponseEntity<?> addForumQuestion (@RequestParam("userId") int userId, @RequestBody ForumQuestionEntity forumQuestion) {
+    public @ResponseBody ResponseEntity<?> addForumQuestion (@RequestParam("userId") int userId,  @Valid @RequestBody ForumQuestionEntity forumQuestion
+                                                             ) {
+
 
         UserEntity user = userClient.getUserByID(userId);
         if (user == null) {

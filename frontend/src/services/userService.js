@@ -23,7 +23,7 @@ export async function logIn(email, inputedPassword) {
 
   } catch (error) {
     console.error(error.message);
-    alert("Netačan email ili adresa.")
+    alert("Netačan email ili lozinka.")
   }
 }
 
@@ -46,28 +46,42 @@ export async function logout() {
   }
 }
 export async function addUser(formData) {
-    try {
-        const response = await axios.post(`${API_URL}/authentication/register`, formData, {
-
+  try {
+      const response = await axios.post(`${API_URL}/authentication/register`, formData, {
           headers: {
-            'Content-Type': 'application/json',
-            'Accept': '*/*',
+              'Content-Type': 'application/json',
+              'Accept': '*/*',
           },
-        });
-         const token = await response.data.access_token
-        localStorage.setItem('token', token);
-        getUserByToken();
+      });
 
+      const token = await response.data.access_token;
+      localStorage.setItem('token', token);
+      getUserByToken();
 
-      } catch (error) {
-        if (error.response && error.response.status === 409) {
-          alert('Korisnik već postoji');
-        } else {
-          console.log(`login error ${error}`);
-          // throw new Error(`Došlo je do greške prilikom dodavanja korisnika: ${error.message}`);
-        }
+  } catch (error) {
+      if (error.response) {
+          // Provjerite status greške
+          if (error.response.status === 409) {
+              alert('Korisnik već postoji');
+          } else if (error.response.status === 400) {
+              // Ispisivanje cijelog odgovora u konzolu da bismo vidjeli strukturu greške
+              console.log('Greška u odgovoru:', error.response.data);
+
+              // Ako postoji niz grešaka, prikažemo sve poruke
+              if (Array.isArray(error.response.data)) {
+                  const errorMessages = error.response.data.map(err => err.message).join('\n ');
+                  alert(`Greške u validaciji: ${errorMessages}`);
+              } else {
+                  alert('Došlo je do greške prilikom registracije.');
+              }
+          }
+      } else {
+          console.log('Greška u mreži:', error);
       }
+  }
 }
+
+
 
 export async function saveUserIdInStorage(userId){
   try{
@@ -146,9 +160,17 @@ export async function addDoctor(doctorData, image) {
     });
   
     if (!response.ok) {
+
       const errorText = await response.text();
       console.error('Adding doctor failed:', response.status, errorText);
-      alert('Adding doctor failed : Doctor with this email or phone number already exist');
+
+      // Ako server vraća grešku u tekstualnom formatu, prikaži tu grešku u alertu
+      if (response.status === 400) {
+        alert(`Validacijska greška: ${errorText}`);
+      } else {
+        alert('Adding doctor failed: Doctor with this email or phone number already exist');
+      }
+
       throw new Error(`Adding doctor failed: ${response.status} - ${errorText}`);
     }
 

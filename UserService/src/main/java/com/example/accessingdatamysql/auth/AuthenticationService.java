@@ -36,8 +36,7 @@ public class AuthenticationService {
     private final AuthenticationManager authenticationManager;
     private final TokenRepository tokenRepository;
 
-    @Autowired
-    private RabbitTemplate rabbitTemplate;
+
     public ResponseEntity register(RegisterRequest request) {
 
         if (userRepository.existsByEmail(request.getEmail())) {

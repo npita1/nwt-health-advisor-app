@@ -1,6 +1,7 @@
 package com.example.accessingdatamysql.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
 
 @Entity
@@ -21,16 +22,18 @@ public class ForumQuestionEntity {
     @JoinColumn(name = "category_id", referencedColumnName = "id")
     private CategoryEntity category;
 
-    @NotNull
-    @Size(min = 1, max = 100, message = "Naslov mora imati između 1 i 100 znakova.")
+
+
+    @Size(min = 5, max = 100, message = "Naslov mora imati između 1 i 100 znakova.")
     private String title;
-    @NotNull
-    @Size(min = 1, max = 1000, message = "Tekst mora imati između 1 i 1000 znakova.")
+
+    @Size(min = 5, max = 1000, message = "Tekst mora imati između 1 i 1000 znakova.")
     private String text;
-    @NotNull
+
     @Pattern(regexp = "^\\d{2}.\\d{2}.\\d{4}$", message = "Datum mora biti u formatu 'DD.MM.YYYY'.")
     private String date;
 
+    @NotNull(message = "Moraš odbrati da li pitanje anonimno ili ne")
     private boolean anonymity;
 
     public ForumQuestionEntity() {}
