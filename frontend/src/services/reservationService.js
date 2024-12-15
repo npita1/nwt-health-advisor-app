@@ -48,6 +48,14 @@ export async function addReservation(eventReservationData) {
       return response.json();
     } catch (error) {
       console.error('Network or server error:', error);
+      // Parsiraj grešku da dobiješ samo poruku iza "message"
+    try {
+      const errorData = JSON.parse(error.message.split(' - ')[1]);
+      const validationMessage = errorData.message;
+      alert(validationMessage);  // Prikazujemo samo poruku validacije
+    } catch (parseError) {
+      alert('Nepoznata greška: ' + error.message);  // Ako parsing ne uspije
+    }
       throw error;
     }
 }

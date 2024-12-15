@@ -36,7 +36,7 @@ public class EventEntity {
     @ManyToOne
     @JoinColumn(name = "doctor_id", referencedColumnName = "id")
     private DoctorInfoEntity doctorInfo;
-
+    @JsonIgnore
     @OneToMany(mappedBy = "event")
     private List<ReservationEntity> reservations;
 

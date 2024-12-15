@@ -62,7 +62,7 @@ function Event() {
                 location: "string",
                 name: "string",
                 description: "string",
-                date: "12.12.2024",
+                date: "73K68a4424",
                 doctorInfo: {
                   id: 0,
                   about: "string",
@@ -83,7 +83,9 @@ function Event() {
                 firstName: "string",
                 lastName: "string",
                 type: 0,
-                password: "string"
+                password: "string",
+                userServiceId: 0
+
               }
           };
         

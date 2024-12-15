@@ -2,14 +2,19 @@ package com.example.accessingdatamysql.controller;
 
 import com.example.accessingdatamysql.entity.EventEntity;
 import com.example.accessingdatamysql.entity.ReservationEntity;
+import com.example.accessingdatamysql.entity.UserEntity;
 import com.example.accessingdatamysql.exceptions.EventNotFoundException;
 import com.example.accessingdatamysql.exceptions.ReservationNotFoundException;
 
+import com.example.accessingdatamysql.feign.UserInterface;
 import com.example.accessingdatamysql.repository.EventRepository;
 import com.example.accessingdatamysql.repository.ReservationRepository;
+import com.example.accessingdatamysql.repository.UserRepository;
+import com.example.accessingdatamysql.service.ReservationService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -25,10 +30,33 @@ public class ReservationController {
     private ReservationRepository reservationRepository;
     @Autowired
     private EventRepository eventRepository;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private ReservationService reservationService;
+
+    @Autowired
+    UserInterface userClient;
     @PostMapping(path="/addReservation")
     public  @ResponseBody ResponseEntity<?> addNewReservation(@Valid @RequestBody ReservationEntity reservation){
-        reservationRepository.save(reservation);
-        return ResponseEntity.ok(reservation);
+        UserEntity user = userClient.getUserByID(reservation.getUser().getId().intValue());
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Korisnik s ID-om " + user + " nije pronađen.");
+        }
+        UserEntity forumUser = userRepository.findByUserServiceId(user.getId());
+        if (forumUser == null) {
+            forumUser = new UserEntity();
+            forumUser.setUserServiceId(user.getId());
+            forumUser.setEmail(user.getEmail());
+            forumUser.setFirstName(user.getFirstName());
+            forumUser.setLastName(user.getLastName());
+            forumUser.setPassword(user.getPassword());
+            userRepository.save(forumUser);
+        }
+        ReservationEntity newReservation= reservationService.addReservation(reservation,forumUser);
+        return ResponseEntity.ok(newReservation);
     }
     @GetMapping(path = "/allReservations")
     public @ResponseBody Iterable<ReservationEntity> getAllReservations(){
