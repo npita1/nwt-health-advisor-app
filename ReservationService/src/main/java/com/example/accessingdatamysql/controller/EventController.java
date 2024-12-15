@@ -1,13 +1,18 @@
 package com.example.accessingdatamysql.controller;
 
 
+import com.example.accessingdatamysql.entity.DoctorInfoEntity;
 import com.example.accessingdatamysql.entity.EventEntity;
 import com.example.accessingdatamysql.entity.ReservationEntity;
+import com.example.accessingdatamysql.entity.UserEntity;
 import com.example.accessingdatamysql.exceptions.EventNotFoundException;
 import com.example.accessingdatamysql.exceptions.ReservationNotFoundException;
 import com.example.accessingdatamysql.feign.ForumInterface;
+import com.example.accessingdatamysql.feign.UserInterface;
+import com.example.accessingdatamysql.repository.DoctorInfoRepository;
 import com.example.accessingdatamysql.repository.EventRepository;
 import com.example.accessingdatamysql.repository.ReservationRepository;
+import com.example.accessingdatamysql.repository.UserRepository;
 import com.example.accessingdatamysql.service.EventService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -40,10 +45,45 @@ public class EventController {
     private EventService eventService;
     @Autowired
     private ForumInterface forumClient;
+    @Autowired
+    UserInterface userClient;
+    @Autowired
+    private DoctorInfoRepository doctorInfoRepository;
+
+    @Autowired
+    private UserRepository userRepository;
+
+
     @PostMapping(path="/addEvent")
-    public  @ResponseBody String addNewEvent(@Valid @RequestBody EventEntity event){
-        eventRepository.save(event);
-        return "Saved";
+    public  @ResponseBody ResponseEntity<EventEntity> addNewEvent(@Valid @RequestBody EventEntity event){
+        // Dohvatite doctor iz zahtjeva
+        DoctorInfoEntity doctor1 = event.getDoctorInfo();
+        int did=doctor1.getId().intValue();
+        DoctorInfoEntity doctor = userClient.getDoctorID(did);
+        // Provjerite da li doctor postoji i modifikujte njegov ID
+        if (doctor != null) {
+            // Provjera da li je doktor vec spasen u bazi foruma
+            DoctorInfoEntity forumDoctor = doctorInfoRepository.findByUserServiceId(doctor.getUser().getId());
+            if (forumDoctor == null) {
+                forumDoctor = new DoctorInfoEntity();
+                UserEntity forumUser = new UserEntity();
+                forumUser.setUserServiceId(doctor.getUser().getId());
+                forumUser.setEmail(doctor.getUser().getEmail());
+                forumUser.setFirstName(doctor.getUser().getFirstName());
+                forumUser.setLastName(doctor.getUser().getLastName());
+                forumUser.setPassword(doctor.getUser().getPassword());
+                userRepository.save(forumUser);
+
+                forumDoctor.setUser(forumUser);
+                forumDoctor.setAbout(doctor.getAbout());
+                forumDoctor.setSpecialization(doctor.getSpecialization());
+                forumDoctor.setPhoneNumber(doctor.getPhoneNumber());
+                doctorInfoRepository.save(forumDoctor);
+            }
+            doctor1.setId(forumDoctor.getId());
+        }
+        EventEntity eventNew = eventService.addEvent(event);
+        return ResponseEntity.ok(eventNew);
     }
     @GetMapping(path = "/allEvents")
     public @ResponseBody Iterable<EventEntity> getAllEvents(HttpServletRequest request){
@@ -68,14 +108,7 @@ public class EventController {
         }
         return reservationRepository.findByEvent(event);
     }
-    @PatchMapping(path = "/events/{id}", consumes = "application/json-patch+json")
-    public @ResponseBody ResponseEntity Update(@PathVariable("id") Long id, @RequestBody JsonPatch patch) throws JsonPatchException, JsonProcessingException {
-        EventEntity event = eventService.Details(id);
-        EventEntity eventPatched = applyPatchToEvent(patch, event);
-        eventService.Update(eventPatched);
-        return ResponseEntity.status(200).body(eventPatched);
 
-    }
 
     private EventEntity applyPatchToEvent(JsonPatch patch, EventEntity targetEvent) throws JsonProcessingException, JsonPatchException {
         JsonNode patched = patch.apply(objectMapper.convertValue(targetEvent, JsonNode.class));

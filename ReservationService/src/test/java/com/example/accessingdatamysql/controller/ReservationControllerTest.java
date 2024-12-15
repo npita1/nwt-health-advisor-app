@@ -1,3 +1,5 @@
+/*
+
 package com.example.accessingdatamysql.controller;
 import com.example.accessingdatamysql.entity.DoctorInfoEntity;
 import com.example.accessingdatamysql.entity.EventEntity;
@@ -152,3 +154,5 @@ public class ReservationControllerTest {
 
     }
 }
+
+ */

@@ -2,6 +2,7 @@ package com.example.accessingdatamysql.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Pattern;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +13,7 @@ import java.util.Set;
 public class DoctorInfoEntity {
 
     @Id
-    //@GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private Long id;
     private String about;
     private String specialization;
@@ -25,6 +26,11 @@ public class DoctorInfoEntity {
     @JsonIgnore
     @OneToMany(mappedBy = "doctorInfo")
     private List<EventEntity> events;
+
+
+
+    @Pattern(regexp = "^\\(\\d{3}\\)\\s*\\d{8}$", message = "Format broja telefona mora biti '(brojbrojbroj) brojbrojbroj'.")
+    private String phoneNumber;
     public DoctorInfoEntity() {}
 
     @Override
@@ -72,6 +78,14 @@ public class DoctorInfoEntity {
 
     public void setSpecialization(String specialization) {
         this.specialization = specialization;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 }
 

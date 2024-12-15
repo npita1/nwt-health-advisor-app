@@ -13,6 +13,15 @@ public class ForumAnswerService {
     private ForumAnswerRepository forumAnswerRepository;
 
     public ForumAnswerEntity addForumAnswer(ForumAnswerEntity forumAnswer) {
+        // Validacija teksta pitanja
+        if (forumAnswer.getText() == null || forumAnswer.getText().length() < 10 || forumAnswer.getText().length() > 1000) {
+            throw new IllegalArgumentException("Tekst odgovora mora biti između 10 i 1000 znakova.");
+        }
+
+        // Validacija datuma (format 'DD.MM.YYYY')
+        if (forumAnswer.getDate() == null || !forumAnswer.getDate().matches("^\\d{2}\\.\\d{2}\\.\\d{4}$")) {
+            throw new IllegalArgumentException("Datum mora biti u formatu 'DD.MM.YYYY'.");
+        }
         return this.forumAnswerRepository.save(forumAnswer);
     }
 

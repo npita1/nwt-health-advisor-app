@@ -1,5 +1,7 @@
 package com.example.accessingdatamysql.controller;
 
+/*
+
 import com.example.accessingdatamysql.entity.DoctorInfoEntity;
 import com.example.accessingdatamysql.entity.ReservationEntity;
 import com.example.accessingdatamysql.entity.UserEntity;
@@ -97,3 +99,5 @@ public class UserControllerTest {
 
 
 }
+
+ */

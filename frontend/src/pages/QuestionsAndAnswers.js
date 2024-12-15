@@ -226,7 +226,7 @@ function QuestionsAndAnswers() {
       setAnswerText(''); // Clear the answer text field
     } catch (error) {
       console.error('Error submitting answer:', error);
-      alert("An error occurred while submitting the answer.");
+      
     }
   };
 
