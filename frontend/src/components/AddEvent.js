@@ -57,6 +57,7 @@ function AddEvent({ onEventAdded }) {
       setDescription("");
       setLocation("");
       setDate("");
+      window.location.reload();
     } catch (error) {
       console.error("Error adding event:", error);
     } finally {

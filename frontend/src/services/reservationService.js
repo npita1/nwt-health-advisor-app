@@ -83,7 +83,6 @@ export async function addEvent(eventData) {
       console.error('Failed to add event:', response.status, errorText);
       throw new Error(`Failed to add event: ${response.status} - ${errorText}`);
     }
-    window.location.reload();
     return response.json();
   } catch (error) {
     console.error('Network or server error:', error);
