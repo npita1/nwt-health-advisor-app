@@ -23,6 +23,11 @@ public class ReservationService {
         if (reservation.getNumOfTicket() < 1) {
             throw new IllegalArgumentException("The number of tickets must be a positive integer.");
         }
+
+        // Provjera postoji li već rezervacija za korisnika i odabrani događaj
+        if (reservationRepository.findByEventIdAndUser(reservation.getEvent().getId(), user).isPresent()) {
+            throw new IllegalArgumentException("Već imate rezervaciju za ovaj događaj");
+        }
        reservation.setUser(user);
         return this.reservationRepository.save(reservation);
 

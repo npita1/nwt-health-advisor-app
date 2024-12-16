@@ -96,7 +96,7 @@ function Event() {
         
         } catch (error) {
             console.error('Greška prilikom dodavanja rezervacije:', error);
-            alert("Greska se desila");
+            
         }
         
         onClose();

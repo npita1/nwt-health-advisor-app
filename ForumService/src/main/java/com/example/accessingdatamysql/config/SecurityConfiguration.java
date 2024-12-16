@@ -53,7 +53,7 @@ public class SecurityConfiguration {
                         .requestMatchers(openRoutes).permitAll()
                         .requestMatchers(POST,"/forum/addForumQuestion").hasRole("USER")
                         .requestMatchers(POST,"/forum/addArticle").hasRole("DOCTOR")
-                        .requestMatchers(POST,"/forum/addForumAnswer").hasAnyRole("DOCTOR","USER")
+                        .requestMatchers(POST,"/forum/addForumAnswer").hasRole("DOCTOR")
                         .requestMatchers(GET,"/forum/forumAnswers/question/{questionId}").hasAnyRole("USER","DOCTOR","ADMIN")
                         .anyRequest()
                         .authenticated()

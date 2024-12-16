@@ -50,7 +50,7 @@ public class SecurityConfiguration {
                         .requestMatchers(GET,"/reservation/events/{eventId}").hasRole("DOCTOR")
                         .requestMatchers(GET,"/reservation/reservations-for-events/{eventId}").hasRole("DOCTOR")
                         .requestMatchers(PUT,"/reservation/eventHeld/{eventId}").hasRole("DOCTOR")
-                        .requestMatchers(POST,"/reservation/addReservation").hasAnyRole("USER","DOCTOR")
+                        .requestMatchers(POST,"/reservation/addReservation").hasRole("USER")
                         .requestMatchers(GET,"/reservation/allReservations").hasAnyRole("ADMIN","DOCTOR")
                         .requestMatchers(GET,"/reservation/reservations/{reservationId}").hasAnyRole("USER","DOCTOR")
                         .requestMatchers(GET,"/reservation/reservations/for-user/{userId}").hasAnyRole("USER","DOCTOR")
