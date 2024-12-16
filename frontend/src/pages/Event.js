@@ -6,11 +6,12 @@ import '../styles/Event.css';
 import L from 'leaflet';
 import osm from '../resources/osm-providers';
 import { getAllEvents, addReservation } from '../services/reservationService';
-
+import AddEvent from "../components/AddEvent";
 function Event() {
     const [center, setCenter] = useState({ lat: 43.8663, lng: 18.4031 });
     const [events, setEvents] = useState([]);
     const [userRole, setUserRole] = useState(localStorage.getItem('userRole'));
+    const [showAddEventForm, setShowAddEventForm] = useState(false); // Dodano stanje za prikaz AddEvent forme
     const [selectedEvent, setSelectedEvent] = useState(null);
     const [numTickets, setNumTickets] = useState(1);
     const ZOOM_LEVEL = 13;
@@ -112,6 +113,30 @@ function Event() {
                     </Marker>
                 </MapContainer>
             </div>
+
+            {(userRole==="DOCTOR") ? (
+                <>
+            {/* Dugme za otvaranje forme AddEvent */}
+            <div style={{ position: 'absolute', left: '45px', zIndex: 10 }}>
+                <Button colorScheme="teal" onClick={() => setShowAddEventForm(true)}>
+                    Add New Event
+                </Button>
+            </div>
+
+            {/* Prikazivanje AddEvent forme u modalu */}
+            {showAddEventForm && (
+                <Modal isOpen={showAddEventForm} onClose={() => setShowAddEventForm(false)}>
+                    <ModalOverlay />
+                    <ModalContent>
+                        <ModalCloseButton />
+                        <ModalBody>
+                            <AddEvent onEventAdded={() => setShowAddEventForm(false)} />
+                        </ModalBody>
+                    </ModalContent>
+                </Modal>
+            )}
+            </>
+        ):null}
             <div className='eventiDiv'>
                 <Flex direction="column" className='sviEventiFlex'>
                     {events.length > 0 ? (
@@ -136,7 +161,7 @@ function Event() {
                                     </Flex>
                                     <p className='opisEventa'>{event.description}</p>
                                 </Flex>
-                                {(userRole === "DOCTOR" || userRole === "USER" || userRole === "ADMIN") ?(
+                                {( userRole === "USER") ?(
                                     <>
                                 <Button 
                                     position="absolute" 

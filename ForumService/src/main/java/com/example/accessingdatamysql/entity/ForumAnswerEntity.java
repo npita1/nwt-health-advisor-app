@@ -29,7 +29,7 @@ public class ForumAnswerEntity {
     private ForumAnswerEntity parent;
 
     @NotNull(message = "Tekst ne smije biti prazan.")
-    @Size(min = 1, max = 1600, message = "Tekst mora imati između 1 i 1600 znakova.")
+    @Size(min = 10, max = 600, message = "Tekst mora imati između 10 i 600 znakova.")
     private String text;
 
     @NotNull

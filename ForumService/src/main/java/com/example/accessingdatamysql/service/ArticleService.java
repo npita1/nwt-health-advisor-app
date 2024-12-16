@@ -26,8 +26,8 @@ public class ArticleService {
         }
 
         // Validacija teksta
-        if (article.getText() == null || article.getText().length() < 20 || article.getText().length() > 1000) {
-            throw new IllegalArgumentException("Tekst članka mora biti između 20 i 1000 znakova.");
+        if (article.getText() == null || article.getText().length() < 20 || article.getText().length() > 755) {
+            throw new IllegalArgumentException("Tekst članka mora biti između 20 i 755 znakova.");
         }
 
         // Validacija datuma (format 'DD.MM.YYYY')

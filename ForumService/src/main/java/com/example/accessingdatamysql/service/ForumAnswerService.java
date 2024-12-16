@@ -14,8 +14,8 @@ public class ForumAnswerService {
 
     public ForumAnswerEntity addForumAnswer(ForumAnswerEntity forumAnswer) {
         // Validacija teksta pitanja
-        if (forumAnswer.getText() == null || forumAnswer.getText().length() < 10 || forumAnswer.getText().length() > 1000) {
-            throw new IllegalArgumentException("Tekst odgovora mora biti između 10 i 1000 znakova.");
+        if (forumAnswer.getText() == null || forumAnswer.getText().length() < 10 || forumAnswer.getText().length() > 600) {
+            throw new IllegalArgumentException("Tekst odgovora mora biti između 10 i 600 znakova.");
         }
 
         // Validacija datuma (format 'DD.MM.YYYY')

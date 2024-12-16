@@ -30,7 +30,7 @@ public class DoctorRequest {
     private String password;
 
     @NotBlank(message = "Polje za detalje o doktoru ne smije biti prazno.")
-    @Size(min = 3, message = "Opis mora biti najmanje dužine 20 znakova.")
+    @Size(min = 10, max=50,  message = "Opis mora biti najmanje dužine 10 znakova.")
     private String about;
 
     private String specialization;

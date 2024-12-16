@@ -59,3 +59,44 @@ export async function addReservation(eventReservationData) {
       throw error;
     }
 }
+
+export async function addEvent(eventData) {
+  const token = localStorage.getItem('token');
+  if (!token || token === "") {
+    throw new Error('No token found');
+  }
+
+  try {
+    console.log('Sending request to add event:', eventData);
+    const response = await fetch(`${API_URL}/reservation/addEvent`, {
+      method: 'POST',
+      headers: {
+        "Content-Type": 'application/json',
+        Accept: 'application/json, text/plain, */*',
+        Authorization: `Bearer ${token}`
+      },
+      body: JSON.stringify(eventData)
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error('Failed to add event:', response.status, errorText);
+      throw new Error(`Failed to add event: ${response.status} - ${errorText}`);
+    }
+    window.location.reload();
+    return response.json();
+  } catch (error) {
+    console.error('Network or server error:', error);
+    
+    try {
+      // Parsiraj odgovor za prikaz validacijske greške
+      const errorData = JSON.parse(error.message.split(' - ')[1]);
+      const validationMessage = errorData.message;
+      alert(validationMessage);  // Prikaz validacijske greške
+    } catch (parseError) {
+      alert('Unknown error: ' + error.message);  // Ako parsing ne uspije
+    }
+    
+    throw error;
+  }
+}

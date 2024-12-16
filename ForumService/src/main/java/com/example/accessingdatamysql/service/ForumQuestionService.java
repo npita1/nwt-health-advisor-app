@@ -24,8 +24,8 @@ public class ForumQuestionService {
         }
 
         // Validacija teksta pitanja
-        if (forumQuestion.getText() == null || forumQuestion.getText().length() < 5 || forumQuestion.getText().length() > 1000) {
-            throw new IllegalArgumentException("Tekst pitanja mora biti između 5 i 1000 znakova.");
+        if (forumQuestion.getText() == null || forumQuestion.getText().length() < 10 || forumQuestion.getText().length() > 400) {
+            throw new IllegalArgumentException("Tekst pitanja mora biti između 10 i 400 znakova.");
         }
 
         // Validacija datuma (format 'DD.MM.YYYY')

@@ -24,10 +24,10 @@ public class ForumQuestionEntity {
 
 
 
-    @Size(min = 5, max = 100, message = "Naslov mora imati između 1 i 100 znakova.")
+    @Size(min = 5, max = 100, message = "Naslov mora imati između 5 i 100 znakova.")
     private String title;
 
-    @Size(min = 5, max = 1000, message = "Tekst mora imati između 1 i 1000 znakova.")
+    @Size(min = 10, max = 400, message = "Tekst mora imati između 10 i 400 znakova.")
     private String text;
 
     @Pattern(regexp = "^\\d{2}.\\d{2}.\\d{4}$", message = "Datum mora biti u formatu 'DD.MM.YYYY'.")

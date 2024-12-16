@@ -21,10 +21,10 @@ public class EventEntity {
     @NotBlank(message = "Morate unijeti lokaciju događaja.")
     private String location;
 
-    @Size(min = 5, max = 30, message = "Ime radionice/eventa mora biti dužine između 5 i 30 znakova.")
+    @Size(min = 5, max = 90, message = "Ime radionice/eventa mora biti dužine između 5 i 90 znakova.")
     private String name;
 
-    @Size(min =10, max = 1000, message = "Opis radionice/eventa mora biti dužine između 10 i 1000 znakova.")
+    @Size(min =10, max = 200, message = "Opis radionice/eventa mora biti dužine između 10 i 200 znakova.")
     private String description;
 
     //@PastOrPresent(message = "Datum mora biti u prošlosti ili današnji datum.")
