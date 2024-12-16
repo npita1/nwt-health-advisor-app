@@ -21,13 +21,13 @@ public class ArticleService {
             throw new IllegalArgumentException("Doctor must be saved in the database before adding an article.");
         }
         // Validacija naslova
-        if (article.getTitle() == null || article.getTitle().length() < 5 || article.getTitle().length() > 100) {
-            throw new IllegalArgumentException("Naslov mora biti između 5 i 100 znakova.");
+        if (article.getTitle() == null || article.getTitle().length() < 5 || article.getTitle().length() > 150) {
+            throw new IllegalArgumentException("Naslov mora biti između 5 i 150 znakova.");
         }
 
         // Validacija teksta
-        if (article.getText() == null || article.getText().length() < 20 || article.getText().length() > 755) {
-            throw new IllegalArgumentException("Tekst članka mora biti između 20 i 755 znakova.");
+        if (article.getText() == null || article.getText().length() < 20 || article.getText().length() > 2500) {
+            throw new IllegalArgumentException("Tekst članka mora biti između 20 i 2500 znakova.");
         }
 
         // Validacija datuma (format 'DD.MM.YYYY')

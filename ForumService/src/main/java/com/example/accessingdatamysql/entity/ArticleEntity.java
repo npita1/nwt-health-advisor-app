@@ -26,11 +26,11 @@ public class ArticleEntity {
     private CategoryEntity category;
 
     @NotNull
-    @Size(min = 1, max = 100)
+    @Size(min = 5, max = 150)
     private String title;
 
     @NotNull
-    @Size(min = 1, max = 755)
+    @Size(min = 20, max = 2500)
     private String text;
 
     @NotNull

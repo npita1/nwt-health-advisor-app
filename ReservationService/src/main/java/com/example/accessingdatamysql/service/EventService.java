@@ -52,8 +52,8 @@ public class EventService {
 
     public EventEntity addEvent(EventEntity event) {
 
-        if (event.getDescription() == null || event.getDescription().length() < 10 || event.getDescription().length() > 200) {
-            throw new IllegalArgumentException("Opis radionice/eventa mora biti dužine između 10 i 200 znakova.");
+        if (event.getDescription() == null || event.getDescription().length() < 10 || event.getDescription().length() > 255) {
+            throw new IllegalArgumentException("Opis radionice/eventa mora biti dužine između 10 i 255 znakova.");
         }
 
         // Validacija datuma (format 'DD.MM.YYYY')
@@ -61,8 +61,8 @@ public class EventService {
             throw new IllegalArgumentException("Datum mora biti u formatu 'DD.MM.YYYY'.");
         }
 
-        if (event.getName() == null || event.getName().length() < 5 || event.getName().length() > 90) {
-            throw new IllegalArgumentException("Ime radionice/eventa mora biti dužine između 5 i 90 znakova.");
+        if (event.getName() == null || event.getName().length() < 5 || event.getName().length() > 100) {
+            throw new IllegalArgumentException("Ime radionice/eventa mora biti dužine između 5 i 100 znakova.");
         }
 
         if (event.getLocation() == null || !VALID_LOCATIONS.contains(event.getLocation().trim())) {
