@@ -10,7 +10,7 @@ import Categories from '../components/Categories.js';
 function HomePage() {
   const [showSignUp, setShowSignUp] = useState(false);
   const [showLogIn, setShowLogIn] = useState(false);
-
+  const [userRole, setUserRole] = useState(localStorage.getItem('userRole'));
   const handleSignUpClick = () => {
     setShowSignUp(true);
   };
@@ -46,6 +46,8 @@ function HomePage() {
           <div className='tekstIznadDugmadiDiv'>
             <p className='tekstIznadDugmadi'>Join us and empower your journey towards better health!</p>
           </div>
+          { (userRole==="") ? (
+            <>
           <div className='dugmadDiv'>
             <Button className='dugmeLogIn' colorScheme='#1F55B3' size="md" mr={2} onClick={handleLogInClick}>
              Log In
@@ -54,7 +56,10 @@ function HomePage() {
              Sign Up
             </Button>
           </div>
+          </>
+          ):null }
         </Flex>
+         
         {/* Slika na desnoj strani */}
         <div className='doktorSlikaDiv' >
           <img src="images/HomePage/doktor.png" alt="Slika" className='slikaDoktor' style={{ width: '400px', height: 'auto' }} />
