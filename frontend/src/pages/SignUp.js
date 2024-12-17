@@ -25,7 +25,11 @@ function SignUp() {
      e.preventDefault();
 
     // const hashedPassword = await bcrypt.hash(password, 10);
-
+     // Provjera da li se password i confirmPassword podudaraju
+     if (password !== confirmPassword) {
+      alert("Password i Confirm Password se ne podudaraju!");
+      return; // Prekidamo izvršavanje funkcije ako lozinke nisu iste
+  }
     const formData = {
         firstname: firstName,
         lastname: lastName,
