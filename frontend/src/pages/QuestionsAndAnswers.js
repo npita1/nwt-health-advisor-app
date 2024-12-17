@@ -282,7 +282,7 @@ function QuestionsAndAnswers() {
           <Categories onSelectCategory={handleCategorySelect} selectedCategory={selectedCategory} />
         </Flex>
       </div>
-     { (userRole === "DOCTOR" || userRole === "USER"  ) ? 
+     { ( userRole === "USER"  ) ? 
      (
       <>
       <div className='zaglavljePitanja'>

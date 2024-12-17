@@ -47,7 +47,8 @@ public class EventService {
             "Zavidovići",
             "Zenica",
             "Zvornik",
-            "Živinice"
+            "Živinice",
+            "Travnik"
     );
 
     public EventEntity addEvent(EventEntity event) {
