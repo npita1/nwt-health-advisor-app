@@ -5,6 +5,7 @@ import com.example.accessingdatamysql.repository.*;
 
 import com.example.accessingdatamysql.service.ForumAnswerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
@@ -77,6 +78,15 @@ public class ForumAnswerController {
         DoctorInfoEntity userServiceDoctor = userClient.getDoctorID((int)doctorId);
         DoctorInfoEntity forumServiceDoctor = doctorInfoRepository.findByUserId(userServiceDoctor.getUser().getId());
         return forumAnswerService.getForumAnswersByDoctorId(forumServiceDoctor.getId());
+    }
+    @DeleteMapping(path = "/deleteAnswer/{answerId}")
+    public @ResponseBody ResponseEntity<?> deleteForumAnswer(@PathVariable Long answerId) {
+        try {
+            forumAnswerService.deleteForumAnswer(answerId);
+            return ResponseEntity.ok("Odgovor uspješno obrisan.");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
     }
 
 }

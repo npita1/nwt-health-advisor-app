@@ -1,7 +1,9 @@
 package com.example.accessingdatamysql.service;
 
 import com.example.accessingdatamysql.entity.*;
+import com.example.accessingdatamysql.repository.ForumAnswerRepository;
 import com.example.accessingdatamysql.repository.ForumQuestionRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +13,8 @@ public class ForumQuestionService {
     @Autowired
     private ForumQuestionRepository forumQuestionRepository;
 
+    @Autowired
+    private ForumAnswerRepository forumAnswerRepository;
     public ForumQuestionEntity addForumQuestion(ForumQuestionEntity forumQuestion) {
         return this.forumQuestionRepository.save(forumQuestion);
     }
@@ -65,6 +69,18 @@ public class ForumQuestionService {
 
     public Iterable<ForumQuestionEntity> getForumQuestionsByCategory (String category) {
         return this.forumQuestionRepository.findByCategory(category);
+    }
+    @Transactional
+    public void deleteForumQuestion(Long questionId) {
+        // Pronađi pitanje koje treba obrisati
+        ForumQuestionEntity question = forumQuestionRepository.findById(questionId)
+                .orElseThrow(() -> new IllegalArgumentException("Pitanje s ID-om " + questionId + " ne postoji."));
+
+        // Brisanje svih odgovora povezanih s pitanjem
+        forumAnswerRepository.deleteAllByQuestion(question);
+
+        // Brisanje pitanja
+        forumQuestionRepository.delete(question);
     }
 
 }

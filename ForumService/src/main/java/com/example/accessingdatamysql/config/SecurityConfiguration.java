@@ -14,8 +14,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
 
-import static org.springframework.http.HttpMethod.GET;
-import static org.springframework.http.HttpMethod.POST;
+import static org.springframework.http.HttpMethod.*;
 
 @Configuration
 @EnableWebSecurity
@@ -54,6 +53,8 @@ public class SecurityConfiguration {
                         .requestMatchers(POST,"/forum/addForumQuestion").hasRole("USER")
                         .requestMatchers(POST,"/forum/addArticle").hasRole("DOCTOR")
                         .requestMatchers(POST,"/forum/addForumAnswer").hasRole("DOCTOR")
+                        .requestMatchers(DELETE,"/forum/deleteAnswer/{answerId}").hasRole("ADMIN")
+                        .requestMatchers(DELETE,"/forum/deleteQuestion/{questionId}").hasRole("ADMIN")
                         .requestMatchers(GET,"/forum/forumAnswers/question/{questionId}").hasAnyRole("USER","DOCTOR","ADMIN")
                         .anyRequest()
                         .authenticated()

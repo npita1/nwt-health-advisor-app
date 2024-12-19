@@ -44,4 +44,11 @@ public class ForumAnswerService {
     public Iterable<ForumAnswerEntity> getForumAnswersByDoctorId(Long doctorId) {
         return this.forumAnswerRepository.getForumAnswersFromDoctorId(doctorId);
     }
+
+    public void deleteForumAnswer(Long id) {
+        ForumAnswerEntity answer = forumAnswerRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Odgovor s ID-jem " + id + " nije pronađen."));
+        forumAnswerRepository.delete(answer);
+    }
+
 }

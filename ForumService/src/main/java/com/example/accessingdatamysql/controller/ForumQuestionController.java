@@ -92,4 +92,14 @@ public class ForumQuestionController {
         return forumQuestionService.getForumQuestionsByCategory(category);
     }
 
+    @DeleteMapping(path = "/deleteQuestion/{questionId}")
+    public @ResponseBody ResponseEntity<?> deleteForumQuestion(@PathVariable Long questionId) {
+        try {
+            forumQuestionService.deleteForumQuestion(questionId);
+            return ResponseEntity.ok("Pitanje i svi povezani odgovori su uspješno obrisani.");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
+
 }
