@@ -51,9 +51,7 @@ public class ArticleService {
         return this.articleRepository.findById(id);
     }
 
-    public void deleteArticle(long id) {
-        this.articleRepository.deleteById(id);
-    }
+
 
     public Iterable<ArticleEntity> getByCategory(String category) {
         return this.articleRepository.findByCategory(category);
@@ -62,5 +60,11 @@ public class ArticleService {
 
     public Iterable<ArticleEntity> getArticleByDoctorId(long doctorId) {
         return this.articleRepository.getArticlesByDoctorId(doctorId);
+    }
+
+    public void deleteArticle(Long id) {
+        ArticleEntity article = articleRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Članak s ID-jem " + id + " nije pronađen."));
+       articleRepository.delete(article);
     }
 }

@@ -217,17 +217,6 @@ public @ResponseBody ResponseEntity<?> addArticleNew(
 
         return articles;
     }
-
-    // Kaskadno brisanje vidi poslije
-    @DeleteMapping(path="/deleteArticle/{id}")
-    public @ResponseBody ResponseEntity<String> deleteArticle (@PathVariable long id) {
-        ArticleEntity article = this.articleService.getArticleById(id);
-        if(article != null) {
-            articleService.deleteArticle(id);
-            return ResponseEntity.ok().build();
-        }
-        throw new ArticleNotFoundException("Not found article by id: " + id);
-    }
     @GetMapping(path="/userCom/articles/doctor/{doctorId}")
     public @ResponseBody Map<String, String> getTitleAndTextArticleDoctorId(@PathVariable long doctorId) {
         DoctorInfoEntity userServiceDoctor = userClient.getDoctorID((int)doctorId);
@@ -268,6 +257,14 @@ public @ResponseBody ResponseEntity<?> addArticleNew(
         articleService.addArticle(article);
         return ResponseEntity.ok("Article successfully added");
     }
-
+    @DeleteMapping(path = "/deleteArticle/{articleId}")
+    public @ResponseBody ResponseEntity<?> deleteArticle(@PathVariable Long articleId) {
+        try {
+            articleService.deleteArticle(articleId);
+            return ResponseEntity.ok("Članak uspješno obrisan.");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
 
 }

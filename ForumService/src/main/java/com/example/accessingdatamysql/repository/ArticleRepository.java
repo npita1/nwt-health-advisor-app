@@ -7,7 +7,7 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface ArticleRepository extends JpaRepository<ArticleEntity, Long> {
     ArticleEntity findById(long id);
-    void deleteById(Long aLong);
+
 
     @Query("SELECT a FROM ArticleEntity a WHERE a.category.name = :category")
     Iterable<ArticleEntity> findByCategory(String category);
