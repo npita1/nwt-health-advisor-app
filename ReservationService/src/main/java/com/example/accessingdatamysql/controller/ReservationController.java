@@ -1,5 +1,6 @@
 package com.example.accessingdatamysql.controller;
 
+import com.example.accessingdatamysql.dto.ReservationEventDTO;
 import com.example.accessingdatamysql.entity.EventEntity;
 import com.example.accessingdatamysql.entity.ReservationEntity;
 import com.example.accessingdatamysql.entity.UserEntity;
@@ -94,5 +95,10 @@ public class ReservationController {
         }catch (SecurityException e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
         }
+    }
+
+    @GetMapping("/myReservations")
+    public List<ReservationEventDTO> getUserReservations() {
+        return reservationService.getUserReservations();
     }
 }

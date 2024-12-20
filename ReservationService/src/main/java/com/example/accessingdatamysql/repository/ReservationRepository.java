@@ -17,6 +17,7 @@ public interface ReservationRepository extends JpaRepository<ReservationEntity,L
     List<ReservationEntity> findByUserId(Integer userId);
 
 
+    List<ReservationEntity> findAllByUserEmail(String email);
     Optional<ReservationEntity> findByEventIdAndUser(Long eventId, UserEntity user);
 
 

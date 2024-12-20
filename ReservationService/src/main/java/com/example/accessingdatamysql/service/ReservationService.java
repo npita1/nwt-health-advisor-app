@@ -1,5 +1,6 @@
 package com.example.accessingdatamysql.service;
 
+import com.example.accessingdatamysql.dto.ReservationEventDTO;
 import com.example.accessingdatamysql.entity.ReservationEntity;
 import com.example.accessingdatamysql.entity.UserEntity;
 import com.example.accessingdatamysql.repository.ReservationRepository;
@@ -7,6 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ReservationService {
@@ -49,5 +53,21 @@ public class ReservationService {
 
         // Obriši rezervaciju ako je provjera uspješna
         reservationRepository.delete(reservation);
+    }
+    public List<ReservationEventDTO> getUserReservations() {
+        // Dohvati trenutnog korisnika iz SecurityContextHolder
+        String currentUserEmail = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        // Dohvati sve rezervacije i mapiraj ih na DTO objekte
+        return reservationRepository.findAllByUserEmail(currentUserEmail)
+                .stream()
+                .map(reservation -> new ReservationEventDTO(
+                        reservation.getId(),
+                        reservation.getEvent().getName(),
+                        reservation.getEvent().getDate().toString(),
+                        reservation.getNumOfTicket(),
+                        reservation.getEvent().getLocation()
+                ))
+                .collect(Collectors.toList());
     }
 }
