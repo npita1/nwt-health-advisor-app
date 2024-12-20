@@ -4,6 +4,8 @@ import com.example.accessingdatamysql.entity.ReservationEntity;
 import com.example.accessingdatamysql.entity.UserEntity;
 import com.example.accessingdatamysql.repository.ReservationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -31,5 +33,21 @@ public class ReservationService {
        reservation.setUser(user);
         return this.reservationRepository.save(reservation);
 
+    }
+    public void deleteReservation(Long id) {
+        // Dohvati trenutnog korisnika iz SecurityContextHolder
+        String currentUserEmail = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        // Pronađi rezervaciju
+        ReservationEntity reservation = reservationRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Rezervacija s ID-jem " + id + " nije pronađena."));
+
+        // Provjeri da li trenutni korisnik ima pravo na ovu rezervaciju
+        if (!reservation.getUser().getEmail().equals(currentUserEmail)) {
+            throw new SecurityException("Nemate pravo da obrišete ovu rezervaciju.");
+        }
+
+        // Obriši rezervaciju ako je provjera uspješna
+        reservationRepository.delete(reservation);
     }
 }

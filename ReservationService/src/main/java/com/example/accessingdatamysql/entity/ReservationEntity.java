@@ -23,7 +23,7 @@ public class ReservationEntity {
     @JoinColumn(name = "event_id", referencedColumnName = "id")
     private EventEntity event;
     @ManyToOne
-    @JoinColumn(name = "user_id",referencedColumnName = "id")
+    @JoinColumn(name = "user_id",referencedColumnName = "id", nullable = false)
     private UserEntity user;
 
     public ReservationEntity(Integer numOfTicket) {

@@ -11,10 +11,13 @@ import java.util.Optional;
 
 public interface ReservationRepository extends JpaRepository<ReservationEntity,Long> {
     ReservationEntity findById(long id);
+
+    void deleteAllByEvent(EventEntity event);
     List<ReservationEntity> findByEvent(EventEntity event);
     List<ReservationEntity> findByUserId(Integer userId);
 
 
     Optional<ReservationEntity> findByEventIdAndUser(Long eventId, UserEntity user);
+
 
 }

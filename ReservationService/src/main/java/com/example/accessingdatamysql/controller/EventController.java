@@ -136,6 +136,14 @@ public class EventController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to communicate with the remote service.");
         }
     }
-
+    @DeleteMapping(path = "/deleteEvent/{eventId}")
+    public @ResponseBody ResponseEntity<?> deleteEvent(@PathVariable Long eventId) {
+        try {
+            eventService.deleteEvent(eventId);
+            return ResponseEntity.ok("Event i sve povezane rezervacije su uspješno obrisani.");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
 
 }

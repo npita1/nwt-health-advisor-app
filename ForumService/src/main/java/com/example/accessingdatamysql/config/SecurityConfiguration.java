@@ -55,6 +55,7 @@ public class SecurityConfiguration {
                         .requestMatchers(POST,"/forum/addForumAnswer").hasRole("DOCTOR")
                         .requestMatchers(DELETE,"/forum/deleteAnswer/{answerId}").hasRole("ADMIN")
                         .requestMatchers(DELETE,"/forum/deleteQuestion/{questionId}").hasRole("ADMIN")
+                        .requestMatchers(DELETE,"/forum/deleteArticle/{articleId}").hasRole("ADMIN")
                         .requestMatchers(GET,"/forum/forumAnswers/question/{questionId}").hasAnyRole("USER","DOCTOR","ADMIN")
                         .anyRequest()
                         .authenticated()

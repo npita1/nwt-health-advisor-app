@@ -2,6 +2,8 @@ package com.example.accessingdatamysql.service;
 
 import com.example.accessingdatamysql.entity.EventEntity;
 import com.example.accessingdatamysql.repository.EventRepository;
+import com.example.accessingdatamysql.repository.ReservationRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +14,9 @@ import java.util.List;
 public class EventService {
     @Autowired
     private EventRepository eventRepository;
+
+    @Autowired
+    private ReservationRepository reservationRepository;
     private static final List<String> VALID_LOCATIONS = Arrays.asList(
             "Banja Luka",
             "Bihać",
@@ -71,5 +76,19 @@ public class EventService {
         }
         return this.eventRepository.save(event);
     }
+
+    @Transactional
+    public void deleteEvent(Long eventId) {
+        // Pronađi event koje treba obrisati
+        EventEntity event = eventRepository.findById(eventId)
+                .orElseThrow(() -> new IllegalArgumentException("Event s ID-om " + eventId + " ne postoji."));
+
+        // Brisanje svih rezervacija povezanih s eventom
+         reservationRepository.deleteAllByEvent(event);
+
+        // Brisanje pitanja
+        eventRepository.delete(event);
+    }
+
 
 }

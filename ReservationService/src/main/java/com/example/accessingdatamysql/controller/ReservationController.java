@@ -84,4 +84,15 @@ public class ReservationController {
             return ResponseEntity.ok(reservations);
         }
     }
+    @DeleteMapping(path = "/deleteReservation/{reservationId}")
+    public @ResponseBody ResponseEntity<?> deleteReservation(@PathVariable Long reservationId) {
+        try {
+            reservationService.deleteReservation(reservationId);
+            return ResponseEntity.ok("Rezervacija uspješno obrisana.");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }catch (SecurityException e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
+        }
+    }
 }
