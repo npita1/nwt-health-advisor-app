@@ -25,7 +25,7 @@ import Articles from '../pages/Articles';
 import { logout as logoutService } from '../services/userService';
 import '../styles/HomePage.css';
 import AddDoctor from '../pages/addDoctor';
-
+import ProfilePage from '../pages/ProfilePage';
 function Header() {
   const [isOpen, setIsOpen] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
@@ -63,6 +63,9 @@ function Header() {
             <Tab>Workshops and Events</Tab>
             <Tab>Articles</Tab> 
             <Tab>Our Specialists</Tab>
+            {( userRole === "USER") ?
+        <Tab>My Profile</Tab> 
+         : <></>}
             {( userRole === "ADMIN") ?
         <Tab>Add doctor</Tab> 
          : <></>}
@@ -87,6 +90,9 @@ function Header() {
             <TabPanel>
               <StaffPage />
             </TabPanel>
+            <TabPanel>
+             <ProfilePage/>
+              </TabPanel>
             <TabPanel>
             <AddDoctor />
           </TabPanel>

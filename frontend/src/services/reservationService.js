@@ -1,4 +1,4 @@
-
+import axios from 'axios';
 const API_URL = 'http://localhost:8086';
 
 export async function getAllEvents() {
@@ -99,3 +99,41 @@ export async function addEvent(eventData) {
     throw error;
   }
 }
+export async function getUserReservations() {
+  const token = localStorage.getItem('token');
+  const response = await axios.get(`${API_URL}/reservation/myReservations`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return response.data;
+}
+
+export async function deleteReservation(reservationId) {
+  const token = localStorage.getItem('token');
+  if (!token || token === "") {
+    throw new Error('No token found');
+  }
+
+  try {
+    console.log('Sending request to delete reservation:', reservationId);
+    const response = await fetch(`${API_URL}/reservation/deleteReservation/${reservationId}`, {
+      method: 'DELETE',
+      headers: {
+        Accept: 'application/json, text/plain, */*',
+        Authorization: `Bearer ${token}`
+      }
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error('Failed to delete reservation:', response.status, errorText);
+      throw new Error(`Failed to delete reservation: ${response.status} - ${errorText}`);
+    }
+
+    return response.json();
+  } catch (error) {
+    console.error('Network or server error:', error);
+
+    throw error;
+  }
+}
+

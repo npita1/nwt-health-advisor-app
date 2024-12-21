@@ -243,3 +243,32 @@ export async function getDoctorIdByUserId(id) {
     throw error;
   }
 }
+export async function changePassword(passwordData) {
+  const token = localStorage.getItem('token');
+  const response = await axios.patch(
+    `${API_URL}/user/changePassword`,
+    passwordData,
+    {
+      headers: { Authorization: `Bearer ${token}` },
+    }
+  );
+  localStorage.setItem('token', "")
+  localStorage.setItem('userId', "")
+  localStorage.setItem('userRole', "")
+  return response.data;
+}
+// Funkcija za dohvaćanje trenutnog korisnika
+export const getCurrentUser = async () => {
+  const token = localStorage.getItem("token");
+  try {
+    const response = await axios.get(`${API_URL}/user/currentUser`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data; // Ovo vraća mapu sa detaljima korisnika
+  } catch (error) {
+    console.error("Greška pri dohvaćanju trenutnog korisnika:", error);
+    throw error;
+  }
+};
