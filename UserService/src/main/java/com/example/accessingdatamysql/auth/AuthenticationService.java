@@ -1,6 +1,7 @@
 package com.example.accessingdatamysql.auth;
 
 import com.example.accessingdatamysql.config.JwtService;
+import com.example.accessingdatamysql.entity.Role;
 import com.example.accessingdatamysql.entity.Token;
 import com.example.accessingdatamysql.entity.TokenType;
 import com.example.accessingdatamysql.entity.UserEntity;
@@ -48,7 +49,7 @@ public class AuthenticationService {
                 .lastName(request.getLastname())
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
-                .role(request.getRole())
+                .role(Role.USER)
                 .build();
         try {
             var savedUser = userRepository.save(user);

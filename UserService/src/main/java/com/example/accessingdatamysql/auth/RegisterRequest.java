@@ -24,7 +24,7 @@ public class RegisterRequest {
             message = "Lozinka mora sadržavati najmanje jedno malo slovo, jedno veliko slovo, jedan broj i jedan znak koji nije slovo ili broj."
     )
     private String password;
-    private Role role;
+
 
     @AssertTrue(message = "Ime i prezime ne smiju biti isti.")
     public boolean isFirstNameNotLastName() {

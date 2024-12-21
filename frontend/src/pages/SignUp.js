@@ -34,8 +34,7 @@ function SignUp() {
         firstname: firstName,
         lastname: lastName,
         email: email,
-        password: password,
-        role: "USER",
+        password: password
     };
       
       console.log('Podaci koji se šalju na server:', formData);
