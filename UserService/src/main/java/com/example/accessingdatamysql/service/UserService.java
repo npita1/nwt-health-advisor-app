@@ -2,6 +2,7 @@ package com.example.accessingdatamysql.service;
 
 
 import com.example.accessingdatamysql.auth.ChangePasswordRequest;
+import com.example.accessingdatamysql.dto.UserDTO;
 import com.example.accessingdatamysql.entity.DoctorInfoEntity;
 import com.example.accessingdatamysql.entity.UserEntity;
 import com.example.accessingdatamysql.exceptions.UserNotFoundException;
@@ -145,6 +146,22 @@ public class UserService {
         tokenRepository.deleteAllByUser(user);
         doctorInfoRepository.deleteByUser(user);
         userRepository.delete(user);
+    }
+
+    public List<UserDTO> getAllUsers() {
+
+        // Dohvati sve rezervacije i mapiraj ih na DTO objekte
+        return userRepository.findAllNonAdminUsers()
+                .stream()
+                .filter(user -> !"ADMIN".equals(user.getRole())) // Filtrira korisnike sa rolom ADMIN
+                .map(user -> UserDTO.builder()
+                        .id(user.getId())
+                        .email(user.getEmail())
+                        .firstName(user.getFirstName())
+                        .lastName(user.getLastName())
+                        .role(user.getRole())
+                        .build())
+                .toList();
     }
 
 }

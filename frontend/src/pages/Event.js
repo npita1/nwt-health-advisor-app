@@ -94,7 +94,8 @@ function Event() {
 
         const addedReservation = await addReservation(eventReservationData);
         alert("Event reservation successful!");
-        
+        localStorage.setItem('selectedTabIndex', "5");
+        window.location.reload();
         } catch (error) {
             console.error('Greška prilikom dodavanja rezervacije:', error);
             

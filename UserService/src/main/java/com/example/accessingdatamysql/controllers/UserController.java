@@ -1,6 +1,7 @@
 package com.example.accessingdatamysql.controllers;
 
 import com.example.accessingdatamysql.auth.ChangePasswordRequest;
+import com.example.accessingdatamysql.dto.UserDTO;
 import com.example.accessingdatamysql.entity.UserEntity;
 import com.example.accessingdatamysql.exceptions.UserNotFoundException;
 import com.example.accessingdatamysql.repository.UserRepository;
@@ -56,9 +57,9 @@ public class UserController {
     }
 
     @GetMapping(path = "/allUsers")
-    public @ResponseBody Iterable<UserEntity> getAllUsers() {
-        // This returns a JSON or XML with the users
-        return userRepository.findAll();
+    public @ResponseBody List<UserDTO>  getAllUsers() {
+
+        return userService.getAllUsers();
     }
 
     @GetMapping(path = "/users/{userID}")

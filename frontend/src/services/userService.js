@@ -37,6 +37,7 @@ export async function logout() {
     localStorage.setItem('token', "")
     localStorage.setItem('userId', "")
     localStorage.setItem('userRole', "")
+    localStorage.setItem('selectedTabIndex', "0");
 
     window.location.reload();
   }catch(error){
@@ -255,6 +256,7 @@ export async function changePassword(passwordData) {
   localStorage.setItem('token', "")
   localStorage.setItem('userId', "")
   localStorage.setItem('userRole', "")
+  
   return response.data;
 }
 // Funkcija za dohvaćanje trenutnog korisnika
@@ -271,4 +273,55 @@ export const getCurrentUser = async () => {
     console.error("Greška pri dohvaćanju trenutnog korisnika:", error);
     throw error;
   }
-};
+}
+export async function getAllUsers() {
+  const token = localStorage.getItem('token');
+
+      try {
+    const response = await axios.get(`${API_URL}/user/allUsers`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+      );
+
+    if (response.status === 200) {
+      console.log('Uspješno dohvaćeni podaci o korisnicima:', response.data);
+      return response.data;
+    } else {
+      throw new Error('Neuspješno dobavljanje podataka o korisnicima.');
+    }
+  } catch (error) {
+    console.error('Greška prilikom dohvaćanja korisnika:', error);
+    throw error;
+  }
+}
+
+export async function deleteUser(userId) {
+  const token = localStorage.getItem('token');
+  if (!token || token === "") {
+    throw new Error('No token found');
+  }
+
+  try {
+    const response = await fetch(`${API_URL}/user/deleteUser/${userId}`, {
+      method: 'DELETE',
+      headers: {
+        Accept: 'application/json, text/plain, */*',
+        Authorization: `Bearer ${token}`
+      }
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error('Failed to delete user:', response.status, errorText);
+      throw new Error(`Failed to delete user: ${response.status} - ${errorText}`);
+    }
+
+    return response.json();
+  } catch (error) {
+    console.error('Network or server error:', error);
+
+    throw error;
+  }
+}

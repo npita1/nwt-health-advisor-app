@@ -14,6 +14,7 @@ import {
   TabPanels,
   Tab,
   TabPanel,
+  Text,
   Image
 } from '@chakra-ui/react';
 import '../styles/Header.css';
@@ -26,19 +27,19 @@ import { logout as logoutService } from '../services/userService';
 import '../styles/HomePage.css';
 import AddDoctor from '../pages/addDoctor';
 import ProfilePage from '../pages/ProfilePage';
+import AdminPanel from '../pages/AdminPanel';
+
 function Header() {
   const [isOpen, setIsOpen] = useState(false);
-  const [showAlert, setShowAlert] = useState(false);
   const cancelRef = React.useRef();
   const [userRole, setUserRole] = useState(localStorage.getItem('userRole'));
 
   const handleLogout = async () => {
     try {
       await logoutService();
-      setShowAlert(true);
       // navigate('/');  // Preusmeri korisnika na početnu stranicu
     } catch (error) {
-      console.error('Greška prilikom logouta korisnika:', error);
+      console.error('Error logging out:', error);
     }
   };
 
@@ -49,67 +50,67 @@ function Header() {
     onClose();
     await handleLogout();
   };
+  const [selectedTabIndex, setSelectedTabIndex] = useState(() => {
+    const savedIndex = localStorage.getItem('selectedTabIndex');
+    return savedIndex ? parseInt(savedIndex, 10) : 0; // Podrazumevani indeks je 0 (Home)
+  });
+  const handleTabChange = (index) => {
+    setSelectedTabIndex(index);
+    localStorage.setItem('selectedTabIndex', index); // Sačuvaj indeks u localStorage
+  };
+    
+  const tabs = [
+    { label: "Home", component: <HomePage /> },
+    { label: "Questions and Answers", component: <QuestionsAndAnswers /> },
+    { label: "Workshops and Events", component: <Event /> },
+    { label: "Articles", component: <Articles /> },
+    { label: "Our Specialists", component: <StaffPage /> },
+    { label: "My Profile", component: <ProfilePage />, role: "USER" },
+    { label: "Add doctor", component: <AddDoctor />, role: "ADMIN" },
+    { label: "Admin Panel", component: <AdminPanel />, role: "ADMIN" },
+  ];
 
   return (
     <ChakraProvider>
       <div className="header">
-        <Tabs>
+        <Tabs index={selectedTabIndex} onChange={handleTabChange}>
           <TabList className="tab" style={{ display: 'flex', alignItems: 'center' }}>
             <div className="logo-container">
               <Image src="images/logo.png" alt="Logo" />
             </div>
-            <Tab>Home</Tab>
-            <Tab>Questions and Answers</Tab>
-            <Tab>Workshops and Events</Tab>
-            <Tab>Articles</Tab> 
-            <Tab>Our Specialists</Tab>
-            {( userRole === "USER") ?
-        <Tab>My Profile</Tab> 
-         : <></>}
-            {( userRole === "ADMIN") ?
-        <Tab>Add doctor</Tab> 
-         : <></>}
-            
-            {localStorage.token ?
-              <Button className='dugmeLogout' colorScheme="#FF585F" size='sm' onClick={onOpen} style={{ marginLeft: 'auto' }}>Logout</Button>
-              : <></>}
+            {tabs.map(
+              (tab, index) =>
+                (!tab.role || tab.role === userRole) && <Tab key={index}>{tab.label}</Tab>
+            )}
+            {localStorage.token && (
+              <Button
+                className="dugmeLogout"
+                colorScheme="#FF585F"
+                size="sm"
+                onClick={onOpen}
+                style={{ marginLeft: 'auto' }}
+              >
+                Logout
+              </Button>
+            )}
           </TabList>
+
           <TabPanels>
-            <TabPanel>
-              <HomePage />
-            </TabPanel>
-            <TabPanel>
-              <QuestionsAndAnswers />
-            </TabPanel>
-            <TabPanel>
-              <Event />
-            </TabPanel>
-            <TabPanel>
-              <Articles />
-            </TabPanel>
-            <TabPanel>
-              <StaffPage />
-            </TabPanel>
-            <TabPanel>
-             <ProfilePage/>
-              </TabPanel>
-            <TabPanel>
-            <AddDoctor />
-          </TabPanel>
+            {tabs.map(
+              (tab, index) =>
+                (!tab.role || tab.role === userRole) && (
+                  <TabPanel key={index}>{tab.component}</TabPanel>
+                )
+            )}
           </TabPanels>
-          
         </Tabs>
       </div>
-      
-      <AlertDialog
-        isOpen={isOpen}
-        leastDestructiveRef={cancelRef}
-        onClose={onClose}
-      >
+
+      <AlertDialog isOpen={isOpen} leastDestructiveRef={cancelRef} onClose={onClose}>
         <AlertDialogOverlay>
           <AlertDialogContent>
             <AlertDialogHeader fontSize="lg" fontWeight="bold">
-              Logout confimation
+              Logout Confirmation
             </AlertDialogHeader>
 
             <AlertDialogBody>

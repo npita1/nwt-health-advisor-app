@@ -22,5 +22,7 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
 
     Optional<UserEntity> findByEmail(String email);
     boolean existsByEmail(String email);
-
+    // Nova metoda za vraćanje svih korisnika koji nisu admin
+    @Query("SELECT u FROM UserEntity u WHERE u.role <> 'ADMIN' OR u.role IS NULL")
+    List<UserEntity> findAllNonAdminUsers();
 }
