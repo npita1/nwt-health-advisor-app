@@ -2,11 +2,17 @@ package com.example.accessingdatamysql.service;
 
 
 import com.example.accessingdatamysql.auth.ChangePasswordRequest;
+import com.example.accessingdatamysql.entity.DoctorInfoEntity;
 import com.example.accessingdatamysql.entity.UserEntity;
 import com.example.accessingdatamysql.exceptions.UserNotFoundException;
+import com.example.accessingdatamysql.feign.ForumInterface;
+import com.example.accessingdatamysql.feign.ReservationInterface;
+import com.example.accessingdatamysql.repository.DoctorInfoRepository;
 import com.example.accessingdatamysql.repository.TokenRepository;
 import com.example.accessingdatamysql.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -24,7 +30,14 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final TokenRepository tokenRepository;
+    @Autowired
+    private ReservationInterface reservationClient;
 
+    @Autowired
+    private ForumInterface forumClient;
+
+    @Autowired
+    private DoctorInfoRepository doctorInfoRepository;
     public String getUsers() {
 
         List<UserEntity> users = userRepository.findAll();
@@ -99,6 +112,39 @@ public class UserService {
 
         // Čišćenje sigurnosnog konteksta
         SecurityContextHolder.clearContext();
+    }
+    @Transactional
+    public void deleteUser(Long userId) {
+        var user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("Korisnik s ID " + userId + " ne postoji."));
+
+        try {
+            // Brisanje korisnika sa foruma
+            ResponseEntity<Map<String, String>> forumResponse = forumClient.deleteUser(userId);
+            if (!forumResponse.getStatusCode().is2xxSuccessful()) {
+                throw new IllegalStateException("Greška prilikom brisanja korisnika sa foruma: " + forumResponse.getBody());
+            }
+
+            Map<String, String> forumResponseBody = forumResponse.getBody();
+            System.out.println("Forum servis odgovor: " + forumResponseBody.get("message"));
+
+            // Brisanje korisnika iz rezervacija
+            ResponseEntity<Map<String, String>> reservationResponse = reservationClient.deleteUser(userId);
+            if (!reservationResponse.getStatusCode().is2xxSuccessful()) {
+                throw new IllegalStateException("Greška prilikom brisanja korisnika iz rezervacija: " + reservationResponse.getBody());
+            }
+
+            Map<String, String> reservationResponseBody = reservationResponse.getBody();
+            System.out.println("Rezervacija servis odgovor: " + reservationResponseBody.get("message"));
+
+        } catch (Exception e) {
+            throw new IllegalStateException("Greška tokom brisanja korisničkih podataka: " + e.getMessage(), e);
+        }
+
+        // Brisanje lokalnih podataka
+        tokenRepository.deleteAllByUser(user);
+        doctorInfoRepository.deleteByUser(user);
+        userRepository.delete(user);
     }
 
 }

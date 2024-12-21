@@ -15,7 +15,7 @@ public interface ReservationRepository extends JpaRepository<ReservationEntity,L
     void deleteAllByEvent(EventEntity event);
     List<ReservationEntity> findByEvent(EventEntity event);
     List<ReservationEntity> findByUserId(Integer userId);
-
+    void deleteAllByUser(UserEntity user);
 
     List<ReservationEntity> findAllByUserEmail(String email);
     Optional<ReservationEntity> findByEventIdAndUser(Long eventId, UserEntity user);

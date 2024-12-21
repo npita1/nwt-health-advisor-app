@@ -51,6 +51,7 @@ public class SecurityConfiguration {
                         .requestMatchers(GET,"/reservation/reservations-for-events/{eventId}").hasRole("DOCTOR")
                         .requestMatchers(PUT,"/reservation/eventHeld/{eventId}").hasRole("DOCTOR")
                         .requestMatchers(POST,"/reservation/addReservation").hasRole("USER")
+                        .requestMatchers(DELETE,"/reservation/deleteUser/{userServiceId}").hasRole("ADMIN")
                         .requestMatchers(DELETE,"/reservation/deleteReservation/{reservationId}").hasRole("USER")
                         .requestMatchers(DELETE,"/reservation/deleteEvent/{eventId}").hasRole("ADMIN")
                         .requestMatchers(GET,"/reservation/allReservations").hasAnyRole("ADMIN","DOCTOR")

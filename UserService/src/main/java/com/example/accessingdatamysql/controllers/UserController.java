@@ -156,6 +156,16 @@ public class UserController {
         userService.changePassword(request, connectedUser, authHeader);
         return ResponseEntity.ok("Password changed successfully, user logged out.");
     }
+
+    @DeleteMapping(path="/deleteUser/{userId}")
+    public @ResponseBody ResponseEntity<?> deleteUser(@PathVariable Long userId) {
+        try {
+            userService.deleteUser(userId);
+            return ResponseEntity.ok("Korisnik i svi povezani podaci su uspješno obrisani.");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
 }
 
 

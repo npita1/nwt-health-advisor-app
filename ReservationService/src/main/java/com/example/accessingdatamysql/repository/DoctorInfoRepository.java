@@ -9,6 +9,8 @@ import java.util.List;
 
 public interface DoctorInfoRepository extends JpaRepository<DoctorInfoEntity, Long> {
     DoctorInfoEntity findById(long id);
+
+    DoctorInfoEntity findByUserId(long userId);
     @Query("SELECT a FROM DoctorInfoEntity a WHERE a.user.userServiceId = :userServiceId")
     DoctorInfoEntity findByUserServiceId(long userServiceId);
 }

@@ -53,6 +53,7 @@ public class SecurityConfiguration {
                         .requestMatchers(POST,"/forum/addForumQuestion").hasRole("USER")
                         .requestMatchers(POST,"/forum/addArticle").hasRole("DOCTOR")
                         .requestMatchers(POST,"/forum/addForumAnswer").hasRole("DOCTOR")
+                        .requestMatchers(DELETE,"/forum/deleteUser").hasRole("ADMIN")
                         .requestMatchers(DELETE,"/forum/deleteAnswer/{answerId}").hasRole("ADMIN")
                         .requestMatchers(DELETE,"/forum/deleteQuestion/{questionId}").hasRole("ADMIN")
                         .requestMatchers(DELETE,"/forum/deleteArticle/{articleId}").hasRole("ADMIN")

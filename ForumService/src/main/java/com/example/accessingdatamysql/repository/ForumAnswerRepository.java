@@ -1,5 +1,6 @@
 package com.example.accessingdatamysql.repository;
 
+import com.example.accessingdatamysql.entity.DoctorInfoEntity;
 import com.example.accessingdatamysql.entity.ForumAnswerEntity;
 import com.example.accessingdatamysql.entity.ForumQuestionEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -11,7 +12,7 @@ public interface ForumAnswerRepository extends JpaRepository<ForumAnswerEntity, 
     ForumAnswerEntity findById(long id);
 
     void deleteAllByQuestion(ForumQuestionEntity question);
-
+    void deleteAllByDoctor(DoctorInfoEntity doctorInfo);
     @Query("SELECT fa FROM ForumAnswerEntity fa WHERE fa.question.id = :questionId")
     Iterable<ForumAnswerEntity> getForumAnswersFromQuestionId(Long questionId);
 

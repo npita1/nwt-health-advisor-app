@@ -15,8 +15,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.security.web.authentication.logout.LogoutHandler;
 
 import static com.example.accessingdatamysql.entity.Role.*;
-import static org.springframework.http.HttpMethod.GET;
-import static org.springframework.http.HttpMethod.POST;
+import static org.springframework.http.HttpMethod.*;
 
 @Configuration
 @EnableWebSecurity
@@ -54,6 +53,7 @@ public class SecurityConfiguration {
                         .requestMatchers(GET,"/user/doctors/specialist/{specialization}").permitAll()
                         .requestMatchers(POST,"/user/addNewDoctor").hasRole(ADMIN.name())
                         .requestMatchers(GET,"/user/allUsers").hasRole(ADMIN.name())
+                        .requestMatchers(DELETE,"user/deleteUser/{userId}").hasRole(ADMIN.name())
                         .requestMatchers(GET,"/user/doctors/{doctorID}").hasAnyRole(ADMIN.name(),DOCTOR.name())
                         .requestMatchers(GET,"/user/doctor/getbyuserid").hasAnyRole(ADMIN.name(),DOCTOR.name(), USER.name())
                         .requestMatchers(GET,"/user/doctor/{doctorID}/articles").hasRole(DOCTOR.name())

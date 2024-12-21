@@ -1,6 +1,7 @@
 package com.example.accessingdatamysql.repository;
 
 import com.example.accessingdatamysql.entity.DoctorInfoEntity;
+import com.example.accessingdatamysql.entity.UserEntity;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
@@ -14,7 +15,7 @@ public interface DoctorInfoRepository extends CrudRepository<DoctorInfoEntity, L
 
     @Query("SELECT u FROM DoctorInfoEntity u WHERE u.user.id =?1")
     DoctorInfoEntity getDoctorByUserId(Integer userId);
-
+    void deleteByUser(UserEntity user);
 
 
     boolean existsByPhoneNumber(String phoneNumber);
