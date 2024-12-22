@@ -93,8 +93,6 @@ const [userRole, setUserRole] = useState(localStorage.getItem('userRole'));
       alert('Lozinka uspješno promijenjena.');
       onClosePasswordModal();
       window.location.reload();
-     // localStorage.clear();
-      // setUserRole(null);
     } catch (error) {
       setErrorMessage('Greška prilikom promjene lozinke: Netačna stara lozinka ili slaba nova lozinka(min 8 karaktera, moram imati veliko i malo slovo,broj i znak ) ');
     }

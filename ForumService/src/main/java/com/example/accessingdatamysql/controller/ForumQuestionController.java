@@ -15,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
 
 
 @Controller
@@ -107,13 +108,18 @@ public class ForumQuestionController {
     }
 
     @DeleteMapping(path = "/deleteQuestion/{questionId}")
-    public @ResponseBody ResponseEntity<?> deleteForumQuestion(@PathVariable Long questionId) {
+    public @ResponseBody ResponseEntity<Map<String, String>> deleteForumQuestion(@PathVariable Long questionId) {
         try {
             forumQuestionService.deleteForumQuestion(questionId);
-            return ResponseEntity.ok("Pitanje i svi povezani odgovori su uspješno obrisani.");
+            // Vraćamo odgovor u JSON formatu
+            Map<String, String> response = Map.of("message", "Pitanje i svi povezani odgovori su uspješno obrisani.");
+            return ResponseEntity.ok(response);
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+            // Vraćamo grešku u JSON formatu
+            Map<String, String> errorResponse = Map.of("error", e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
         }
     }
+
 
 }

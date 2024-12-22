@@ -16,6 +16,7 @@ import {
   FormControl,
   FormLabel,
   Input,
+  Text,
   Textarea,
   Radio,
   RadioGroup,
@@ -33,7 +34,9 @@ import {
   getAllCategories,
   addForumQuestion,
   getForumAnswersByQuestionId,
-  addForumAnswer // Import the function to add an answer
+  addForumAnswer ,// Import the function to add an answer
+  deleteForumQuestion,
+  deleteForumAnswer
 } from '../services/forumService';
 import { getDoctorIdByUserId } from '../services/userService';
 
@@ -49,7 +52,7 @@ function QuestionsAndAnswers() {
   const [expandedQuestionId, setExpandedQuestionId] = useState(null);
   const [userRole, setUserRole] = useState(localStorage.getItem('userRole'));
   const [answerText, setAnswerText] = useState('');
-
+  const [deleteModal, setDeleteModal] = useState({ isOpen: false, type: null, id: null });
   useEffect(() => {
     const fetchQuestions = async () => {
       try {
@@ -266,7 +269,33 @@ function QuestionsAndAnswers() {
       console.error('Error fetching answers:', error);
     }
   };
-
+  const handleDelete = async () => {
+    const { type, id } = deleteModal;
+    try {
+      if (type === 'question') {
+        // Pozivanje API-ja za brisanje pitanja
+        const response = await deleteForumQuestion(id);
+        console.log(response.message); // "Pitanje i svi povezani odgovori su uspješno obrisani."
+        setQuestions(prevQuestions => prevQuestions.filter(question => question.id !== id));
+      } else if (type === 'answer') {
+        // Pozivanje API-ja za brisanje odgovora
+        const response = await deleteForumAnswer(id);
+        console.log(response.message); // "Odgovor uspješno obrisan."
+        setQuestions(prevQuestions =>
+          prevQuestions.map(question => ({
+            ...question,
+            answers: question.answers.filter(answer => answer.id !== id)
+          }))
+        );
+      }
+      // Zatvaranje modala nakon uspješnog brisanja
+      setDeleteModal({ isOpen: false, type: null, id: null });
+    } catch (error) {
+      // Obrada greške
+      console.error('Error deleting item:', error.message || error);
+    }
+  };
+  
   return (
     <div>
       <div className='categoryDiv'>
@@ -321,6 +350,15 @@ function QuestionsAndAnswers() {
                         </Flex>
                         <p className='tekstPitanja'>{question.text}</p>
                       </Flex>
+                      {userRole === 'ADMIN' && (
+                            <Button
+                              colorScheme="red"
+                              size="sm"
+                              onClick={() => setDeleteModal({ isOpen: true, type: 'question', id: question.id })}
+                            >
+                              Delete Question
+                            </Button>
+                          )}
                     </div>
                   </Box>
                   <AccordionIcon />
@@ -339,6 +377,15 @@ function QuestionsAndAnswers() {
                             <p className='odgovorImeDoktora'>Dr. {answer.doctor.user.firstName} {answer.doctor.user.lastName}</p>
                             <p className='datumPitanja'>{answer.date}</p>
                             <p className='tekstOdgovora'>{answer.text}</p>
+                            {userRole === 'ADMIN' && (
+                            <Button
+                          colorScheme="red"
+                          size="sm"
+                          onClick={() => setDeleteModal({ isOpen: true, type: 'answer', id: answer.id })}
+                        >
+                          Delete Answer
+                        </Button>
+                            )}
                           </Flex>
                         </Flex>
                       </div>
@@ -368,7 +415,7 @@ function QuestionsAndAnswers() {
           </Accordion>
         </Flex>
       </div>
-
+      
       {/* Modal */}
       <Modal isOpen={showModal} onClose={handleModalClose}>
         <ModalOverlay />
@@ -410,7 +457,27 @@ function QuestionsAndAnswers() {
           </ModalFooter>
         </ModalContent>
       </Modal>
+      {/* Delete Confirmation Modal */}
+      <Modal isOpen={deleteModal.isOpen} onClose={() => setDeleteModal({ isOpen: false, type: null, id: null })}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Confirm Deletion</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <Text>Are you sure you want to delete this {deleteModal.type}?</Text>
+          </ModalBody>
+          <ModalFooter>
+            <Button colorScheme="red" onClick={handleDelete}>
+              Yes
+            </Button>
+            <Button ml={3} onClick={() => setDeleteModal({ isOpen: false, type: null, id: null })}>
+              No
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </div>
+    
   );
 }
 

@@ -11,6 +11,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @Controller
 @Validated
 @CrossOrigin
@@ -80,12 +82,16 @@ public class ForumAnswerController {
         return forumAnswerService.getForumAnswersByDoctorId(forumServiceDoctor.getId());
     }
     @DeleteMapping(path = "/deleteAnswer/{answerId}")
-    public @ResponseBody ResponseEntity<?> deleteForumAnswer(@PathVariable Long answerId) {
+    public @ResponseBody ResponseEntity<Map<String, String>> deleteForumAnswer(@PathVariable Long answerId) {
         try {
             forumAnswerService.deleteForumAnswer(answerId);
-            return ResponseEntity.ok("Odgovor uspješno obrisan.");
+            // Vraćamo odgovor u JSON formatu
+            Map<String, String> response = Map.of("message", "Odgovor uspješno obrisan.");
+            return ResponseEntity.ok(response);
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+            // Vraćamo grešku u JSON formatu
+            Map<String, String> errorResponse = Map.of("error", e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
         }
     }
 

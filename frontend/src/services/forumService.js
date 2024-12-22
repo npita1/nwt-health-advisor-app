@@ -24,6 +24,7 @@ export async function getAllCategories() {
 
 
 
+
 export async function getForumQuestionsByCategory(category) {
   try {
       const response = await fetch(`${API_URL}/forum/questions/category/${category}`, {
@@ -248,4 +249,61 @@ export async function addForumAnswer(answerData) {
     throw error;
   }
 }
+export async function deleteForumQuestion(questionId) {
+  const token = localStorage.getItem('token');
+  if (!token || token === "") {
+    throw new Error('No token found');
+  }
 
+  try {
+    console.log('Sending request to delete question:', questionId);
+    const response = await fetch(`${API_URL}/forum/deleteQuestion/${questionId}`, {
+      method: 'DELETE',
+      headers: {
+        Accept: 'application/json, text/plain, */*',
+        Authorization: `Bearer ${token}`
+      }
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error('Failed to delete question:', response.status, errorText);
+      throw new Error(`Failed to delete question: ${response.status} - ${errorText}`);
+    }
+
+    return response.json();
+  } catch (error) {
+    console.error('Network or server error:', error);
+
+    throw error;
+  }
+}
+export async function deleteForumAnswer(answerId) {
+  const token = localStorage.getItem('token');
+  if (!token || token === "") {
+    throw new Error('No token found');
+  }
+
+  try {
+    console.log('Sending request to delete answer:', answerId);
+    const response = await fetch(`${API_URL}/forum/deleteAnswer/${answerId}`, {
+      method: 'DELETE',
+      headers: {
+        Accept: 'application/json, text/plain, */*',
+        Authorization: `Bearer ${token}`
+      }
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error('Failed to delete answer:', response.status, errorText);
+      throw new Error(`Failed to delete answer: ${response.status} - ${errorText}`);
+    }
+
+    return response.json();
+  } catch (error) {
+    console.error('Network or server error:', error);
+
+    throw error;
+  }
+}
