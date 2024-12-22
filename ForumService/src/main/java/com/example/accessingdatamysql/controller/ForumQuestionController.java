@@ -32,6 +32,9 @@ public class ForumQuestionController {
     @Autowired
     UserRepository userRepository;
 
+    @Autowired
+    private DoctorInfoRepository doctorInfoRepository;
+
     @PostMapping(path="/addForumQuestionClassic")
     public @ResponseBody ResponseEntity<ForumQuestionEntity> addNewForumQuestion (@RequestBody ForumQuestionEntity forumQuestionEntity) {
         ForumQuestionEntity forumQuestion = forumQuestionService.addForumQuestion(forumQuestionEntity);
@@ -58,6 +61,17 @@ public class ForumQuestionController {
             forumUser.setLastName(user.getLastName());
             forumUser.setPassword(user.getPassword());
             userRepository.save(forumUser);
+            DoctorInfoEntity doctor = userClient.getDoctorByUserId1(userId);
+            if(doctor!=null){
+                DoctorInfoEntity forumDoctor = new DoctorInfoEntity();
+                forumDoctor.setAbout(doctor.getAbout());
+                forumDoctor.setSpecialization(doctor.getSpecialization());
+                forumDoctor.setPhoneNumber(doctor.getPhoneNumber());
+                forumDoctor.setAvailability(doctor.getAvailability());
+                forumDoctor.setUser(forumUser);
+                forumDoctor.setImagePath(doctor.getImagePath());
+                doctorInfoRepository.save(forumDoctor);
+            }
         }
 
         ForumQuestionEntity savedForumQuestion = forumQuestionService.addForumQuestionUser(forumQuestion, forumUser);

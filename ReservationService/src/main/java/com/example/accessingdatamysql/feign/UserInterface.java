@@ -22,7 +22,8 @@ public interface UserInterface {
     @GetMapping(path="/user/doctors/specialist/{specialization}")
     public List<DoctorInfoEntity> getDoctorsBySpecialization(@PathVariable String specialization);
 
-
+    @GetMapping(path="/user/getDoctorByUserid/{userID}")
+    public DoctorInfoEntity getDoctorByUserId1(@PathVariable int userID);
     @GetMapping("/api/tokens/validate")
     boolean isTokenValid(@RequestParam("token") String token);
 

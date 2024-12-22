@@ -65,7 +65,7 @@ function Header() {
     { label: "Workshops and Events", component: <Event /> },
     { label: "Articles", component: <Articles /> },
     { label: "Our Specialists", component: <StaffPage /> },
-    { label: "My Profile", component: <ProfilePage />, role: "USER" },
+    { label: "My Profile", component: <ProfilePage />,  role: ["USER", "DOCTOR"]  },
     { label: "Add doctor", component: <AddDoctor />, role: "ADMIN" },
     { label: "Admin Panel", component: <AdminPanel />, role: "ADMIN" },
   ];
@@ -79,9 +79,12 @@ function Header() {
               <Image src="images/logo.png" alt="Logo" />
             </div>
             {tabs.map(
-              (tab, index) =>
-                (!tab.role || tab.role === userRole) && <Tab key={index}>{tab.label}</Tab>
-            )}
+  (tab, index) =>
+    (!tab.role || (Array.isArray(tab.role) ? tab.role.includes(userRole) : tab.role === userRole)) && (
+      <Tab key={index}>{tab.label}</Tab>
+    )
+)}
+
             {localStorage.token && (
               <Button
                 className="dugmeLogout"
@@ -96,12 +99,12 @@ function Header() {
           </TabList>
 
           <TabPanels>
-            {tabs.map(
-              (tab, index) =>
-                (!tab.role || tab.role === userRole) && (
-                  <TabPanel key={index}>{tab.component}</TabPanel>
-                )
-            )}
+          {tabs.map(
+  (tab, index) =>
+    (!tab.role || (Array.isArray(tab.role) ? tab.role.includes(userRole) : tab.role === userRole)) && (
+      <TabPanel key={index}>{tab.component}</TabPanel>
+    )
+)}
           </TabPanels>
         </Tabs>
       </div>

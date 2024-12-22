@@ -162,7 +162,7 @@ function Event() {
                                     </Flex>
                                     <p className='opisEventa'>{event.description}</p>
                                 </Flex>
-                                {( userRole === "USER") ?(
+                                {( userRole === "USER" ||  userRole === "DOCTOR") ?(
                                     <>
                                 <Button 
                                     position="absolute" 

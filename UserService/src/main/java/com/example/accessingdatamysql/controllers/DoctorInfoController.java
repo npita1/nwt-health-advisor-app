@@ -141,8 +141,8 @@ public class DoctorInfoController {
         if (!password.matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9]).{8,}$")) {
             return ResponseEntity.badRequest().body("Lozinka mora sadržavati najmanje jedno malo slovo, jedno veliko slovo, jedan broj i jedan specijalni znak.");
         }
-        if (about == null || about.length() < 20) {
-            return ResponseEntity.badRequest().body("Opis mora biti najmanje dužine 20 znakova.");
+        if (about == null || about.length() < 10 || about.length() >255) {
+            return ResponseEntity.badRequest().body("About mora biti između 10 i 255 znakova");
         }
         if (!availability.matches("^[\\p{L} -]+ - [\\p{L} -]+$")) {
             return ResponseEntity.badRequest().body("Format dostupnosti mora biti 'Rijec - Rijec'.");
@@ -185,6 +185,11 @@ public class DoctorInfoController {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
         }
     }
+    @GetMapping(path="/getDoctorByUserid/{userID}")
+    public DoctorInfoEntity getDoctorByUserId1(@PathVariable int userID){
 
+        return doctorService.getDoctorByUserId(userID);
+
+    }
 
 }

@@ -50,7 +50,7 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(openApiEndpoints).permitAll()
                         .requestMatchers(openRoutes).permitAll()
-                        .requestMatchers(POST,"/forum/addForumQuestion").hasRole("USER")
+                        .requestMatchers(POST,"/forum/addForumQuestion").hasAnyRole("USER","DOCTOR")
                         .requestMatchers(POST,"/forum/addArticle").hasRole("DOCTOR")
                         .requestMatchers(POST,"/forum/addForumAnswer").hasRole("DOCTOR")
                         .requestMatchers(DELETE,"/forum/deleteUser").hasRole("ADMIN")

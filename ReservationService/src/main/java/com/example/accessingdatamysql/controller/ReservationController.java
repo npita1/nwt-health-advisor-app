@@ -1,6 +1,7 @@
 package com.example.accessingdatamysql.controller;
 
 import com.example.accessingdatamysql.dto.ReservationEventDTO;
+import com.example.accessingdatamysql.entity.DoctorInfoEntity;
 import com.example.accessingdatamysql.entity.EventEntity;
 import com.example.accessingdatamysql.entity.ReservationEntity;
 import com.example.accessingdatamysql.entity.UserEntity;
@@ -8,6 +9,7 @@ import com.example.accessingdatamysql.exceptions.EventNotFoundException;
 import com.example.accessingdatamysql.exceptions.ReservationNotFoundException;
 
 import com.example.accessingdatamysql.feign.UserInterface;
+import com.example.accessingdatamysql.repository.DoctorInfoRepository;
 import com.example.accessingdatamysql.repository.EventRepository;
 import com.example.accessingdatamysql.repository.ReservationRepository;
 import com.example.accessingdatamysql.repository.UserRepository;
@@ -34,7 +36,8 @@ public class ReservationController {
 
     @Autowired
     private UserRepository userRepository;
-
+    @Autowired
+    private DoctorInfoRepository doctorInfoRepository;
     @Autowired
     private ReservationService reservationService;
 
@@ -44,7 +47,7 @@ public class ReservationController {
     public  @ResponseBody ResponseEntity<?> addNewReservation(@Valid @RequestBody ReservationEntity reservation){
         UserEntity user = userClient.getUserByID(reservation.getUser().getId().intValue());
         if (user == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Korisnik s ID-om " + user + " nije pronađen.");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Korisnik s ID-om " + user.getId() + " nije pronađen.");
         }
         UserEntity forumUser = userRepository.findByUserServiceId(user.getId());
         if (forumUser == null) {
@@ -55,6 +58,16 @@ public class ReservationController {
             forumUser.setLastName(user.getLastName());
             forumUser.setPassword(user.getPassword());
             userRepository.save(forumUser);
+            DoctorInfoEntity doctor = userClient.getDoctorByUserId1(user.getId().intValue());
+            if(doctor!=null){
+                DoctorInfoEntity forumDoctor = new DoctorInfoEntity();
+                forumDoctor.setAbout(doctor.getAbout());
+                forumDoctor.setSpecialization(doctor.getSpecialization());
+                forumDoctor.setPhoneNumber(doctor.getPhoneNumber());
+
+                forumDoctor.setUser(forumUser);
+                doctorInfoRepository.save(forumDoctor);
+            }
         }
         ReservationEntity newReservation= reservationService.addReservation(reservation,forumUser);
         return ResponseEntity.ok(newReservation);

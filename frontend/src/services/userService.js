@@ -178,6 +178,7 @@ export async function addDoctor(doctorData, image) {
     const responseData = await response.json();
     console.log('Doctor added successfully:', responseData);
     alert('Doctor added successfully');
+    localStorage.setItem('selectedTabIndex', "4");
     window.location.reload();
     return responseData;
   } catch (error) {
@@ -256,7 +257,7 @@ export async function changePassword(passwordData) {
   localStorage.setItem('token', "")
   localStorage.setItem('userId', "")
   localStorage.setItem('userRole', "")
-  
+  localStorage.setItem('selectedTabIndex', "0");
   return response.data;
 }
 // Funkcija za dohvaćanje trenutnog korisnika

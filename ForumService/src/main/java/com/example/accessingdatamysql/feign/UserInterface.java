@@ -18,4 +18,7 @@ public interface UserInterface {
     @GetMapping("/api/tokens/validate")
     boolean isTokenValid(@RequestParam("token") String token);
 
+    @GetMapping(path="/user/getDoctorByUserid/{userID}")
+    public DoctorInfoEntity getDoctorByUserId1(@PathVariable int userID);
+
 }
