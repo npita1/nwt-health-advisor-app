@@ -141,7 +141,7 @@ public class EventController {
     public @ResponseBody ResponseEntity<Map<String, String>> deleteEvent(@PathVariable Long eventId) {
         try {
             eventService.deleteEvent(eventId);
-            Map<String, String> response = Map.of("message", "Pitanje i svi povezani odgovori su uspješno obrisani.");
+            Map<String, String> response = Map.of("message", "event uspješno  obrisan.");
             return ResponseEntity.ok(response);
         } catch (IllegalArgumentException e) {
             // Vraćamo grešku u JSON formatu

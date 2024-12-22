@@ -137,3 +137,32 @@ export async function deleteReservation(reservationId) {
   }
 }
 
+export async function deleteEvent(eventId) {
+  const token = localStorage.getItem('token');
+  if (!token || token === "") {
+    throw new Error('No token found');
+  }
+
+  try {
+    console.log('Sending request to delete event:', eventId);
+    const response = await fetch(`${API_URL}/reservation/deleteEvent/${eventId}`, {
+      method: 'DELETE',
+      headers: {
+        Accept: 'application/json, text/plain, */*',
+        Authorization: `Bearer ${token}`
+      }
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error('Failed to delete event:', response.status, errorText);
+      throw new Error(`Failed to delete event: ${response.status} - ${errorText}`);
+    }
+
+    return response.json();
+  } catch (error) {
+    console.error('Network or server error:', error);
+
+    throw error;
+  }
+}

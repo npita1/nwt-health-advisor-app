@@ -43,9 +43,9 @@ const Articles = () => {
     const { type, id } = deleteModal;
     try {
       if (type === 'article') {
-        // Pozivanje API-ja za brisanje pitanja
+       
         const response = await deleteArticle(id);
-        console.log(response.message); // "Pitanje i svi povezani odgovori su uspješno obrisani."
+        console.log(response.message);
         setArticlesData(prev => prev.filter(article => article.id !== id));
       } 
       // Zatvaranje modala nakon uspješnog brisanja

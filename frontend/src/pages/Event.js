@@ -1,11 +1,11 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { Flex, Button, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, useDisclosure, Select } from '@chakra-ui/react';
+import { Flex, Button, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, Text,ModalCloseButton, useDisclosure, Select } from '@chakra-ui/react';
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import '../styles/Event.css';
 import L from 'leaflet';
 import osm from '../resources/osm-providers';
-import { getAllEvents, addReservation } from '../services/reservationService';
+import { getAllEvents, addReservation,deleteEvent } from '../services/reservationService';
 import AddEvent from "../components/AddEvent";
 function Event() {
     const [center, setCenter] = useState({ lat: 43.8663, lng: 18.4031 });
@@ -17,7 +17,7 @@ function Event() {
     const ZOOM_LEVEL = 13;
     const mapRef = useRef();
     const position = [43.854168, 18.392567];
-
+    const [deleteModal, setDeleteModal] = useState({ isOpen: false, type: null, id: null });
     const customIcon = L.icon({
         iconUrl: "images/EventPage/location.png",
         iconSize: [32, 32], // size of the icon
@@ -103,7 +103,22 @@ function Event() {
         
         onClose();
     };
-
+    const handleDelete = async () => {
+        const { type, id } = deleteModal;
+        try {
+          if (type === 'event') {
+           
+            const response = await deleteEvent(id);
+            console.log(response.message); 
+            setEvents(prev => prev.filter(event => event.id !== id));
+          } 
+          // Zatvaranje modala nakon uspješnog brisanja
+          setDeleteModal({ isOpen: false, type: null, id: null });
+        } catch (error) {
+          // Obrada greške
+          console.error('Error deleting item:', error.message || error);
+        }
+      };
     return (
         <div>
             <div className="kartaDiv">
@@ -176,6 +191,19 @@ function Event() {
                                 </Button>
                                 </>
                                ):null }
+                                {userRole === 'ADMIN' && (
+                            <Button
+                            colorScheme="red"
+                            size="sm"
+                            position="absolute" 
+                                    
+                                    bottom="20px" 
+                                    right="20px"
+                          onClick={() => setDeleteModal({ isOpen: true, type: 'event', id: event.id })}
+                        >
+                          Delete Event
+                        </Button>
+                            )}
                             </Flex>
                         ))
                     ) : (
@@ -183,7 +211,25 @@ function Event() {
                     )}
                 </Flex>
             </div>
-
+              {/* Delete Confirmation Modal */}
+      <Modal isOpen={deleteModal.isOpen} onClose={() => setDeleteModal({ isOpen: false, type: null, id: null })}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Confirm Deletion</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <Text>Are you sure you want to delete this event?</Text>
+          </ModalBody>
+          <ModalFooter>
+            <Button colorScheme="red" onClick={handleDelete}>
+              Yes
+            </Button>
+            <Button ml={3} onClick={() => setDeleteModal({ isOpen: false, type: null, id: null })}>
+              No
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
             {selectedEvent && (
                 <Modal isOpen={isOpen} onClose={onClose}>
                     <ModalOverlay />
