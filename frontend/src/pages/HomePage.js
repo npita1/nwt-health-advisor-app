@@ -46,7 +46,7 @@ function HomePage() {
           <div className='tekstIznadDugmadiDiv'>
             <p className='tekstIznadDugmadi'>Join us and empower your journey towards better health!</p>
           </div>
-          { (userRole==="") ? (
+          { (!userRole || userRole === "") ? (
             <>
           <div className='dugmadDiv'>
             <Button className='dugmeLogIn' colorScheme='#1F55B3' size="md" mr={2} onClick={handleLogInClick}>
