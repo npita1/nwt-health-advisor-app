@@ -307,3 +307,33 @@ export async function deleteForumAnswer(answerId) {
     throw error;
   }
 }
+
+export async function deleteArticle(articleId) {
+  const token = localStorage.getItem('token');
+  if (!token || token === "") {
+    throw new Error('No token found');
+  }
+
+  try {
+    console.log('Sending request to delete article:', articleId);
+    const response = await fetch(`${API_URL}/forum/deleteArticle/${articleId}`, {
+      method: 'DELETE',
+      headers: {
+        Accept: 'application/json, text/plain, */*',
+        Authorization: `Bearer ${token}`
+      }
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error('Failed to delete article:', response.status, errorText);
+      throw new Error(`Failed to delete article: ${response.status} - ${errorText}`);
+    }
+
+    return response.json();
+  } catch (error) {
+    console.error('Network or server error:', error);
+
+    throw error;
+  }
+}

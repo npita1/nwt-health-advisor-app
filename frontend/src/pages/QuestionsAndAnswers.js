@@ -352,8 +352,14 @@ function QuestionsAndAnswers() {
                       </Flex>
                       {userRole === 'ADMIN' && (
                             <Button
-                              colorScheme="red"
-                              size="sm"
+                            colorScheme="red"
+                            size="sm"
+                            style={{
+                              marginTop: '10px',
+                              alignSelf: 'flex-end',
+                              position: 'absolute',
+                              right: '264px',
+                            }}
                               onClick={() => setDeleteModal({ isOpen: true, type: 'question', id: question.id })}
                             >
                               Delete Question
@@ -379,8 +385,14 @@ function QuestionsAndAnswers() {
                             <p className='tekstOdgovora'>{answer.text}</p>
                             {userRole === 'ADMIN' && (
                             <Button
-                          colorScheme="red"
-                          size="sm"
+                            colorScheme="red"
+                            size="sm"
+                            style={{
+                              marginTop: '10px',
+                              alignSelf: 'flex-end',
+                              position: 'absolute',
+                              right: '264px',
+                            }}
                           onClick={() => setDeleteModal({ isOpen: true, type: 'answer', id: answer.id })}
                         >
                           Delete Answer

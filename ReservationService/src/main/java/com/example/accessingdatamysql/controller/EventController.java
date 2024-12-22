@@ -31,6 +31,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Map;
 
 @RestController// This means that this class is a Controller
 @Validated
@@ -137,12 +138,15 @@ public class EventController {
         }
     }
     @DeleteMapping(path = "/deleteEvent/{eventId}")
-    public @ResponseBody ResponseEntity<?> deleteEvent(@PathVariable Long eventId) {
+    public @ResponseBody ResponseEntity<Map<String, String>> deleteEvent(@PathVariable Long eventId) {
         try {
             eventService.deleteEvent(eventId);
-            return ResponseEntity.ok("Event i sve povezane rezervacije su uspješno obrisani.");
+            Map<String, String> response = Map.of("message", "Pitanje i svi povezani odgovori su uspješno obrisani.");
+            return ResponseEntity.ok(response);
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+            // Vraćamo grešku u JSON formatu
+            Map<String, String> errorResponse = Map.of("error", e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
         }
     }
 

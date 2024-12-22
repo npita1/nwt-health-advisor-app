@@ -258,12 +258,14 @@ public @ResponseBody ResponseEntity<?> addArticleNew(
         return ResponseEntity.ok("Article successfully added");
     }
     @DeleteMapping(path = "/deleteArticle/{articleId}")
-    public @ResponseBody ResponseEntity<?> deleteArticle(@PathVariable Long articleId) {
+    public @ResponseBody ResponseEntity<Map<String, String>>deleteArticle(@PathVariable Long articleId) {
         try {
             articleService.deleteArticle(articleId);
-            return ResponseEntity.ok("Članak uspješno obrisan.");
+            Map<String, String> response = Map.of("message", "Članak uspješno obrisan.");
+            return ResponseEntity.ok(response);
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+            Map<String, String> errorResponse = Map.of("error", e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
         }
     }
 
