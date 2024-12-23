@@ -85,7 +85,7 @@ function Header() {
     )
 )}
 
-            {localStorage.token && (
+            {(localStorage.token && userRole)  && (
               <Button
                 className="dugmeLogout"
                 colorScheme="#FF585F"

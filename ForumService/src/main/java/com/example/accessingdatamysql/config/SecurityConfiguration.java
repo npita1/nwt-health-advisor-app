@@ -39,7 +39,10 @@ public class SecurityConfiguration {
             "/forum/allArticles",
             "/forum/allForumQuestions",
             "/forum/questions/category/{category}",
-            "/uploads/**"
+            "/uploads/**",
+            "/forum/uploads/**",
+            "/uploads/${segment}",
+            "/forum/uploads${segment}"
 
     };
 

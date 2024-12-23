@@ -37,7 +37,9 @@ public class SecurityConfiguration {
             "/swagger-ui.html",
             "/authentication/user",
             "/authentication/user-id",
-            "/uploads/**"
+            "/uploads/**",
+            "/user/uploads/**",
+            "/user/uploads${segment}"
     };
 
 

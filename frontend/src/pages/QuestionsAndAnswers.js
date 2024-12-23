@@ -375,7 +375,7 @@ function QuestionsAndAnswers() {
                       <div className='divJednogOdgovora' key={index}>
                         <Flex>
                           <img
-                            src={`http://localhost:8084${answer.doctor.imagePath}`}
+                            src={`http://localhost:8086/user${answer.doctor.imagePath}`}
                             alt="Doctor Icon"
                             style={{ width: '50px', height: '50px', border: '50%' }}
                           />

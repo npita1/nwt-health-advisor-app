@@ -39,7 +39,7 @@ const  ArticleDrawer =({articleInfo, isOpen, setIsOpen}) => {
   
             <DrawerBody display="flex" flexDirection="column" alignItems="center">
                 <img
-                  src={`http://localhost:8083${articleInfo.imagePath}`}
+                  src={`http://localhost:8086/forum${articleInfo.imagePath}`}
                   alt="green iguana"
                   style={{ width: '100%', height: 'auto' }}
                 />

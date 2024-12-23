@@ -55,54 +55,7 @@ public class ArticleController {
         ArticleEntity newArticle = articleService.addArticle(article);
         return ResponseEntity.ok("Article added.");
     }
-//    @PostMapping(path = "/addArticle", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-//    public @ResponseBody ResponseEntity<?> addArticleNew(
-//            @RequestParam("doctorId") int doctorId,
-//            @RequestParam("image") MultipartFile image,
-//            @RequestPart("article") ArticleEntity article) {
-//        // Spremanje slike u folder
-//        String imagePath = null;
-//        if (!image.isEmpty()) {
-//            try {
-//                byte[] bytes = image.getBytes();
-//                Path path = Paths.get("images/" + image.getOriginalFilename());
-//                Files.write(path, bytes);
-//                imagePath = path.toString();
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Greška pri spremanju slike.");
-//            }
-//        }
-//
-//        DoctorInfoEntity doctor = userClient.getDoctorID(doctorId);
-//        if (doctor == null) {
-//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Doktor s ID-om " + doctorId + " nije pronađen.");
-//        }
-//
-//        // Provjera da li je doktor vec spasen u bazi foruma
-//        DoctorInfoEntity forumDoctor = doctorInfoRepository.findByUserId(doctor.getUser().getId());
-//        if (forumDoctor == null) {
-//            forumDoctor = new DoctorInfoEntity();
-//            UserEntity forumUser = new UserEntity();
-//            forumUser.setUserServiceId(doctor.getUser().getId());
-//            forumUser.setEmail(doctor.getUser().getEmail());
-//            forumUser.setFirstName(doctor.getUser().getFirstName());
-//            forumUser.setLastName(doctor.getUser().getLastName());
-//            forumUser.setPassword(doctor.getUser().getPassword());
-//            userRepository.save(forumUser);
-//
-//            forumDoctor.setUser(forumUser);
-//            forumDoctor.setAbout(doctor.getAbout());
-//            forumDoctor.setSpecialization(doctor.getSpecialization());
-//            forumDoctor.setAvailability(doctor.getAvailability());
-//            forumDoctor.setPhoneNumber(doctor.getPhoneNumber());
-//            doctorInfoRepository.save(forumDoctor);
-//        }
-//        article.setImagePath(imagePath);
-//        ArticleEntity savedArticle = articleService.addArticleDoctor(article, forumDoctor);
-//
-//        return ResponseEntity.ok(savedArticle);
-//    }
+
 @PostMapping(path = "/addArticle", consumes = "multipart/form-data")
 public @ResponseBody ResponseEntity<?> addArticleNew(
         @RequestParam("doctorId") int doctorId,
@@ -118,10 +71,6 @@ public @ResponseBody ResponseEntity<?> addArticleNew(
     if (!image.isEmpty()) {
         try {
             byte[] bytes = image.getBytes();
-//            Path path = Paths.get(System.getProperty("user.dir") + "/uploads/"
-//                    + image.getOriginalFilename());
-//            Files.write(path, bytes);
-//            imagePath = path.toString();
             Path path = Paths.get("uploads/" + image.getOriginalFilename());
             Files.write(path, bytes);
             imagePath = "/uploads/" + image.getOriginalFilename(); // Relativna putanja
