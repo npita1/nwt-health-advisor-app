@@ -18,6 +18,9 @@ export default function AddArticle() {
     const [naslov, postaviNaslov] = useState('');
     const [kategorija, postaviKategoriju] = useState('');
     const [slika, postaviSliku] = useState([]);
+    const [validFileTypeTxt, setValidFileTypeTxt] = useState(true);
+    const [validFileTypeImg, setValidFileTypeImg] = useState(true);
+
 
     async function dohvatiKategorije() {
         try {
@@ -69,6 +72,10 @@ export default function AddArticle() {
       alert('Morate odabrati kategoriju!');
       return;
     }
+    if(!(validFileTypeImg && validFileTypeTxt)){
+      alert('Invalid file type');
+      return;
+    }
         const datum = getCurrentDate();
         const podaciClanka = {
             title: naslov,
@@ -115,6 +122,14 @@ export default function AddArticle() {
             acceptedFileTypes={['text/plain']}
             labelIdle='Drag & drop your file or <span class="filepond--label-action">Browse</span>'
             maxFileSize='10MB'
+            allowFileTypeValidation={true}
+                onaddfile={(error, file) => {
+                    if (error) {
+                        setValidFileTypeTxt(false);
+                    }else{
+                        setValidFileTypeTxt(true);
+                    }
+                }}
           />
         </FormControl>
         
@@ -127,6 +142,14 @@ export default function AddArticle() {
             acceptedFileTypes={['image/jpeg', 'image/png']}
             labelIdle='Drag & drop your image or <span class="filepond--label-action">Browse</span> <br/> (JPEG and PNG only)'
             maxFileSize='10MB'
+            allowFileTypeValidation={true}
+                onaddfile={(error, file) => {
+                    if (error) {
+                        setValidFileTypeImg(false);
+                    }else{
+                        setValidFileTypeImg(true);
+                    }
+                }}
           />
         </FormControl>
   

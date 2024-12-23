@@ -34,6 +34,7 @@ public class DoctorService {
         if (doctorInfoRepository.existsByPhoneNumber(doctorInfo.getPhoneNumber())) {
             throw new IllegalArgumentException("Doktor s ovim brojem telefona već postoji.");
         }
+
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRole(Role.DOCTOR);
         userRepository.save(user);

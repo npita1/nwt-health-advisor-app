@@ -22,7 +22,7 @@ export default function AddDoctor() {
     const [phoneNumber, setPhoneNumber] = useState("");
     const [slika, postaviSliku] = useState([]);
     const [showPassword, setShowPassword] = useState(false);
-
+    const [validFileType, setValidFileType] = useState(true);
     const handlePasswordVisibility = () => setShowPassword(!showPassword);
 
     const textareaRef = useRef(null);
@@ -46,8 +46,11 @@ export default function AddDoctor() {
 
     async function dodajClanakUBazu(doctorData) {
         try {
-            
+            if(validFileType){
             await addDoctor(doctorData, slika[0].file);
+        }else {
+            alert('Invalid file type');
+        }
         } catch (error) {
             console.error('Greška pri dodavanju doktora:', error);
         }
@@ -136,6 +139,14 @@ export default function AddDoctor() {
                 acceptedFileTypes={['image/jpeg', 'image/png']}
                 labelIdle='Drag and drop your image or <span class="filepond--label-action">Browse</span> <br/> (JPEG and PNG formats only)'
                 maxFileSize='10MB'
+                allowFileTypeValidation={true}
+                onaddfile={(error, file) => {
+                    if (error) {
+                        setValidFileType(false);
+                    }else{
+                        setValidFileType(true);
+                    }
+                }}
             />
         </FormControl>
 
