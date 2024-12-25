@@ -83,7 +83,7 @@ export default function AddArticle() {
             date: datum,
             categoryId: kategorija        
     };
-        console.log('Podaci članka:', podaciClanka);
+        
         dodajClanakUBazu(podaciClanka);
     };
 
