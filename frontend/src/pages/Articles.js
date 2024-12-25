@@ -72,8 +72,8 @@ const Articles = () => {
             <Article
               title={article.title}
               subtitle={{
-                doctor: `Dr. ${article.doctor.user.firstName} ${article.doctor.user.lastName}`,
-                category: article.category.name,
+                doctor: `Dr. ${article.doctorFirstName} ${article.doctorLastName}`,
+                category: article.categoryName,
               }}
               image={article.image}
               articleInfo={article}

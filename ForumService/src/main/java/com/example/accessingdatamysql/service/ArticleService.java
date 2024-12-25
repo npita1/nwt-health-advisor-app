@@ -1,10 +1,14 @@
 package com.example.accessingdatamysql.service;
 
+import com.example.accessingdatamysql.dto.ArticleDTO;
 import com.example.accessingdatamysql.entity.ArticleEntity;
 import com.example.accessingdatamysql.entity.DoctorInfoEntity;
 import com.example.accessingdatamysql.repository.ArticleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ArticleService {
@@ -66,5 +70,21 @@ public class ArticleService {
         ArticleEntity article = articleRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Članak s ID-jem " + id + " nije pronađen."));
        articleRepository.delete(article);
+    }
+
+    public List<ArticleDTO> getAllArticlesAsDTO() {
+        List<ArticleEntity> articles = articleRepository.findAll();
+
+        return articles.stream().map(article -> {
+            ArticleDTO dto = new ArticleDTO();
+            dto.setId(article.getId());
+            dto.setTitle(article.getTitle());
+            dto.setText(article.getText());
+            dto.setImagePath(article.getImagePath());
+            dto.setDoctorFirstName(article.getDoctor().getUser().getFirstName());
+            dto.setDoctorLastName(article.getDoctor().getUser().getLastName());
+            dto.setCategoryName(article.getCategory().getName());
+            return dto;
+        }).collect(Collectors.toList());
     }
 }

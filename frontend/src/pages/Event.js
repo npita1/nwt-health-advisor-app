@@ -172,7 +172,7 @@ function Event() {
                                         </Flex>
                                         <Flex className='infoFlex'>
                                             <img src="images/EventPage/lecturer.png" alt="Lecturer Icon" style={{ width: '20px', height: 'auto' }} />
-                                            <p className='lokDatDokTekst'>Dr. {event.doctorInfo.user.firstName} {event.doctorInfo.user.lastName}</p>
+                                            <p className='lokDatDokTekst'>Dr. {event.doctorFirstName} {event.doctorLastName}</p>
                                         </Flex>
                                     </Flex>
                                     <p className='opisEventa'>{event.description}</p>

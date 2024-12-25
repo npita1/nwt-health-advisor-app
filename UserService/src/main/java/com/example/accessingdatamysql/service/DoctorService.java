@@ -1,5 +1,6 @@
 package com.example.accessingdatamysql.service;
 
+import com.example.accessingdatamysql.dto.DoctorDTO;
 import com.example.accessingdatamysql.entity.DoctorInfoEntity;
 import com.example.accessingdatamysql.entity.Role;
 import com.example.accessingdatamysql.entity.UserEntity;
@@ -8,6 +9,7 @@ import com.example.accessingdatamysql.exceptions.UserNotFoundException;
 import com.example.accessingdatamysql.repository.DoctorInfoRepository;
 import com.example.accessingdatamysql.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -16,6 +18,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.example.accessingdatamysql.exceptions.ErrorDetails;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Service
 @RequiredArgsConstructor
@@ -62,5 +68,23 @@ public class DoctorService {
         }
 
         return doctor;
+    }
+    public Iterable<DoctorDTO> getAllDoctorsAsDTO() {
+        List<DoctorInfoEntity> doctors = new ArrayList<>();
+        doctorInfoRepository.findAll().forEach(doctors::add);
+
+        return doctors.stream().map(doctor -> {
+            DoctorDTO dto = new DoctorDTO();
+            dto.setId(doctor.getId());
+            dto.setFirstName(doctor.getUser().getFirstName());
+            dto.setLastName(doctor.getUser().getLastName());
+            dto.setEmail(doctor.getUser().getEmail());
+            dto.setPhoneNumber(doctor.getPhoneNumber());
+            dto.setSpecialization(doctor.getSpecialization());
+            dto.setAvailability(doctor.getAvailability());
+            dto.setAbout(doctor.getAbout());
+            dto.setImagePath(doctor.getImagePath());
+            return dto;
+        }).collect(Collectors.toList());
     }
 }

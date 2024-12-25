@@ -104,14 +104,10 @@ function QuestionsAndAnswers() {
   }
 
   const handleQuestionSubmit = async () => {
-    console.log('Question title:', questionTitle);
-    console.log('Question text:', questionText);
-    console.log('Question category:', questionCategory);
-    console.log('Anonymity:', anonymity);
 
     try {
       const userId = localStorage.getItem('userId');
-      console.log('User ID:', userId);
+     
 
       if (userId == null || userId === "") {
         alert("You need to be logged in to post a question. Please log in to continue.");
@@ -147,12 +143,24 @@ function QuestionsAndAnswers() {
         anonymity: isAnonymous
       };
 
-      console.log('Sending request to add question:', JSON.stringify(questionData, null, 2));
 
       const addedQuestion = await addForumQuestion(userId, questionData);
-      console.log('Added question:', addedQuestion);
+     
+      const addedQuestion1 ={
+        id:addedQuestion.id,
+        title:addedQuestion.title,
+        text:addedQuestion.text,
+        date:addedQuestion.date,
+        anonymity:addedQuestion.anonymity,
+        categoryId:addedQuestion.category.id,
+        userFirstName:addedQuestion.user.firstName ,
+        userLastName:addedQuestion.user.lastName,
+      
 
-      setQuestions(prevQuestions => [addedQuestion, ...prevQuestions]);
+      }
+
+      
+      setQuestions(prevQuestions => [addedQuestion1, ...prevQuestions]);
 
       setQuestionTitle('');
       setQuestionText('');
@@ -214,15 +222,22 @@ function QuestionsAndAnswers() {
         date: getCurrentDate()
       };
 
-      console.log('Sending request to add answer:', JSON.stringify(answerData, null, 2));
+      
 
       const addedAnswer = await addForumAnswer(answerData);
-      console.log('Added answer:', addedAnswer);
-
+      
+      const addedAnswer1={
+        id:addedAnswer.id,
+        text:addedAnswer.text,
+        date:addedAnswer.date,
+        doctorFirstName:addedAnswer.doctor.user.firstName,
+        doctorLastName:addedAnswer.doctor.user.lastName,
+        doctorImagePath:addedAnswer.doctor.imagePath
+      }
       // Update the questions state to include the new answer
       setQuestions(prevQuestions => 
         prevQuestions.map(question =>
-          question.id === questionId ? { ...question, answers: [...question.answers, addedAnswer] } : question
+          question.id === questionId ? { ...question, answers: [...question.answers, addedAnswer1] } : question
         )
       );
 
@@ -264,7 +279,7 @@ function QuestionsAndAnswers() {
       const answers = await getForumAnswersByQuestionId(question.id);
       question.answers = answers;
       setExpandedQuestionId(question.id);
-      //console.log(answers)
+      
     } catch (error) {
       console.error('Error fetching answers:', error);
     }
@@ -336,13 +351,13 @@ function QuestionsAndAnswers() {
                           <Flex direction="column">
                             <p className='naslovPitanja'>{question.title}</p>
                             <p className='korisnikPitanja'>
-                              By: {question.anonymity ? 'Anonymous' : (question.user ? `${question.user.firstName} ${question.user.lastName}` : 'Unknown User')}
+                              By: {question.anonymity ? 'Anonymous' : (`${question.userFirstName} ${question.userLastName}`)}
                             </p>
                             <p className='datumPitanja'>{question.date}</p>
                           </Flex>
                           <div className='kategorijaPitanjaUnutarPitanjaDiv'>
                             <img
-                              src={getCategoryIcon(question.category.id)}
+                              src={getCategoryIcon(question.categoryId)}
                               alt="Category Icon"
                               style={{ width: '50px', height: 'auto' }}
                             />
@@ -375,12 +390,12 @@ function QuestionsAndAnswers() {
                       <div className='divJednogOdgovora' key={index}>
                         <Flex>
                           <img
-                            src={`http://localhost:8086/user${answer.doctor.imagePath}`}
+                            src={`http://localhost:8086/user${answer.doctorImagePath}`}
                             alt="Doctor Icon"
                             style={{ width: '50px', height: '50px', border: '50%' }}
                           />
                           <Flex direction="column">
-                            <p className='odgovorImeDoktora'>Dr. {answer.doctor.user.firstName} {answer.doctor.user.lastName}</p>
+                            <p className='odgovorImeDoktora'>Dr. {answer.doctorFirstName} {answer.doctorLastName}</p>
                             <p className='datumPitanja'>{answer.date}</p>
                             <p className='tekstOdgovora'>{answer.text}</p>
                             {userRole === 'ADMIN' && (

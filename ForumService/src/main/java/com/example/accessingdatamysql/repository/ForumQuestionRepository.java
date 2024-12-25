@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
+import java.util.List;
+
 public interface ForumQuestionRepository extends JpaRepository<ForumQuestionEntity, Long> {
 
     ForumQuestionEntity findById(long id);
@@ -16,5 +18,5 @@ public interface ForumQuestionRepository extends JpaRepository<ForumQuestionEnti
     Iterable<ForumQuestionEntity> findQuestionsByUserId(Long userId);
 
     @Query("SELECT question FROM ForumQuestionEntity question WHERE question.category.name = :category")
-    Iterable<ForumQuestionEntity> findByCategory(String category);
+    List<ForumQuestionEntity> findByCategory(String category);
 }

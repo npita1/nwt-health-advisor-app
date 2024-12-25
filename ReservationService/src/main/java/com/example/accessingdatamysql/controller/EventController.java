@@ -1,6 +1,7 @@
 package com.example.accessingdatamysql.controller;
 
 
+import com.example.accessingdatamysql.dto.EventDTO;
 import com.example.accessingdatamysql.entity.DoctorInfoEntity;
 import com.example.accessingdatamysql.entity.EventEntity;
 import com.example.accessingdatamysql.entity.ReservationEntity;
@@ -87,8 +88,8 @@ public class EventController {
         return ResponseEntity.ok(eventNew);
     }
     @GetMapping(path = "/allEvents")
-    public @ResponseBody Iterable<EventEntity> getAllEvents(HttpServletRequest request){
-        return eventRepository.findAll();
+    public @ResponseBody List<EventDTO> getAllEvents() {
+        return eventService.getAllEventsAsDTO();
     }
     @GetMapping("/events/{eventId}")
     public EventEntity getEvent(@PathVariable int eventId) {

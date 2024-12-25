@@ -1,5 +1,6 @@
 package com.example.accessingdatamysql.service;
 
+import com.example.accessingdatamysql.dto.EventDTO;
 import com.example.accessingdatamysql.entity.EventEntity;
 import com.example.accessingdatamysql.repository.EventRepository;
 import com.example.accessingdatamysql.repository.ReservationRepository;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class EventService {
@@ -89,6 +91,20 @@ public class EventService {
         // Brisanje pitanja
         eventRepository.delete(event);
     }
+    public List<EventDTO> getAllEventsAsDTO() {
+        List<EventEntity> events = eventRepository.findAll();
 
+        return events.stream().map(event -> {
+            EventDTO dto = new EventDTO();
+            dto.setId(event.getId());
+            dto.setName(event.getName());
+            dto.setLocation(event.getLocation());
+            dto.setDate(event.getDate());
+            dto.setDescription(event.getDescription());
+            dto.setDoctorFirstName(event.getDoctorInfo().getUser().getFirstName());
+            dto.setDoctorLastName(event.getDoctorInfo().getUser().getLastName());
+            return dto;
+        }).collect(Collectors.toList());
+    }
 
 }

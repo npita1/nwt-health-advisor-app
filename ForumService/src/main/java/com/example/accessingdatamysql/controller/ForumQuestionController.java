@@ -1,4 +1,5 @@
 package com.example.accessingdatamysql.controller;
+import com.example.accessingdatamysql.dto.ForumQuestionDTO;
 import com.example.accessingdatamysql.entity.*;
 import com.example.accessingdatamysql.feign.UserInterface;
 import com.example.accessingdatamysql.repository.*;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 
@@ -81,8 +83,8 @@ public class ForumQuestionController {
     }
 
     @GetMapping(path="/allForumQuestions")
-    public @ResponseBody Iterable<ForumQuestionEntity> getAllForumQuestions() {
-        return forumQuestionService.getAllForumQuestions();
+    public @ResponseBody List<ForumQuestionDTO> getAllForumQuestions() {
+        return forumQuestionService.getAllForumQuestionsAsDTO();
     }
 
     @GetMapping(path="/questions/{forumQuestionId}")
@@ -103,7 +105,7 @@ public class ForumQuestionController {
     }
 
     @GetMapping(path="/questions/category/{category}")
-    public @ResponseBody Iterable<ForumQuestionEntity> getForumQuestionsByCategory (@PathVariable String category) {
+    public @ResponseBody List<ForumQuestionDTO> getForumQuestionsByCategory (@PathVariable String category) {
         return forumQuestionService.getForumQuestionsByCategory(category);
     }
 

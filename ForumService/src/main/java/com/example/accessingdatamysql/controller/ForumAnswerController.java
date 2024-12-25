@@ -1,4 +1,5 @@
 package com.example.accessingdatamysql.controller;
+import com.example.accessingdatamysql.dto.ForumAnswerDTO;
 import com.example.accessingdatamysql.entity.*;
 import com.example.accessingdatamysql.feign.UserInterface;
 import com.example.accessingdatamysql.repository.*;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -71,8 +73,8 @@ public class ForumAnswerController {
     }
 
     @GetMapping(path="/forumAnswers/question/{questionId}")
-    public @ResponseBody Iterable<ForumAnswerEntity> getForumAnswersByQuestionId(@PathVariable Long questionId) {
-        return forumAnswerService.getForumAnswersByQuestionId(questionId);
+    public @ResponseBody List<ForumAnswerDTO> getForumAnswersByQuestionId(@PathVariable Long questionId) {
+        return forumAnswerService.getForumAnswersByQuestionIdAsDTO(questionId);
     }
 
     @GetMapping(path="/forumAnswers/doctor/{doctorId}")

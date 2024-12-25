@@ -55,7 +55,7 @@ const StaffPage = () => {
     const [firstName, lastName] = value.split(' ');
 
     const filtered = doctors.filter((doctor) => {
-    const fullName = `${doctor.user.firstName} ${doctor.user.lastName}`;
+    const fullName = `${doctor.firstName} ${doctor.lastName}`;
     const lowerCasedFullName = fullName.toLowerCase();
     return lowerCasedFullName.includes(value.toLowerCase()) ||
            (firstName && lowerCasedFullName.includes(firstName.toLowerCase())) ||

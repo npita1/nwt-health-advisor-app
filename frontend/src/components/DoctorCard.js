@@ -49,7 +49,7 @@ const DoctorCard = ({doctorInfo}) => {
 
       </div>
       <Heading py='2' size='md' color={"#1F55B3"}>
-        Dr. {doctorInfo.user.firstName + " " + doctorInfo.user.lastName}
+        Dr. {doctorInfo.firstName + " " + doctorInfo.lastName}
       </Heading>
 
       <Text  color={"#BCCCE8"}>
@@ -59,7 +59,7 @@ const DoctorCard = ({doctorInfo}) => {
 
     <CardFooter className='CardFooter'>
       <EmailIcon color={"#BCCCE8"} ></EmailIcon>
-      <Text color={"#BCCCE8"}>{doctorInfo.user.email}</Text>
+      <Text color={"#BCCCE8"}>{doctorInfo.email}</Text>
       <PhoneIcon color={"#BCCCE8"}></PhoneIcon>
       <Text color={"#BCCCE8"}>{doctorInfo.phoneNumber}</Text>
       <Spacer />

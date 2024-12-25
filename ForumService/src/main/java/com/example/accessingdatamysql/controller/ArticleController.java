@@ -1,4 +1,5 @@
 package com.example.accessingdatamysql.controller;
+import com.example.accessingdatamysql.dto.ArticleDTO;
 import com.example.accessingdatamysql.entity.*;
 import com.example.accessingdatamysql.exceptions.CategoryNotFoundException;
 import com.example.accessingdatamysql.feign.UserInterface;
@@ -24,6 +25,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -131,9 +133,9 @@ public @ResponseBody ResponseEntity<?> addArticleNew(
 
 
 
-    @GetMapping(path="/allArticles")
-    public @ResponseBody Iterable<ArticleEntity> getAllArticles() {
-        return articleService.getAllArticles();
+    @GetMapping(path = "/allArticles")
+    public @ResponseBody List<ArticleDTO> getAllArticles() {
+        return articleService.getAllArticlesAsDTO();
     }
 
     @GetMapping(path="/articles/{articleId}")

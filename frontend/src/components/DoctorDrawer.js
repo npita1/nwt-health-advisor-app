@@ -37,11 +37,11 @@ const  DoctorDrawer =({doctorInfo}) => {
                 <Image
                     objectFit='cover'
                     maxW={{ base: '100%', sm: '200px' }}
-                    src={`http://localhost:8086$/user{doctorInfo.imagePath}`}
+                    src={`http://localhost:8086/user${doctorInfo.imagePath}`}
                     alt='Doctor'
                 />
                 <Heading size='md' color={"#1F55B3"} py={2}>
-                    Dr. {doctorInfo.user.firstName + " " + doctorInfo.user.lastName}
+                    Dr. {doctorInfo.firstName + " " + doctorInfo.lastName}
                 </Heading>
                 <Text size='lg' color={"#FF585F"} py={2}>
                 {
@@ -69,7 +69,7 @@ const  DoctorDrawer =({doctorInfo}) => {
                     Email
                 </Heading>
                 <Text size='lg' color={"#BCCCE8"} paddingBottom={8} alignSelf={"start"}>
-                    {doctorInfo.user.email}
+                    {doctorInfo.email}
                 </Text>
                 <Heading size='sm' color={"#1F55B3"} alignSelf={"start"}>
                     Phone

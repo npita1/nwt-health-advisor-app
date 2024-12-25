@@ -1,6 +1,7 @@
 package com.example.accessingdatamysql.controllers;
 
 import com.example.accessingdatamysql.auth.DoctorRequest;
+import com.example.accessingdatamysql.dto.DoctorDTO;
 import com.example.accessingdatamysql.entity.DoctorInfoEntity;
 import com.example.accessingdatamysql.entity.UserEntity;
 import com.example.accessingdatamysql.exceptions.UserNotFoundException;
@@ -71,9 +72,9 @@ public class DoctorInfoController {
 
 
     @GetMapping(path="/allDoctors")
-    public @ResponseBody Iterable<DoctorInfoEntity> getAllDoctors() {
+    public @ResponseBody Iterable<DoctorDTO> getAllDoctors() {
         // This returns a JSON or XML with the users
-        return doctorInfoRepository.findAll();
+        return doctorService.getAllDoctorsAsDTO();
     }
     @GetMapping(path="/doctors/specialist/{specialization}")
     public List<DoctorInfoEntity> getDoctorsBySpecialization(@PathVariable String specialization){
@@ -101,11 +102,8 @@ public class DoctorInfoController {
     }
     @GetMapping(path="/doctor/getbyuserid")
     public @ResponseBody ResponseEntity<?> getDoctorByUserId(@RequestParam("doctorId") int userID){
-        DoctorInfoEntity doctor = doctorInfoRepository.getDoctorByUserId(userID);
+        DoctorInfoEntity doctor =doctorService.getDoctorByUserId(userID);
 
-        if(doctor == null) {
-            throw new UserNotFoundException("Not found doctor by id: " + userID);
-        }
 
         //return ResponseEntity.ok(user);
         return ResponseEntity.ok(doctor);

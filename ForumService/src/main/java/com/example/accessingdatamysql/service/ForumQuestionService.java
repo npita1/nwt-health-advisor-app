@@ -1,11 +1,15 @@
 package com.example.accessingdatamysql.service;
 
+import com.example.accessingdatamysql.dto.ForumQuestionDTO;
 import com.example.accessingdatamysql.entity.*;
 import com.example.accessingdatamysql.repository.ForumAnswerRepository;
 import com.example.accessingdatamysql.repository.ForumQuestionRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ForumQuestionService {
@@ -67,8 +71,27 @@ public class ForumQuestionService {
         return this.forumQuestionRepository.findQuestionsByUserId(userId);
     }
 
-    public Iterable<ForumQuestionEntity> getForumQuestionsByCategory (String category) {
-        return this.forumQuestionRepository.findByCategory(category);
+    public List<ForumQuestionDTO> getForumQuestionsByCategory (String category) {
+        List<ForumQuestionEntity> questions= forumQuestionRepository.findByCategory(category);
+        return questions.stream().map(event -> {
+            ForumQuestionDTO dto = new ForumQuestionDTO();
+            dto.setId(event.getId());
+            dto.setAnonymity(event.isAnonymity());
+            dto.setTitle(event.getTitle());
+            dto.setCategoryId(event.getCategory().getId());
+            dto.setText(event.getText());
+            dto.setDate(event.getDate());
+
+            if (event.isAnonymity()) {
+                dto.setUserFirstName("");
+                dto.setUserLastName("");
+            } else {
+                dto.setUserFirstName(event.getUser().getFirstName());
+                dto.setUserLastName(event.getUser().getLastName());
+            }
+
+            return dto;
+        }).collect(Collectors.toList());
     }
     @Transactional
     public void deleteForumQuestion(Long questionId) {
@@ -82,5 +105,26 @@ public class ForumQuestionService {
         // Brisanje pitanja
         forumQuestionRepository.delete(question);
     }
+    public List<ForumQuestionDTO> getAllForumQuestionsAsDTO() {
+        List<ForumQuestionEntity> questions=forumQuestionRepository.findAll();
+        return questions.stream().map(event -> {
+            ForumQuestionDTO dto = new ForumQuestionDTO();
+            dto.setId(event.getId());
+            dto.setAnonymity(event.isAnonymity());
+            dto.setTitle(event.getTitle());
+            dto.setCategoryId(event.getCategory().getId());
+            dto.setText(event.getText());
+            dto.setDate(event.getDate());
 
+            if (event.isAnonymity()) {
+                dto.setUserFirstName("");
+                dto.setUserLastName("");
+            } else {
+                dto.setUserFirstName(event.getUser().getFirstName());
+                dto.setUserLastName(event.getUser().getLastName());
+            }
+
+            return dto;
+        }).collect(Collectors.toList());
+    }
 }

@@ -1,10 +1,14 @@
 package com.example.accessingdatamysql.service;
 
+import com.example.accessingdatamysql.dto.ForumAnswerDTO;
 import com.example.accessingdatamysql.entity.ArticleEntity;
 import com.example.accessingdatamysql.entity.ForumAnswerEntity;
 import com.example.accessingdatamysql.repository.ForumAnswerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ForumAnswerService {
@@ -37,9 +41,7 @@ public class ForumAnswerService {
         this.forumAnswerRepository.deleteById(id);
     }
 
-    public Iterable<ForumAnswerEntity> getForumAnswersByQuestionId(Long questionId) {
-        return this.forumAnswerRepository.getForumAnswersFromQuestionId(questionId);
-    }
+
 
     public Iterable<ForumAnswerEntity> getForumAnswersByDoctorId(Long doctorId) {
         return this.forumAnswerRepository.getForumAnswersFromDoctorId(doctorId);
@@ -50,5 +52,16 @@ public class ForumAnswerService {
                 .orElseThrow(() -> new IllegalArgumentException("Odgovor s ID-jem " + id + " nije pronađen."));
         forumAnswerRepository.delete(answer);
     }
-
+    public List<ForumAnswerDTO> getForumAnswersByQuestionIdAsDTO(Long questionId) {
+        return forumAnswerRepository.getForumAnswersFromQuestionId(questionId).stream().map(answer -> {
+            ForumAnswerDTO dto = new ForumAnswerDTO();
+            dto.setId(answer.getId());
+            dto.setText(answer.getText());
+            dto.setDate(answer.getDate());
+            dto.setDoctorFirstName(answer.getDoctor().getUser().getFirstName());
+            dto.setDoctorLastName(answer.getDoctor().getUser().getLastName());
+            dto.setDoctorImagePath(answer.getDoctor().getImagePath());
+            return dto;
+        }).collect(Collectors.toList());
+    }
 }
