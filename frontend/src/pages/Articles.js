@@ -25,7 +25,6 @@ const Articles = () => {
     try {
       const articles = await getAllArticles();
       setArticlesData(articles)
-      console.log(articles);
     } catch (error) {
       console.error('Error fetching articles:', error);
     }

@@ -28,7 +28,6 @@ export async function addReservation(eventReservationData) {
     }
   
     try {
-      console.log('Sending request to add reservation:', eventReservationData);
       const response = await fetch(`${API_URL}/reservation/addReservation`, {
         method: 'POST',
         headers: {
@@ -67,7 +66,6 @@ export async function addEvent(eventData) {
   }
 
   try {
-    console.log('Sending request to add event:', eventData);
     const response = await fetch(`${API_URL}/reservation/addEvent`, {
       method: 'POST',
       headers: {
@@ -114,7 +112,6 @@ export async function deleteReservation(reservationId) {
   }
 
   try {
-    console.log('Sending request to delete reservation:', reservationId);
     const response = await fetch(`${API_URL}/reservation/deleteReservation/${reservationId}`, {
       method: 'DELETE',
       headers: {
@@ -144,7 +141,6 @@ export async function deleteEvent(eventId) {
   }
 
   try {
-    console.log('Sending request to delete event:', eventId);
     const response = await fetch(`${API_URL}/reservation/deleteEvent/${eventId}`, {
       method: 'DELETE',
       headers: {

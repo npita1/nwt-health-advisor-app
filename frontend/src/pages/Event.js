@@ -48,7 +48,6 @@ function Event() {
 
         try {
         const userId = localStorage.getItem('userId');
-        console.log('User ID:', userId);
         
         if(userId == null || userId === "") {
           alert("You need to be logged in to make a reservation. Please log in to continue.");

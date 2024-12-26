@@ -102,7 +102,6 @@ export async function addForumQuestion(userId, questionData) {
   }
 
   try {
-    console.log('Sending request to add question:', questionData);
     const response = await fetch(`${API_URL}/forum/addForumQuestion?userId=${userId}`, {
       method: 'POST',
       headers: {
@@ -149,7 +148,6 @@ export async function addArticle(articleData, userId, image) {
   formData.append('categoryId', articleData.categoryId);
 
   try {
-      console.log('Šaljem zahtjev za dodavanje članka:', articleData);
       const response = await fetch(`${API_URL}/forum/addArticle`, {
           method: 'POST',
           headers: {
@@ -218,7 +216,6 @@ export async function addForumAnswer(answerData) {
   }
 
   try {
-    console.log('Sending request to add question:', answerData);
     const response = await fetch(`${API_URL}/forum/addForumAnswer`, {
       method: 'POST',
       headers: {
@@ -256,7 +253,6 @@ export async function deleteForumQuestion(questionId) {
   }
 
   try {
-    console.log('Sending request to delete question:', questionId);
     const response = await fetch(`${API_URL}/forum/deleteQuestion/${questionId}`, {
       method: 'DELETE',
       headers: {
@@ -285,7 +281,6 @@ export async function deleteForumAnswer(answerId) {
   }
 
   try {
-    console.log('Sending request to delete answer:', answerId);
     const response = await fetch(`${API_URL}/forum/deleteAnswer/${answerId}`, {
       method: 'DELETE',
       headers: {
@@ -315,7 +310,6 @@ export async function deleteArticle(articleId) {
   }
 
   try {
-    console.log('Sending request to delete article:', articleId);
     const response = await fetch(`${API_URL}/forum/deleteArticle/${articleId}`, {
       method: 'DELETE',
       headers: {

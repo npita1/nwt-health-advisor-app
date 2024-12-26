@@ -26,7 +26,7 @@ export default function AddArticle() {
         try {
             const kategorije = await getAllCategories();
             postaviKategorije(kategorije);
-            console.log(kategorije);
+            
         } catch (error) {
             console.error('Greška pri dohvatanju kategorija:', error);
         }

@@ -36,7 +36,6 @@ const StaffPage = () => {
       const doctors = await getAllDoctors();
       setDoctors(doctors)
       setFilteredDoctors(doctors)
-      console.log(doctors);
     } catch (error) {
       console.error('Error fetching doctors:', error);
     }

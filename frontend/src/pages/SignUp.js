@@ -37,7 +37,6 @@ function SignUp() {
         password: password
     };
       
-      console.log('Podaci koji se šalju na server:', formData);
       addUser(formData)
       
   };

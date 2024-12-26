@@ -117,7 +117,6 @@ export async function getUserByToken() {
     });
 
     if (response.status === 200) {
-      console.log('Uspješno dohvaćeni podaci o korisniku:', response.data);
       localStorage.setItem('userId', response.data);
       saveUserIdInStorage(localStorage.userId)
 
@@ -150,7 +149,6 @@ export async function addDoctor(doctorData, image) {
   formData.append('image', image);
 
   try {
-    console.log('Sending request to add doctor:', doctorData);
     const response = await fetch(`${API_URL}/user/addNewDoctor`, {
       method: 'POST',
       headers: {
@@ -176,7 +174,6 @@ export async function addDoctor(doctorData, image) {
     }
 
     const responseData = await response.json();
-    console.log('Doctor added successfully:', responseData);
     alert('Doctor added successfully');
     localStorage.setItem('selectedTabIndex', "4");
     window.location.reload();
@@ -207,7 +204,7 @@ export async function getAllDoctors() {
   );
 
     if (response.status === 200) {
-      console.log('Uspješno dohvaćeni podaci o doktorima:', response.data);
+      
       return response.data;
     } else {
       throw new Error('Neuspješno dobavljanje podataka o doktorima.');
@@ -235,7 +232,7 @@ export async function getDoctorIdByUserId(id) {
 
     if (response.ok) {
       const data = await response.json();
-      console.log('Uspješno dohvaćeni podaci o doktoru:', data.id);
+      
       return data.id; 
     } else {
       throw new Error('Došlo je do greške prilikom dohvaćanja podataka o doktoru.');
@@ -287,7 +284,6 @@ export async function getAllUsers() {
       );
 
     if (response.status === 200) {
-      console.log('Uspješno dohvaćeni podaci o korisnicima:', response.data);
       return response.data;
     } else {
       throw new Error('Neuspješno dobavljanje podataka o korisnicima.');

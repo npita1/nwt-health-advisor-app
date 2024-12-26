@@ -30,7 +30,11 @@ public class DoctorService {
     private final UserRepository userRepository;
     private final DoctorInfoRepository doctorInfoRepository;
     private final PasswordEncoder passwordEncoder;
-
+    public void validateImagePath(String imagePath) {
+        if (imagePath == null || (!imagePath.endsWith(".png") && !imagePath.endsWith(".jpg"))) {
+            throw new IllegalArgumentException("Slika mora biti u .jpg ili .png formatu");
+        }
+    }
 
     public DoctorInfoEntity addDoctor(UserEntity user, DoctorInfoEntity doctorInfo) {
         if (userRepository.existsByEmail(user.getEmail())) {
@@ -40,7 +44,7 @@ public class DoctorService {
         if (doctorInfoRepository.existsByPhoneNumber(doctorInfo.getPhoneNumber())) {
             throw new IllegalArgumentException("Doktor s ovim brojem telefona već postoji.");
         }
-
+        validateImagePath(doctorInfo.getImagePath());
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRole(Role.DOCTOR);
         userRepository.save(user);
@@ -56,7 +60,7 @@ public class DoctorService {
         // Provjera da li doktor postoji
         DoctorInfoEntity doctor = doctorInfoRepository.getDoctorByUserId(userId);
         if (doctor == null) {
-            throw new UserNotFoundException("Doktor nije pronađen za ID: " + userId);
+            return null;
         }
 
         // Provjera ovlaštenja
@@ -64,7 +68,7 @@ public class DoctorService {
         boolean isAuthorizedUser = authenticatedUser.getId() == userId;
 
         if (!isAdmin && !isAuthorizedUser) {
-            throw new SecurityException("Nemate pravo da obrišete ovu rezervaciju.");
+            return null;
         }
 
         return doctor;

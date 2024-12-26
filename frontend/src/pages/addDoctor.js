@@ -76,7 +76,7 @@ export default function AddDoctor() {
              availability: availability,
              phoneNumber: phoneNumber       
     };
-        console.log('Podaci članka:', doctorData);
+        
         dodajClanakUBazu(doctorData);
     };
 

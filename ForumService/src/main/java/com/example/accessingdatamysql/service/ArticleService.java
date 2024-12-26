@@ -19,7 +19,11 @@ public class ArticleService {
     public ArticleEntity addArticle(ArticleEntity article) {
         return this.articleRepository.save(article);
     }
-
+    public void validateImagePath(String imagePath) {
+        if (imagePath == null || (!imagePath.endsWith(".png") && !imagePath.endsWith(".jpg"))) {
+            throw new IllegalArgumentException("Slika mora biti u .jpg ili .png formatu");
+        }
+    }
     public ArticleEntity addArticleDoctor(ArticleEntity article, DoctorInfoEntity doctor) {
         if (doctor.getId() == null) {
             throw new IllegalArgumentException("Doctor must be saved in the database before adding an article.");
@@ -42,6 +46,8 @@ public class ArticleService {
         if (article.getCategory().getId() == null) {
             throw new IllegalArgumentException("Kategorija mora biti postavljena.");
         }
+        // Validacija putanje slike
+        validateImagePath(article.getImagePath());
         article.setDoctor(doctor);
         return this.articleRepository.save(article);
     }
