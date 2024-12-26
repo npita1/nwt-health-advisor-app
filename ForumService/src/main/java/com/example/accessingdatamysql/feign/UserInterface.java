@@ -5,7 +5,7 @@ import com.example.accessingdatamysql.entity.UserEntity;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
-@FeignClient(name = "USERSERVICE")
+@FeignClient(name = "USERSERVICE",configuration = FeignClientConfiguration.class)
 public interface UserInterface {
 
     @GetMapping(value = "/user/doctors/{doctorID}")

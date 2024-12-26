@@ -57,7 +57,7 @@ public class SecurityConfiguration {
                         .requestMatchers(GET,"/user/allUsers").hasRole(ADMIN.name())
                         .requestMatchers(DELETE,"user/deleteUser/{userId}").hasRole(ADMIN.name())
                         .requestMatchers(GET,"/user/doctors/{doctorID}").hasAnyRole(ADMIN.name(),DOCTOR.name())
-                        .requestMatchers(GET,"/user/getDoctorByUserid/{userID}").hasAnyRole(ADMIN.name(),DOCTOR.name())
+                        .requestMatchers(GET,"/user/getDoctorByUserid/{userID}").hasAnyRole(ADMIN.name(),DOCTOR.name(),USER.name())
                         .requestMatchers(GET,"/user/doctor/getbyuserid").hasAnyRole(ADMIN.name(),DOCTOR.name(), USER.name())
                         .requestMatchers(GET,"/user/doctor/{doctorID}/articles").hasRole(DOCTOR.name())
                         .requestMatchers(GET,"/user/users/{userID}").hasAnyRole(ADMIN.name(),DOCTOR.name(),USER.name())

@@ -53,15 +53,16 @@ public class DoctorService {
     }
 
     public DoctorInfoEntity getDoctorByUserId(int userId) {
-        // Dohvati trenutno autentifikovanog korisnika iz SecurityContext-a
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        UserEntity authenticatedUser = (UserEntity) authentication.getPrincipal();
-
         // Provjera da li doktor postoji
         DoctorInfoEntity doctor = doctorInfoRepository.getDoctorByUserId(userId);
         if (doctor == null) {
             return null;
         }
+
+        // Dohvati trenutno autentifikovanog korisnika iz SecurityContext-a
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserEntity authenticatedUser = (UserEntity) authentication.getPrincipal();
+
 
         // Provjera ovlaštenja
         boolean isAdmin = authenticatedUser.getRole() == Role.ADMIN;

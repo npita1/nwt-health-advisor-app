@@ -67,7 +67,9 @@ const Articles = () => {
          : <></>}
       <div className="articlesContainer">
         {articlesData.map((article) => (
-          <Box key={article.id} position="relative">
+          <Box key={article.id} className="article-box" p={4} mb={4} boxShadow="md" borderRadius="md" borderWidth="1px">
+          <Flex justifyContent="space-between" alignItems="center" >
+            {/* Informacije o članku */}
             <Article
               title={article.title}
               subtitle={{
@@ -77,22 +79,20 @@ const Articles = () => {
               image={article.image}
               articleInfo={article}
             />
+      
+            {/* Dugme za brisanje (vidljivo samo za ADMIN role) */}
             {userRole === 'ADMIN' && (
               <Button
-              colorScheme="red"
-                            size="sm"
-                            style={{
-                              marginTop: '10px',
-                              alignSelf: 'flex-end',
-                              position: 'absolute',
-                              
-                            }}
-              onClick={() => setDeleteModal({ isOpen: true, type: 'article', id: article.id })}
-            >
-              Delete {article.title}
+                colorScheme="red"
+                size="sm"
+                ml={4}
+                onClick={() => setDeleteModal({ isOpen: true, type: 'article', id: article.id })}
+              >
+                Delete
               </Button>
             )}
-          </Box>
+          </Flex>
+        </Box>
         ))}
       </div>
         {/* Delete Confirmation Modal */}
