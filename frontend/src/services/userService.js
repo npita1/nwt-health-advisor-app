@@ -2,7 +2,7 @@ import bcrypt from 'bcryptjs';
 import axios from 'axios';
 import { useState } from 'react';
 
-const API_URL = 'http://localhost:8086';
+const API_URL = 'https://ec2-54-161-190-131.compute-1.amazonaws.com/api';
 
 export async function logIn(email, inputedPassword) {
   try {

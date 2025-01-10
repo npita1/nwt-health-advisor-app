@@ -1,5 +1,5 @@
 import axios from 'axios';
-const API_URL = 'http://localhost:8086';
+const API_URL = 'https://ec2-54-161-190-131.compute-1.amazonaws.com/api';
 
 export async function getAllEvents() {
     try {

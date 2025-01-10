@@ -390,7 +390,7 @@ function QuestionsAndAnswers() {
                       <div className='divJednogOdgovora' key={index}>
                         <Flex>
                           <img
-                            src={`http://localhost:8086/user${answer.doctorImagePath}`}
+                            src={`https://ec2-54-161-190-131.compute-1.amazonaws.com/api/user${answer.doctorImagePath}`}
                             alt="Doctor Icon"
                             style={{ width: '50px', height: '50px', border: '50%' }}
                           />

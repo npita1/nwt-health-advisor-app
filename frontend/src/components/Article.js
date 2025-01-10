@@ -25,7 +25,7 @@ export default function Article({ title, subtitle, image, articleInfo, onClick})
           
             <CardMedia
               component="img"
-              image={`http://localhost:8086/forum${articleInfo.imagePath}`}
+              image={`https://ec2-54-161-190-131.compute-1.amazonaws.com/api/forum${articleInfo.imagePath}`}
               alt="green iguana"
               style={{ position: 'absolute', top: 0, left: -30, width: '100%', height: '100%' }}
             />

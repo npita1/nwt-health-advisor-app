@@ -37,7 +37,7 @@ const  DoctorDrawer =({doctorInfo}) => {
                 <Image
                     objectFit='cover'
                     maxW={{ base: '100%', sm: '200px' }}
-                    src={`http://localhost:8086/user${doctorInfo.imagePath}`}
+                    src={`https://ec2-54-161-190-131.compute-1.amazonaws.com/api/user${doctorInfo.imagePath}`}
                     alt='Doctor'
                 />
                 <Heading size='md' color={"#1F55B3"} py={2}>

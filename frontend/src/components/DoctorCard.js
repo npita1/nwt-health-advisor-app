@@ -30,7 +30,7 @@ const DoctorCard = ({doctorInfo}) => {
   <Image
     objectFit='cover'
     maxW={{ base: '100%', sm: '200px' }}
-    src={`http://localhost:8086/user${doctorInfo.imagePath}`}
+    src={`https://ec2-54-161-190-131.compute-1.amazonaws.com/api/user${doctorInfo.imagePath}`}
     alt='Doctor'
     style={{ width: '100%' }} 
   />
